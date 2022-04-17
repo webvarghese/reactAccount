@@ -1,82 +1,32 @@
-const Table = ({ text }) => {
+const Table = ({ inputList}) => {
   return (
     <div className="list-table">
       <table>
         <thead>
-          <th>Date</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Purpose</th>
-          <th>Amount</th>
-          <th>Verified</th>
+          <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Purpose</th>
+            <th>Amount</th>
+            <th>Verified</th>
+          </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
-          <tr>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-            <td>{text}</td>
-          </tr>
+          {
+            inputList.map((input,index) =>{
+              return (
+                <tr key={index}>
+                  <td>{input.date}</td>
+                  <td>{input.from}</td>
+                  <td>{input.to}</td>
+                  <td>{input.purpose}</td>
+                  <td>{input.Amount}</td>
+                  <td>{input.verified}</td>
+                </tr>
+              )
+            })
+          }
         </tbody>
       </table>
     </div>

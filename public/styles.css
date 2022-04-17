@@ -16,6 +16,7 @@ h1 {
 .tablet {
   height: 5vh;
   width: min-content;
+  height: min-content;
   background-color: aquamarine;
   border-radius: 500px;
   padding: 0 2vw;
@@ -102,7 +103,16 @@ h1 {
 .list-table {
   height: 80vh;
   width: 60vw;
-  padding: 0 5vw;
+  overflow: auto;
+}
+.list-table td {
+  padding-left: 1vw;
+}
+.list-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
 }
 
 .form-control {
@@ -136,4 +146,10 @@ h1 {
 footer {
   margin-top: 30px;
   text-align: center;
+}
+.scrollable {
+  overflow: scroll;
+}
+.right-panel {
+  padding: 0 2vw;
 }
