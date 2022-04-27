@@ -9,22 +9,27 @@ h1 {
 }
 .nav {
   display: flex;
-  border: 1px solid blue;
+  height: max-content;
+  background-color: black;
   list-style-type: none;
-  border-radius: 2vh;
+  align-items: center;
+  padding: 1vh 0;
+  color: white;
 }
 .tablet {
   height: 5vh;
   width: min-content;
   height: min-content;
-  background-color: aquamarine;
-  border-radius: 500px;
   padding: 0 2vw;
   font-size: 3vh;
   margin-left: 3vw;
 }
+.tablet input {
+  border: none;
+}
 .tablet a {
   text-decoration: none;
+  color: white;
 }
 .home {
   border: 1px solid red;
@@ -152,4 +157,12 @@ footer {
 }
 .right-panel {
   padding: 0 2vw;
+}
+
+.prompt {
+  z-index: 1;
+  height: 100px;
+  width: 100px;
+  background-color: violet;
+  transform: translate(-50% -50%);
 }

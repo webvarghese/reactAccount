@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
-import {useState} from 'react'
+import { useState, useEffect } from "react";
 
-function Tab({onSearch}) {
-  const [strSearch, setStrSearch] = useState('')
-  
+function Tab({ onSearch, searchByDate }) {
+  const [strSearch, setStrSearch] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  useEffect(() => {
+    searchByDate(fromDate, toDate);
+  }, [fromDate, toDate]);
+
+  useEffect(() => {
+    onSearch(strSearch);
+  }, [strSearch]);
+
   return (
     <>
       <ul className="nav">
@@ -15,12 +25,33 @@ function Tab({onSearch}) {
         </li>
         <li className="tablet">
           <input
-          type="text"
-          placeholder="search here"
-          value={strSearch}
-          onChange={(e) => setStrSearch(e.target.value)}
-          onKeyDown={()=>onSearch(strSearch)}
+            type="text"
+            placeholder="search here"
+            value={strSearch}
+            onChange={(e) => setStrSearch((prev) => e.target.value)}
           />
+        </li>
+        <li className="tablet">
+          <label>
+            From
+            <input
+              type="date"
+              placeholder="from date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+            />
+          </label>
+        </li>
+        <li className="tablet">
+          <label>
+            To
+            <input
+              type="date"
+              placeholder="to date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+            />
+          </label>
         </li>
       </ul>
     </>
