@@ -17,6 +17,16 @@ function Tab({ onSearch, searchByDate }) {
   return (
     <>
       <ul className="nav">
+        <li>
+          More
+          <ul className="sub-menu-1">
+            <li>One</li>
+            <li>Two</li>
+            <li>Three</li>
+            <li>Four</li>
+            <li>Five</li>
+          </ul>
+        </li>
         <li className="tablet">
           <Link to="/some">Some</Link>
         </li>

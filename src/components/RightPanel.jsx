@@ -1,15 +1,17 @@
 import { Routes, Route } from "react-router-dom";
 import Table from "./Table";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import Tab from "./Tab";
 
 function RightPanel({ list }) {
   const [searchList, setSearchList] = useState([]);
-
-  useEffect(() => {
+  useCallback(()=>{
     setSearchList(list);
-  }, [list]);
+  },[list])
+  useEffect(() => {
+    setSearchList(list)
+  }, [list,setSearchList]);
 
   const filterList = (str) => {
     console.log(str);

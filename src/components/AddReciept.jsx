@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import TextPrompt from "./TextPrompt";
-const AddTask = ({ onAdd }) => {
+const AddReceipt = ({ onAdd }) => {
   const [date, setDate] = useState("");
-  const [voucherNo, setVoucherNo] = useState('')
+  const [receiptNo, setReceiptNo] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [purpose, setPurpose] = useState("");
   const [amount, setAmount] = useState("");
+  const [items, setItems] = useState([]);
   const [by, setBy] = useState("");
   const [bankDetails, setBankDetails] = useState("");
   const [verified, setVerified] = useState(false);
@@ -33,9 +34,18 @@ const AddTask = ({ onAdd }) => {
     setAmount("");
     setVerified(false);
   };
+  const addItem = () => {
+    setItems([...items, { purpose, amount }]);
+    setPurpose('')
+    setAmount('')
+  };
   const promptList = ["John", "Joseph", "Jane", "Thomas", "Christo"];
   const whenChanged = (e) => {
     const str = e.target.value;
+    if (str.length < 1){
+      setShowPrompt(false);
+      return
+    } 
     setTarget(e);
     setPrompt(promptList.filter((p) => p.toLowerCase().indexOf(str) >= 0));
   };
@@ -46,13 +56,12 @@ const AddTask = ({ onAdd }) => {
   };
   useEffect(() => {
     console.log(prompt);
+    setShowPrompt(false);
     if (prompt.length > 0) {
       setShowPrompt(true);
     }
   }, [prompt]);
-  useEffect(() => {
-    console.log(by);
-  }, [by]);
+ 
 
   const fillText = (text) => {
     console.log(target.target.placeholder);
@@ -85,7 +94,7 @@ const AddTask = ({ onAdd }) => {
       {showPrompt && (
         <TextPrompt x={x} y={y} prompt={prompt} fillText={fillText} />
       )}
-      <form className="add-form" onSubmit={onSubmit}>
+      <div className="add-form" onSubmit={onSubmit}>
         <div className="form-control">
           <label>Date</label>
           <input
@@ -96,12 +105,12 @@ const AddTask = ({ onAdd }) => {
           />
         </div>
         <div className="form-control">
-          <label>Voucher No</label>
+          <label>Receipt No</label>
           <input
             type="text"
-            placeholder="Voucher No"
-            value={voucherNo}
-            onChange={(e) => setVoucherNo(e.target.value)}
+            placeholder="Receipt No"
+            value={receiptNo}
+            onChange={(e) => setReceiptNo(e.target.value)}
           />
         </div>
         <div className="form-control">
@@ -152,6 +161,18 @@ const AddTask = ({ onAdd }) => {
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
+        <button className="btn-small" onClick={addItem}>
+          {" "}
+          Add Item{" "}
+        </button>
+        <div>
+          {items.map((item, index)=>{
+            return <p key={index}>{item.purpose + " : " +item.amount }</p>
+          })}
+          <h3>{"Total : "}<span>&#8360;</span> {+ items.reduce((tot, item)=>{
+           return  tot + parseInt(item.amount,10)
+          },0)}</h3>
+        </div>
         <div
           className="form-control"
           value={by}
@@ -186,8 +207,8 @@ const AddTask = ({ onAdd }) => {
           className="btn btn-block"
           value="Save Transaction"
         />
-      </form>
+      </div>
     </>
   );
 };
-export default AddTask;
+export default AddReceipt;

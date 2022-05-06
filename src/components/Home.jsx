@@ -1,19 +1,11 @@
-import AddTask from "./AddTask";
+
 import RightPanel from "./RightPanel";
+import LeftPanel from "./LeftPanel"
 
-import { useState, useEffect } from "react";
-
-const Home = () => {
-  const [transactions, setTransactions] = useState([]);
-
-  const addTransaction = (transaction) => {
-    setTransactions([...transactions, transaction]);
-    console.log(transactions);
-  };
-
+const Home = ({transactions}) => {
   return (
     <div className="container">
-      <AddTask onAdd={addTransaction} />
+      <LeftPanel/>
       <RightPanel list={transactions} />
     </div>
   );

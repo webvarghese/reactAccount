@@ -7,14 +7,20 @@ h1 {
   color: green;
   font-size: 2rem;
 }
+::-webkit-scrollbar {
+  width: 20px;
+}
 .nav {
   display: flex;
   height: max-content;
-  background-color: black;
+  overflow: auto;
+  background-color: darkslategrey;
   list-style-type: none;
   align-items: center;
-  padding: 1vh 0;
+  padding: 1vh 1vw;
   color: white;
+  cursor: pointer;
+  border-radius: 10px;
 }
 .tablet {
   height: 5vh;
@@ -40,12 +46,14 @@ h1 {
   border-radius: 2vh;
 }
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
   border: 1px solid steelblue;
-  padding: 30px;
+  padding: 10px;
   border-radius: 5px;
 }
 
@@ -68,6 +76,13 @@ h1 {
   text-decoration: none;
   font-size: 15px;
   font-family: inherit;
+}
+.btn-small {
+  padding: 10px;
+  background-color: cornflowerblue;
+  width: max-content;
+  border: none;
+  border-radius: 5px;
 }
 
 .btn:focus {
@@ -100,10 +115,8 @@ h1 {
   justify-content: space-between;
 }
 
-.add-form {
-  height: 80vh;
-  width: 30vw;
-  margin-bottom: 40px;
+.add-form input {
+  width: 80%;
 }
 .list-table {
   height: 80vh;
@@ -132,6 +145,11 @@ h1 {
   margin: 1vh;
   padding: 1vh 2vw;
 }
+.form-control input[type="radio"] {
+  width: max-content;
+  margin-right: 0px;
+  margin-left: 20px;
+}
 
 .form-control-check {
   display: flex;
@@ -156,7 +174,18 @@ footer {
   overflow: scroll;
 }
 .right-panel {
+  grid-column: 2 / 4;
   padding: 0 2vw;
+  background-color: khaki;
+  overflow: auto;
+  border-radius: 10px;
+}
+.left-panel {
+  grid-column: 1 / 2;
+  padding: 0 2vw;
+  background-color: darkseagreen;
+  overflow: auto;
+  border-radius: 10px;
 }
 
 .prompt {
@@ -165,4 +194,16 @@ footer {
   width: 100px;
   background-color: violet;
   transform: translate(-50% -50%);
+}
+.sub-menu-1 {
+  display: none;
+}
+.nav li:hover .sub-menu-1 {
+  display: block;
+  position: absolute;
+  background: rgb(0, 0, 0);
+  margin-top: 1px;
+}
+.sub-menu-1 li {
+  margin: 15 5;
 }

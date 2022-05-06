@@ -1,18 +1,13 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import About from "./components/About";
-import Nav from "./components/Nav";
+import Login from "./components/Login";
+import Main from "./components/Main";
+import { useState } from "react";
 
 function App() {
-  return (
-    <>
-      <Nav />
-      <Routes>
-        <Route path="/*" element={<Home />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </>
-  );
+  const [auth, setAuth] = useState(true);
+  const logged = (log) => {
+    setAuth(log);
+  };
+  return <>{auth ? <Main /> : <Login logged={logged} />}</>;
 }
 
 export default App;
