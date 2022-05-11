@@ -26,12 +26,15 @@ const AddTask = ({ onAdd }) => {
       return;
     }
     onAdd({ date, from, to, purpose, amount, verified });
-    setDate("");
-    setFrom("");
-    setTo("");
-    setPurpose("");
-    setAmount("");
-    setVerified(false);
+    google.script.run.withSuccessHandler((d)=>{
+      setDate("");
+      setFrom("");
+      setTo("");
+      setPurpose("");
+      setAmount("");
+      setVerified(false);
+    }).saveTransaction([{ date, from, to, purpose, amount, verified }]);
+    
   };
   const promptList = ["John", "Joseph", "Jane", "Thomas", "Christo"];
   const whenChanged = (e) => {

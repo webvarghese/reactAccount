@@ -182,7 +182,7 @@ footer {
 }
 .left-panel {
   grid-column: 1 / 2;
-  padding: 0 2vw;
+  padding:5vh 2vw;
   background-color: darkseagreen;
   overflow: auto;
   border-radius: 10px;
@@ -206,4 +206,39 @@ footer {
 }
 .sub-menu-1 li {
   margin: 15 5;
+}
+.button-block{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding :10px;
+}
+.btn-add{
+  background-color: aquamarine;
+  grid-column: 1 / 2;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 0;
+}
+.btn-update{
+  background-color:burlywood;
+  grid-column: 2 / 3;
+  border: none;
+  border-radius: 5px;
+}
+.btn-clear{
+  background-color: cadetblue;
+  grid-column: 3/4;
+  border: none;
+  border-radius: 5px;
+}
+.btn-delete{
+  background-color:indianred;
+  grid-column: 4/5;
+  border: none;
+  border-radius: 5px;
+}
+.selectedRow :hover {
+  background-color:darkgoldenrod;
+  cursor: pointer;
 }
