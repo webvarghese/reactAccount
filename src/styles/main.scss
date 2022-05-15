@@ -55,6 +55,10 @@ h1 {
   border: 1px solid steelblue;
   padding: 10px;
   border-radius: 5px;
+  
+  input{
+    border-radius: 5px;
+  }
 }
 
 .header {
@@ -122,6 +126,11 @@ h1 {
   height: 80vh;
   width: 60vw;
   overflow: auto;
+  
+  .selectedRow:hover {
+    background-color:darkgoldenrod;
+    cursor: pointer;
+  }
 }
 .list-table td {
   padding-left: 1vw;
@@ -238,7 +247,5 @@ footer {
   border: none;
   border-radius: 5px;
 }
-.selectedRow :hover {
-  background-color:darkgoldenrod;
-  cursor: pointer;
-}
+
+

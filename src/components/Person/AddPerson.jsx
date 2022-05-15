@@ -17,9 +17,11 @@ const AddPerson = ({addPerson,updatePerson, deletePerson, person}) => {
   },[person])
 
   const showPerson=(person)=>{
-    setPersonId(person.personId)
-    setPersonName(person.personName)
-    setPersonAddress(person.personAddress)
+    if(person.personId > 0){
+      setPersonId(person.personId)
+      setPersonName(person.personName)
+      setPersonAddress(person.personAddress)
+    }
   }
   return (
     <>

@@ -13,6 +13,12 @@ function Nav() {
         <li className="tablet">
           <Link to="/person">Person</Link>
         </li>
+        <li className="tablet">
+          <Link to="/accountHead">Account Head</Link>
+        </li>
+        <li className="tablet">
+          <Link to="/schedule">Schedule</Link>
+        </li>
       </ul>
     </>
   );
