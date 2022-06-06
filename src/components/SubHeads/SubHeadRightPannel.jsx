@@ -1,9 +1,10 @@
 
-import PersonTable from "./PersonTable";
-import { useState, useEffect, useCallback } from "react";
-import PersonTab from "./PersonTab";
 
-function PersonRightPanel({ list, setPerson}) {
+import { useState, useEffect, useCallback } from "react";
+import SubHeadTab from "./SubHeadTab";
+import SubHeadTable from "./SubHeadTable";
+
+function SubHeadRightPanel({ list, setSubHead}) {
   const [searchList, setSearchList] = useState([]);
   useCallback(()=>{
     
@@ -15,7 +16,6 @@ function PersonRightPanel({ list, setPerson}) {
   }, [list]);
 
   const filterList = (str) => {
-   
     if (str.length > 1) {
       setSearchList(
         list.filter(
@@ -30,10 +30,10 @@ function PersonRightPanel({ list, setPerson}) {
  
   return (
     <div className="right-panel">
-      <PersonTab onSearch={filterList}  />
-      <PersonTable inputList={searchList} selectPerson={setPerson}/>
+      <SubHeadTab onSearch={filterList}  />
+      <SubHeadTable inputList={searchList} selectSubHead={setSubHead}/>
     </div>
   );
 }
 
-export default PersonRightPanel;
+export default SubHeadRightPanel;

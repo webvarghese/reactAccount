@@ -1,8 +1,10 @@
-import { useEffect} from "react";
+import { useState,useEffect} from "react";
 const PersonTable = ({ inputList,selectPerson }) => {
+  const [list, setList] = useState([])
   useEffect(()=>{
-
-  },[inputList])
+    setList(inputList)
+    
+  },[list])
     return (
       <div className="list-table">
         <table>
@@ -14,7 +16,7 @@ const PersonTable = ({ inputList,selectPerson }) => {
             </tr>
           </thead>
           <tbody>
-              {inputList.map((input,index)=>{
+              {list.map((input,index)=>{
                   return (
                     <tr className="selectedRow" key={index} onClick={()=>selectPerson(input.personId)}>
                     <td>{input.personId}</td>

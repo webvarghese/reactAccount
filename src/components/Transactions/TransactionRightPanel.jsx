@@ -1,20 +1,19 @@
 import { Routes, Route } from "react-router-dom";
-import Table from "./Table";
 import { useState, useEffect, useCallback } from "react";
+import TransactionRightTab from "./TransactionRightTab";
+import TransactionTable from "./TransactionTable";
 
-import Tab from "./Tab";
-
-function RightPanel({ list }) {
+function TransactionRightPanel({dataArray, setTransaction}) {
   const [searchList, setSearchList] = useState([]);
+  const list = dataArray.Transactions
   useCallback(()=>{
-    setSearchList(list);
-  },[list])
+    setSearchList([...list]);
+  },[dataArray])
   useEffect(() => {
-    setSearchList(list)
-  }, [list,setSearchList]);
+    setSearchList([...list])
+  }, [dataArray,setSearchList]);
 
   const filterList = (str) => {
-    console.log(str);
     if (str.length > 0) {
       setSearchList(
         list.filter(
@@ -32,7 +31,7 @@ function RightPanel({ list }) {
     let endDate = toDate ? new Date(toDate) : new Date();
     startDate = startDate <= endDate ? startDate : thisDate;
     endDate = endDate <= thisDate ? endDate : thisDate;
-    console.log(startDate, endDate);
+   
     // setSearchList(list.filter((item)=>{
     //   const itemDate = new Date(item.date)
     //   return itemDate >= startDate && itemDate <= endDate
@@ -40,13 +39,10 @@ function RightPanel({ list }) {
   };
   return (
     <div className="right-panel">
-      <Tab onSearch={filterList} searchByDate={searchByDate} />
-      <Routes>
-        <Route path="/some" element={<Table inputList={searchList} />} />
-        <Route path="/somemore" element={<Table inputList={searchList} />} />
-      </Routes>
+      <TransactionRightTab onSearch={filterList} searchByDate={searchByDate} />
+      <TransactionTable inputList={searchList} selectTransaction={setTransaction} />
     </div>
   );
 }
 
-export default RightPanel;
+export default TransactionRightPanel;

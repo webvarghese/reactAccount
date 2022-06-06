@@ -22,7 +22,7 @@ const getSchedule =(id)=>{
 const addSchedule=(data)=>{
     const objArray = [data.scheduleName]
     const id = addObject_('Schedules',objArray)
-    console.log(id)
+    
     const objAdded = getSchedule(id)
     return objAdded
   }

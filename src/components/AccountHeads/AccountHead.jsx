@@ -1,18 +1,27 @@
 import AccountHeadRightPanel from "./AccountHeadRightPannel";
 import AccountHeadLeftPanel from "./AccountHeadLeftPannel"
 import {useState, useEffect} from 'react'
+import { getAccountHeads, getSchedules, getAccountTypes } from "../Utilities";
 
 const AccountHead = () => {
   const [accountHeadList,setAccountHeadList] = useState([])
+  const [scheduleList, setScheduleList] = useState([])
+  const [accountTypeList, setAccountTypeList] = useState([])
   const [acc, setAcc] = useState('')
-  
 
   useEffect(()=>{
-    google.script.run.withSuccessHandler((list)=>{
-        setAccountHeadList(list)   
-      }).getAccountHeads();
+    const getData = async ()=>{
+      const accountHeads =await getAccountHeads()
+      const accountTypes = await getAccountTypes()
+      const schedules = await getSchedules()
+      setAccountHeadList(accountHeads)
+      setAccountTypeList(accountTypes)
+      setScheduleList(schedules)
+    }
+    getData()
   },[])
 
+  
   
  
   const addAccountHead =(objAccountHead)=>{
@@ -61,8 +70,18 @@ const AccountHead = () => {
   }
   return (
     <div className="container">
-      <AccountHeadLeftPanel addAccountHead={addAccountHead} updateAccountHead={updateAccountHead} deleteAccountHead ={deleteAccountHead} accountHead={acc}/>
-      <AccountHeadRightPanel list={accountHeadList} setAccountHead={setAccountHead} />
+      <AccountHeadLeftPanel accountHeadList ={accountHeadList} 
+      accountTypeList ={accountTypeList}
+      scheduleList = {scheduleList}
+      addAccountHead={addAccountHead} 
+      updateAccountHead={updateAccountHead} 
+      deleteAccountHead ={deleteAccountHead} 
+      accountHead={acc}/>
+
+      <AccountHeadRightPanel accountHeadList ={accountHeadList} 
+      accountTypeList ={accountTypeList}
+      scheduleList = {scheduleList} 
+      setAccountHead={setAccountHead} />
     </div>
   );
 };

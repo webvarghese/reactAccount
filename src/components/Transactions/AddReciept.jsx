@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import TextPrompt from "./TextPrompt";
-const AddReceipt = ({ onAdd }) => {
-  const [date, setDate] = useState("");
-  const [receiptNo, setReceiptNo] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+
+const AddReceipt = ({ addTransaction, updateTransaction, deleteTransaction, dataArray, transaction }) => {
+  const [transactionId, setTransactionId] = useState("")
+  const [transactionDate, setDate] = useState("");
+  const [transactionReceiptNo, setReceiptNo] = useState("");
+  const [transactionFrom, setFrom] = useState("");
   const [purpose, setPurpose] = useState("");
   const [amount, setAmount] = useState("");
-  const [items, setItems] = useState([]);
-  const [by, setBy] = useState("");
+  const [details, setDetails] = useState("")
+  const [transactionItems, setItems] = useState([]);
+  const [transactionBy, setBy] = useState("");
+  const [transactionType, setType] = useState("Reciept")
   const [bankDetails, setBankDetails] = useState("");
-  const [verified, setVerified] = useState(false);
 
   const [x, setX] = useState("");
   const [y, setY] = useState("");
@@ -19,28 +20,41 @@ const AddReceipt = ({ onAdd }) => {
   const [target, setTarget] = useState("");
 
   const [showPrompt, setShowPrompt] = useState(false);
+  const [personList, setPersonList] = useState([])
+  
+  setPersonList([...dataArray.Persons])
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!date) {
-      alert("Please enter date of transaction");
-      return;
+    const clearTransaction = ()=>{
+      setDate("");
+      setReceiptNo("");
+      setFrom("");
+      setPurpose("");
+      setAmount("");
+      setItems([])
+      setBy("");
+      setType("Receipt");
+      setBankDetails("")
     }
-    onAdd({ date, from, to, purpose, amount, verified });
-    setDate("");
-    setFrom("");
-    setTo("");
-    setPurpose("");
-    setAmount("");
-    setVerified(false);
-  };
+    const fillTransaction = (transaction)=>{
+      if(transaction.transactionId > 0 && transaction.transactionType === "Receipt"){
+        setTransactionId(transaction.transactionId)
+        setDate(transaction.transactionDate);
+        setReceiptNo(transaction.transactionReceiptNo);
+        setFrom(transaction.transactionFrom);
+        setItems(transaction.transactionItems)
+        setBy(transaction.transactionBy);
+        setType(transaction.transactionType);
+        setBankDetails(transaction.transactionBankDetails)
+      }
+    }
+    
   const addItem = () => {
-    setItems([...items, { purpose, amount }]);
+    setItems([...transactionItems, { purpose, amount,details }]);
     setPurpose('')
     setAmount('')
+    setDetails("")
   };
-  const promptList = ["John", "Joseph", "Jane", "Thomas", "Christo"];
-  const whenChanged = (e) => {
+  const whenChanged = (e,promptList) => {
     const str = e.target.value;
     if (str.length < 1){
       setShowPrompt(false);
@@ -52,19 +66,22 @@ const AddReceipt = ({ onAdd }) => {
   const whenFocus = (e) => {
     setX(e.target.getBoundingClientRect().right);
     setY(e.target.getBoundingClientRect().top);
-    console.log(e.target.getBoundingClientRect().top);
   };
   useEffect(() => {
-    console.log(prompt);
     setShowPrompt(false);
     if (prompt.length > 0) {
       setShowPrompt(true);
     }
   }, [prompt]);
+
+  useEffect(() => {
+    if (transaction.transactionId > 0) {
+      fillTransaction(transaction);
+    }
+  }, [transaction]);
  
 
   const fillText = (text) => {
-    console.log(target.target.placeholder);
     switch (target.target.placeholder) {
       case "From":
         setFrom(text);
@@ -80,27 +97,19 @@ const AddReceipt = ({ onAdd }) => {
     }
     setShowPrompt(false);
   };
-  // const formatDate = (e) => {
-  //   const inputDate = new Date(e.target.value).toLocaleDateString("en-us", {
-  //     weekday: "long",
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric"
-  //   });
-  //   console.log(inputDate);
-  // };
+  
   return (
     <>
       {showPrompt && (
         <TextPrompt x={x} y={y} prompt={prompt} fillText={fillText} />
       )}
-      <div className="add-form" onSubmit={onSubmit}>
+      <div className="add-form">
         <div className="form-control">
           <label>Date</label>
           <input
             type="date"
             placeholder="Date"
-            value={date}
+            value={transactionDate}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
@@ -109,7 +118,7 @@ const AddReceipt = ({ onAdd }) => {
           <input
             type="text"
             placeholder="Receipt No"
-            value={receiptNo}
+            value={transactionReceiptNo}
             onChange={(e) => setReceiptNo(e.target.value)}
           />
         </div>
@@ -118,23 +127,10 @@ const AddReceipt = ({ onAdd }) => {
           <input
             type="text"
             placeholder="From"
-            value={from}
+            value={transactionFrom}
             onChange={(e) => {
               setFrom(e.target.value);
-              whenChanged(e);
-            }}
-            onFocus={whenFocus}
-          />
-        </div>
-        <div className="form-control">
-          <label>To</label>
-          <input
-            type="text"
-            placeholder="To"
-            value={to}
-            onChange={(e) => {
-              setTo(e.target.value);
-              whenChanged(e);
+              whenChanged(e,personList);
             }}
             onFocus={whenFocus}
           />
@@ -161,9 +157,17 @@ const AddReceipt = ({ onAdd }) => {
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
+        <div className="form-control">
+          <label>Details</label>
+          <input
+            type="text"
+            placeholder="Details"
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+          />
+        </div>
         <button className="btn-small" onClick={addItem}>
-          {" "}
-          Add Item{" "}
+          Add Item
         </button>
         <div>
           {items.map((item, index)=>{
@@ -188,27 +192,33 @@ const AddReceipt = ({ onAdd }) => {
             <input
               type="text"
               placeholder="Bank Details"
-              value={bankDetails}
+              value={transactioBankDetails}
               onChange={(e) => setBankDetails(e.target.value)}
             />
           </div>
         )}
-        <div className="form-control form-control-check">
-          <label>Verified ?</label>
-          <input
-            type="checkbox"
-            checked={verified}
-            value={verified}
-            onChange={(e) => setVerified(e.currentTarget.checked)}
-          />
+        <div className="button-block">
+            <button className="btn-add" onClick={()=>addTransaction({transactionDate,
+                                                                      transactionReceiptNo,
+                                                                      transactionFrom,
+                                                                      transactionItems,
+                                                                      transactionBy,
+                                                                      transactionType,
+                                                                      transactionBankDetails})}>Add</button>
+            <button className="btn-update" onClick={()=>updateTransaction({transactionId,
+                                                                      transactionDate,
+                                                                      transactionReceiptNo,
+                                                                      transactionFrom,
+                                                                      transactionItems,
+                                                                      transactionBy,
+                                                                      transactionType,
+                                                                      transactionBankDetails})}>Update</button>
+            <button className="btn-clear" onClick={clearTransaction}>Clear</button>
+            <button className="btn-delete" onClick={()=>deleteTransaction(transactionId)}>Delete</button>
         </div>
-        <input
-          type="submit"
-          className="btn btn-block"
-          value="Save Transaction"
-        />
       </div>
     </>
   );
 };
+
 export default AddReceipt;

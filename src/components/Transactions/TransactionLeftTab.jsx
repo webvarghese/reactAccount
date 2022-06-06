@@ -1,7 +1,7 @@
 
 import {useState,useEffect} from 'react'
 
-function LeftTab({show,toggleHeading}) { 
+function TransactionLeftTab({show,toggleHeading}) { 
   
   const [showHeading, setShowHeading] = useState(true) 
   
@@ -21,11 +21,9 @@ function LeftTab({show,toggleHeading}) {
           Payment
         </li>
       }
-        
-        
       </ul>
     </>
   );
 }
 
-export default LeftTab;
+export default TransactionLeftTab;

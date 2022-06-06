@@ -2,16 +2,15 @@ import PersonRightPanel from "./PersonRightPannel";
 import PersonLeftPanel from "./PersonLeftPannel"
 import {useState, useEffect} from 'react'
 
-const Person = () => {
-  const [personList,setPersonList] = useState([])
+const Person = ({dataArray}) => {
+  const [personList,setPersonList] = useState([])  
   const [perso, setPerso] = useState('')
   
-
+  const temp = dataArray.Persons
+ 
   useEffect(()=>{
-    google.script.run.withSuccessHandler((list)=>{
-        setPersonList(list)   
-      }).getPersons();
-  },[])
+   setPersonList([...temp])
+  },[dataArray])
 
   
  

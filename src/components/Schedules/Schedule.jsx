@@ -2,16 +2,15 @@ import ScheduleRightPanel from "./ScheduleRightPannel";
 import ScheduleLeftPanel from "./ScheduleLeftPannel"
 import {useState, useEffect} from 'react'
 
-const Schedule = () => {
+const Schedule = ({dataArray}) => {
   const [scheduleList,setScheduleList] = useState([])
   const [sch, setSch] = useState('')
   
 
+  const temp = dataArray.Schedules
   useEffect(()=>{
-    google.script.run.withSuccessHandler((list)=>{
-        setScheduleList(list)   
-      }).getSchedules();
-  },[])
+   setScheduleList([...temp])
+  },[dataArray])
 
   
  

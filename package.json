@@ -2,6 +2,7 @@
   "name": "reactaccount",
   "version": "1.0.0",
   "description": "Created with CodeSandbox",
+  "type": "module",
   "scripts": {
     "glogin": "clasp login --no-localhost",
     "glogout": "clasp logout",

@@ -1,4 +1,4 @@
-const Table = ({ inputList }) => {
+const TransactionsTable = ({ inputList, selectTransaction }) => {
   return (
     <div className="list-table">
       <table>
@@ -13,7 +13,7 @@ const Table = ({ inputList }) => {
           </tr>
         </thead>
         <tbody>
-          {inputList.map((input, index) => {
+          {inputList.length > 0 && inputList.map((input, index) => {
             const inputDate = new Date(input.date).toLocaleDateString("en-us", {
               weekday: "long",
               year: "numeric",
@@ -21,7 +21,7 @@ const Table = ({ inputList }) => {
               day: "numeric"
             });
             return (
-              <tr key={index}>
+              <tr className="selectedRow" key={index} onClick={()=>selectTransaction(input.transactionId)}>
                 <td>{inputDate}</td>
                 <td>{input.from}</td>
                 <td>{input.to}</td>
@@ -36,4 +36,4 @@ const Table = ({ inputList }) => {
     </div>
   );
 };
-export default Table;
+export default TransactionsTable;

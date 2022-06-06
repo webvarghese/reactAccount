@@ -55,7 +55,7 @@ function addObject_(file,info){
         const ws = ss.getSheetByName(file)
         const row = (ws.getLastRow() -1) < 1 ? 1: (ws.getLastRow() -1) 
         var uniqueIds = ws.getRange(2,1,row,1).getValues() 
-        console.log(uniqueIds)   
+        
         var maxNum = 0
         uniqueIds.forEach(r=>{maxNum = r[0]>maxNum ? r[0] : maxNum})
         var newId = maxNum + 1 
@@ -76,7 +76,7 @@ function updateField_(file,id,col,newData){
                           .map(r=>r[0].toString().toLowerCase())
         const posIndex = custIds.indexOf(id.toString().toLowerCase())
         const rowNumber = posIndex ===-1 ? 0 : posIndex + 2
-        console.log(posIndex)
+        
         ws.getRange(rowNumber,1,1,col).setValues([newData])
         return id
   } catch (error) {
@@ -87,10 +87,5 @@ function updateField_(file,id,col,newData){
 }
 function doNothing_(){}
 
-  const saveTransaction =(data)=>{
-    result = data.map(Object.values)
-    console.log(result)
-    appendData('Transactions', result[0])
-  }
-
+  
   
