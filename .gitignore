@@ -1,4 +1,4 @@
 node_modules
 .codesandbox
-.parcel-cache/data.mdb
+.parcel-cache
 .parcel-cache/data.mdb

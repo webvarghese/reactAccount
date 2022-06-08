@@ -1,9 +1,9 @@
 
-const runGoogleScript = (serverFunctionName)=>{
+export const runGoogleScript = (serverFunctionName, obj)=>{
     return new Promise((resolve, reject)=>{
       google.script.run.withSuccessHandler
       (data=> {resolve(data)})
-      .withFailureHandler(er=>{reject(er)})[serverFunctionName]()
+      .withFailureHandler(er=>{reject(er)})[serverFunctionName](obj)
     })
   }
 

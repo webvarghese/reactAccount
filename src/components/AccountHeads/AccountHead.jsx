@@ -1,7 +1,7 @@
 import AccountHeadRightPanel from "./AccountHeadRightPannel";
 import AccountHeadLeftPanel from "./AccountHeadLeftPannel"
 import {useState, useEffect} from 'react'
-import { getAccountHeads, getSchedules, getAccountTypes } from "../Utilities";
+
 
 const AccountHead = () => {
   const [accountHeadList,setAccountHeadList] = useState([])
