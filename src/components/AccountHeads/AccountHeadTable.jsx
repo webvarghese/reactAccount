@@ -1,5 +1,5 @@
 import { useEffect, useState} from "react";
-const AccountHeadTable = ({ inputList,selectAccountHead }) => {
+const AccountHeadTable = ({ list,selectAccountHead }) => {
   
     return (
       <div className="list-table">
@@ -13,7 +13,7 @@ const AccountHeadTable = ({ inputList,selectAccountHead }) => {
             </tr>
           </thead>
           <tbody>
-              {inputList.length > 0 && inputList.map((input,index)=>{
+              {list.length > 0 && list.map((input,index)=>{
                   return (
                     <tr className="selectedRow" key={index} onClick={()=>selectAccountHead(input.accountHeadId)}>
                     <td>{input.accountHeadId}</td>

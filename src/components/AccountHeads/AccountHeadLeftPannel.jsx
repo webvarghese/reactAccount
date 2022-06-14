@@ -1,16 +1,16 @@
 
 import AddAccountHead from "./AddAccountHead"
-function AccountHeadLeftPanel({accountHeadList, accountTypeList, scheduleList, addAccountHead,updateAccountHead,deleteAccountHead,accountHead}) {
+function AccountHeadLeftPanel({accountTypes, schedules,addAccountHead,selectedAccountHead, updateAccountHead,deleteAccountHead}) {
   
   return (
     <div className="left-panel">
-      <AddAccountHead accountHeadList ={accountHeadList} 
-      accountTypeList ={accountTypeList}
-      scheduleList = {scheduleList} 
+      <AddAccountHead  
+      accountTypes ={accountTypes}
+      schedules = {schedules} selectedAccountHead = {selectedAccountHead}
       addAccountHead={addAccountHead} 
       updateAccountHead ={updateAccountHead} 
       deleteAccountHead={deleteAccountHead} 
-      accountHead={accountHead} />
+      />
     </div>
   );
 }

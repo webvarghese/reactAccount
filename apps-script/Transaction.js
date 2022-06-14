@@ -8,12 +8,12 @@ const getTransaction =(id)=>{
     objTransaction.transactionBy = data[4]
     objTransaction.transanctionBankDetails = data[5]
     objTransaction.savedTimeStamp = data[6]
-    objTransaction.userId = date[7]
+    objTransaction.userId = data[7]
     return objTransaction
   }
 
   const getTransactions =()=>{
-    const transactionsList = getObjectArray_('Transactions',7)
+    const transactionsList = getObjectArray_('Transactions',8)
     const transactions = []
     transactionsList.map((data)=>{
       const objTransaction ={}
@@ -24,7 +24,7 @@ const getTransaction =(id)=>{
       objTransaction.transactionBy = data[4]
       objTransaction.transanctionBankDetails = data[5]
       objTransaction.savedTimeStamp = data[6]
-      objTransaction.userId = date[7]
+      objTransaction.userId = data[7]
       transactions.push(objTransaction)
     })
     return transactions

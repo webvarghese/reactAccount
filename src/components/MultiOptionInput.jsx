@@ -1,7 +1,7 @@
 import {useState, useEffect,useMemo} from 'react'
 import TextPrompt from "./TextPrompt";
 
-const MultiOptionInput =({promptList, textField, idField, fillText,returnText})=>{
+const MultiOptionInput =({promptList, textField, idField, fillText,displayText})=>{
     const [x, setX] = useState("");
     const [y, setY] = useState("");
     const [prompt, setPrompt] = useState([]);
@@ -9,24 +9,25 @@ const MultiOptionInput =({promptList, textField, idField, fillText,returnText})=
 
     const whenChanged = (e) => {
         const str = e.target.value
-        returnText(str)
+        displayText(str)
         if (str.length < 1){
           setPrompt([])
+          closePrompt()
           return
         } 
         setPrompt(promptList.filter((p) => p.textField.toLowerCase().indexOf(str.toLowerCase()) > -1));
+        openPrompt()
         whenFocus(e)
       };
     const whenFocus = (e) => {
       setX(e.target.getBoundingClientRect().right);
       setY(e.target.getBoundingClientRect().top);
     };
-    useMemo(() => {
-      setShowPrompt(false);
+    const openPrompt = ()=>{
       if(prompt.length > 0){
         setShowPrompt(true)
       }
-    }, [prompt]);
+    }
 
     const closePrompt =()=>{
       setShowPrompt(false)

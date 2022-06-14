@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
-function AccountHeadTab({ onSearch}) {
-  const [strSearch, setStrSearch] = useState("");
-  useEffect(() => {
-    onSearch(strSearch);
-  }, [strSearch]);
+function AccountHeadTab({filterList}) {
+  const [searchText, setSearchText] = useState("");
+  const onSearch = (e)=>{
+    const str = e.target.value
+    setSearchText(str)
+    filterList(str)
+  }
 
   return (
     <>
@@ -13,8 +15,8 @@ function AccountHeadTab({ onSearch}) {
           <input
             type="text"
             placeholder="search here"
-            value={strSearch}
-            onChange={(e) => setStrSearch(e.target.value)}
+            value={searchText}
+            onChange={onSearch}
           />
         </li>
       </ul>

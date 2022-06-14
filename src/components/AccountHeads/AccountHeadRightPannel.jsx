@@ -4,22 +4,17 @@ import { useState, useEffect, useMemo } from "react";
 import AccountHeadTab from "./AccountHeadTab";
 
 
-function AccountHeadRightPanel({accountHeadList, accountTypeList, scheduleList, setAccountHead}) {
-  const [searchList, setSearchList] = useState([]);
+function AccountHeadRightPanel({accountHeads, accountTypes, schedules,selectAccountHead}) {
+  const [filteredList, setFilteredList] = useState([]);
   const [list, setList]  = useState([])
-
-
- 
-
-  
  
   useEffect(()=>{
     const fillList =()=>{
       const newList = []
-      accountHeadList.map((accHead)=>{
+      accountHeads.map((accHead)=>{
         const objAcHead = new Object({})
-        const scheduleName = accHead.scheduleId > 0 ? scheduleList.filter((sch)=>sch.scheduleId === accHead.scheduleId)[0].scheduleName :"Not set"
-        const accountType = accHead.accountTypeId > 0 ? accountTypeList.filter((accTyp)=>accTyp.accountTypeId === accHead.accountTypeId)[0].accountTypeName : "Not set"
+        const scheduleName = accHead.scheduleId > 0 ? schedules.filter((sch)=>sch.scheduleId === accHead.scheduleId)[0].scheduleName :"Not set"
+        const accountType = accHead.accountTypeId > 0 ? accountTypes.filter((accTyp)=>accTyp.accountTypeId === accHead.accountTypeId)[0].accountTypeName : "Not set"
         objAcHead.accountHeadId = accHead.accountHeadId
         objAcHead.scheduleName = scheduleName
         objAcHead.accountTypeName = accountType
@@ -29,30 +24,30 @@ function AccountHeadRightPanel({accountHeadList, accountTypeList, scheduleList, 
       setList(newList)
     }
     fillList()
-  },[accountHeadList])
+  },[accountHeads])
 
   useEffect(()=>{
-    setSearchList(list)
+    setFilteredList(list)
     },[list])
 
   const filterList = (str) => {
     if (str.length > 1) {
-      setSearchList(
+      setFilteredList(
         list.filter(
           (data) =>
             JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
         )
       );
     } else {
-      setSearchList(list);
+      setFilteredList(list);
     }
   };
  
   return (
     <div className="right-panel">
-      <AccountHeadTab onSearch={filterList}  />
-      <AccountHeadTable inputList ={searchList}
-      selectAccountHead={setAccountHead}/>
+      <AccountHeadTab filterList={filterList}  />
+      <AccountHeadTable list ={filteredList}
+      selectAccountHead={selectAccountHead}/>
     </div>
   );
 }

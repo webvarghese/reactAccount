@@ -62,10 +62,13 @@ export const getTransactions = async()=>{
 }
 
 export const getAllDataArrays = async ()=>{
+  console.log("getAllarrays called")
   try {
     const data = await runGoogleScript('getAllDataArrays')
+    console.log(data)
     return data 
   }catch (error) {
+    console.log(error)
       return {}
   }
 }

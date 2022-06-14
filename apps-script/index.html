@@ -25734,27 +25734,29 @@ function Main() {
     _react.useEffect(()=>{
         const getData = async ()=>{
             const dataArray = await _utilities.getAllDataArrays();
+            console.log(dataArray);
             const AccountHeads = dataArray.AccountHeads.splice(0);
             const AccountTypes = dataArray.AccountTypes.splice(0);
             const Persons = dataArray.Persons.splice(0);
-            const PrayerGroups = dataArray.PrayerGroups.splice(0);
+            //const PrayerGroups = dataArray.PrayerGroups.splice(0)
             const Schedules = dataArray.Schedules.splice(0);
-            const SubHeads = dataArray.SubHeads.splice(0);
+            //const SubHeads = dataArray.SubHeads.splice(0)
             const Transactions = dataArray.Transactions.splice(0);
             const Items = dataArray.Items.splice(0);
-            const Budgets = dataArray.Budgets.splice(0);
+            //const Budgets = dataArray.Budgets.splice(0)
             setAccountHeads(AccountHeads);
             setAccountTypes(AccountTypes);
             setSchedules(Schedules);
             setPersons(Persons);
-            setPrayerGroups(PrayerGroups);
-            setSubHeads(SubHeads);
+            //setPrayerGroups(PrayerGroups)
+            //setSubHeads(SubHeads)
             setTransactions(Transactions);
             setItems(Items);
-            setBudgets(Budgets);
+        //setBudgets(Budgets)
         };
         getData();
     }, []);
+    console.log(persons);
     const addPerson = async (obj)=>{
         const objPerson = await _utilities.runGoogleScript("addPerson", obj);
         if (objPerson.personId > 0) setPersons([
@@ -25894,11 +25896,9 @@ function Main() {
     };
     const deleteAccountHead = async (id)=>{
         const returnId = await _utilities.runGoogleScript("deleteAccountHead", id);
-        if (returnId === id) setAccountHeads([
-            accountHeads.filter((accountHead)=>{
-                return accountHead.accountHeadId !== returnId;
-            })
-        ]);
+        if (returnId === id) setAccountHeads(accountHeads.filter((accountHead)=>{
+            return accountHead.accountHeadId !== returnId;
+        }));
     };
     // account types
     const addAccountType = async (obj)=>{
@@ -25922,17 +25922,15 @@ function Main() {
             return;
         }
         const returnId = await _utilities.runGoogleScript("deleteAccountHead", id);
-        if (returnId === id) setAccountTypes([
-            accountTypes.filter((accountType)=>{
-                return accountType.accountTypeId !== returnId;
-            })
-        ]);
+        if (returnId === id) setAccountTypes(accountTypes.filter((accountType)=>{
+            return accountType.accountTypeId !== returnId;
+        }));
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_navDefault.default, {}, void 0, false, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 190,
+                lineNumber: 193,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Routes, {
@@ -25947,7 +25945,7 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 192,
+                        lineNumber: 195,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25955,7 +25953,7 @@ function Main() {
                         element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_aboutDefault.default, {}, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 193,
+                        lineNumber: 196,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25967,7 +25965,7 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 194,
+                        lineNumber: 197,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25975,11 +25973,14 @@ function Main() {
                         element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountHeadDefault.default, {
                             accountHeads: accountHeads,
                             accountTypes: accountTypes,
-                            schedules: schedules
+                            schedules: schedules,
+                            addAccountHead: addAccountHead,
+                            updateAccountHead: updateAccountHead,
+                            deleteAccountHead: deleteAccountHead
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 195,
+                        lineNumber: 198,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25989,7 +25990,7 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 196,
+                        lineNumber: 199,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25999,7 +26000,7 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 197,
+                        lineNumber: 200,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26009,13 +26010,13 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 198,
+                        lineNumber: 201,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 191,
+                lineNumber: 194,
                 columnNumber: 7
             }, this)
         ]
@@ -26032,7 +26033,7 @@ $RefreshReg$(_c, "Main");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react-router-dom":"fdOAw","react":"21dqq","./Transactions/Transactions":"6VJAe","./About":"hkKyJ","./Person/Person":"kDVD4","./AccountHeads/AccountHead":"8xgS0","./Schedules/Schedule":"bWhHr","./AccountTypes/AccountType":"iWR9v","./SubHeads/SubHead":"akZQ3","./Nav":"s3SC8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../functions/Utilities":"ivds8"}],"fdOAw":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react-router-dom":"fdOAw","react":"21dqq","./Transactions/Transactions":"6VJAe","./About":"hkKyJ","./Person/Person":"kDVD4","./AccountHeads/AccountHead":"8xgS0","./Schedules/Schedule":"bWhHr","./AccountTypes/AccountType":"iWR9v","./SubHeads/SubHead":"akZQ3","./Nav":"s3SC8","../functions/Utilities":"ivds8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"fdOAw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "MemoryRouter", ()=>_reactRouter.MemoryRouter
@@ -30085,88 +30086,53 @@ var _accountHeadLeftPannel = require("./AccountHeadLeftPannel");
 var _accountHeadLeftPannelDefault = parcelHelpers.interopDefault(_accountHeadLeftPannel);
 var _react = require("react");
 var _s = $RefreshSig$();
-const AccountHead = ()=>{
+const AccountHead = ({ accountHeads , schedules , accountTypes , addAccountHead , updateAccountHead , deleteAccountHead  })=>{
     _s();
-    const [accountHeadList, setAccountHeadList] = _react.useState([]);
-    const [scheduleList, setScheduleList] = _react.useState([]);
-    const [accountTypeList, setAccountTypeList] = _react.useState([]);
-    const [acc, setAcc] = _react.useState('');
-    _react.useEffect(()=>{
-        const getData = async ()=>{
-            const accountHeads = await getAccountHeads();
-            const accountTypes = await getAccountTypes();
-            const schedules = await getSchedules();
-            setAccountHeadList(accountHeads);
-            setAccountTypeList(accountTypes);
-            setScheduleList(schedules);
-        };
-        getData();
-    }, []);
-    const addAccountHead = (objAccountHead)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.accountHeadId > 1) setAccountHeadList([
-                ...accountHeadList,
-                d
-            ]);
-            else alert('Error while adding AccountHead');
-        }).addAccountHead(objAccountHead);
-    };
-    const updateAccountHead = (objAccountHead)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.accountHeadId > 0) setAccountHeadList(accountHeadList.map((accountHead)=>{
-                if (accountHead.accountHeadId === objAccountHead.accountHeadId) return d;
-                else return accountHead;
-            }));
-            else alert("Error while updating the person");
-        }).updateAccountHead(objAccountHead);
-    };
-    const deleteAccountHead = (id1)=>{
-        google.script.run.withSuccessHandler((id)=>{
-            if (id > 0) setAccountHeadList(accountHeadList.filter((accountHead)=>{
-                return accountHead.accountHeadId !== id;
-            }));
-            else alert("Error while deleting AccountHead");
-        }).deleteAccountHead(id1);
-    };
-    const setAccountHead = (id)=>{
-        const accountHead1 = accountHeadList.filter((accountHead)=>accountHead.accountHeadId === id
+    const [selectedAccountHead, setSelectedAccountHead] = _react.useState('');
+    const selectAccountHead = (id)=>{
+        const objAccountHead = accountHeads.filter((accountHead)=>accountHead.accountHeadId === id
         )[0];
-        setAcc(accountHead1);
+        const objSchedule = schedules.filter((schedule)=>schedule.scheduleId === objAccountHead.scheduleId
+        )[0];
+        const objAccountType = accountTypes.filter((type)=>type.accountTypeId === objAccountHead.accountTypeId
+        )[0];
+        objAccountHead.scheduleName = objSchedule.scheduleName;
+        objAccountHead.accountTypeName = objAccountType.accountTypeName;
+        setSelectedAccountHead(objAccountHead);
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "container",
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountHeadLeftPannelDefault.default, {
-                accountHeadList: accountHeadList,
-                accountTypeList: accountTypeList,
-                scheduleList: scheduleList,
+                accountTypes: accountTypes,
+                schedules: schedules,
                 addAccountHead: addAccountHead,
+                selectedAccountHead: selectedAccountHead,
                 updateAccountHead: updateAccountHead,
-                deleteAccountHead: deleteAccountHead,
-                accountHead: acc
+                deleteAccountHead: deleteAccountHead
             }, void 0, false, {
                 fileName: "src/components/AccountHeads/AccountHead.jsx",
-                lineNumber: 73,
+                lineNumber: 20,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountHeadRightPannelDefault.default, {
-                accountHeadList: accountHeadList,
-                accountTypeList: accountTypeList,
-                scheduleList: scheduleList,
-                setAccountHead: setAccountHead
+                accountHeads: accountHeads,
+                accountTypes: accountTypes,
+                schedules: schedules,
+                selectAccountHead: selectAccountHead
             }, void 0, false, {
                 fileName: "src/components/AccountHeads/AccountHead.jsx",
-                lineNumber: 81,
+                lineNumber: 27,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/AccountHeads/AccountHead.jsx",
-        lineNumber: 72,
+        lineNumber: 19,
         columnNumber: 5
     }, undefined);
 };
-_s(AccountHead, "Rzn/zLAswJIfOhkgDgm5Rw0dQwU=");
+_s(AccountHead, "DefkhAQ+mcqKN3KBIk9gnfKBSDA=");
 _c = AccountHead;
 exports.default = AccountHead;
 var _c;
@@ -30193,18 +30159,18 @@ var _react = require("react");
 var _accountHeadTab = require("./AccountHeadTab");
 var _accountHeadTabDefault = parcelHelpers.interopDefault(_accountHeadTab);
 var _s = $RefreshSig$();
-function AccountHeadRightPanel({ accountHeadList , accountTypeList , scheduleList , setAccountHead  }) {
+function AccountHeadRightPanel({ accountHeads , accountTypes , schedules , selectAccountHead  }) {
     _s();
-    const [searchList, setSearchList] = _react.useState([]);
+    const [filteredList, setFilteredList] = _react.useState([]);
     const [list, setList] = _react.useState([]);
     _react.useEffect(()=>{
         const fillList = ()=>{
             const newList = [];
-            accountHeadList.map((accHead)=>{
+            accountHeads.map((accHead)=>{
                 const objAcHead = new Object({});
-                const scheduleName = accHead.scheduleId > 0 ? scheduleList.filter((sch)=>sch.scheduleId === accHead.scheduleId
+                const scheduleName = accHead.scheduleId > 0 ? schedules.filter((sch)=>sch.scheduleId === accHead.scheduleId
                 )[0].scheduleName : "Not set";
-                const accountType = accHead.accountTypeId > 0 ? accountTypeList.filter((accTyp)=>accTyp.accountTypeId === accHead.accountTypeId
+                const accountType = accHead.accountTypeId > 0 ? accountTypes.filter((accTyp)=>accTyp.accountTypeId === accHead.accountTypeId
                 )[0].accountTypeName : "Not set";
                 objAcHead.accountHeadId = accHead.accountHeadId;
                 objAcHead.scheduleName = scheduleName;
@@ -30216,44 +30182,44 @@ function AccountHeadRightPanel({ accountHeadList , accountTypeList , scheduleLis
         };
         fillList();
     }, [
-        accountHeadList
+        accountHeads
     ]);
     _react.useEffect(()=>{
-        setSearchList(list);
+        setFilteredList(list);
     }, [
         list
     ]);
     const filterList = (str)=>{
-        if (str.length > 1) setSearchList(list.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
+        if (str.length > 1) setFilteredList(list.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
         ));
-        else setSearchList(list);
+        else setFilteredList(list);
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "right-panel",
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountHeadTabDefault.default, {
-                onSearch: filterList
+                filterList: filterList
             }, void 0, false, {
                 fileName: "src/components/AccountHeads/AccountHeadRightPannel.jsx",
-                lineNumber: 53,
+                lineNumber: 48,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountHeadTableDefault.default, {
-                inputList: searchList,
-                selectAccountHead: setAccountHead
+                list: filteredList,
+                selectAccountHead: selectAccountHead
             }, void 0, false, {
                 fileName: "src/components/AccountHeads/AccountHeadRightPannel.jsx",
-                lineNumber: 54,
+                lineNumber: 49,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/AccountHeads/AccountHeadRightPannel.jsx",
-        lineNumber: 52,
+        lineNumber: 47,
         columnNumber: 5
     }, this);
 }
-_s(AccountHeadRightPanel, "t7wXx/1q2IO3nxHJ/SC28QwTHHo=");
+_s(AccountHeadRightPanel, "AutX8x5i7y7/6Fwb1+XGA0iDFi0=");
 _c = AccountHeadRightPanel;
 exports.default = AccountHeadRightPanel;
 var _c;
@@ -30275,7 +30241,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-const AccountHeadTable = ({ inputList , selectAccountHead  })=>{
+const AccountHeadTable = ({ list , selectAccountHead  })=>{
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "list-table",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("table", {
@@ -30323,7 +30289,7 @@ const AccountHeadTable = ({ inputList , selectAccountHead  })=>{
                     columnNumber: 11
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tbody", {
-                    children: inputList.length > 0 && inputList.map((input, index)=>{
+                    children: list.length > 0 && list.map((input, index)=>{
                         return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
                             className: "selectedRow",
                             onClick: ()=>selectAccountHead(input.accountHeadId)
@@ -30403,14 +30369,14 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _s = $RefreshSig$();
-function AccountHeadTab({ onSearch  }) {
+function AccountHeadTab({ filterList  }) {
     _s();
-    const [strSearch, setStrSearch] = _react.useState("");
-    _react.useEffect(()=>{
-        onSearch(strSearch);
-    }, [
-        strSearch
-    ]);
+    const [searchText, setSearchText] = _react.useState("");
+    const onSearch = (e)=>{
+        const str = e.target.value;
+        setSearchText(str);
+        filterList(str);
+    };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("ul", {
             className: "nav",
@@ -30419,26 +30385,26 @@ function AccountHeadTab({ onSearch  }) {
                 children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
                     type: "text",
                     placeholder: "search here",
-                    value: strSearch,
-                    onChange: (e)=>setStrSearch(e.target.value)
+                    value: searchText,
+                    onChange: onSearch
                 }, void 0, false, {
                     fileName: "src/components/AccountHeads/AccountHeadTab.jsx",
-                    lineNumber: 13,
+                    lineNumber: 15,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/AccountHeads/AccountHeadTab.jsx",
-                lineNumber: 12,
+                lineNumber: 14,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "src/components/AccountHeads/AccountHeadTab.jsx",
-            lineNumber: 11,
+            lineNumber: 13,
             columnNumber: 7
         }, this)
     }, void 0, false);
 }
-_s(AccountHeadTab, "rhB8jZJXSMpAmEzcCOH6olLC7MQ=");
+_s(AccountHeadTab, "OAGvOw28fBJQW7HtXCjc9nvla2M=");
 _c = AccountHeadTab;
 exports.default = AccountHeadTab;
 var _c;
@@ -30461,17 +30427,16 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addAccountHead = require("./AddAccountHead");
 var _addAccountHeadDefault = parcelHelpers.interopDefault(_addAccountHead);
-function AccountHeadLeftPanel({ accountHeadList , accountTypeList , scheduleList , addAccountHead , updateAccountHead , deleteAccountHead , accountHead  }) {
+function AccountHeadLeftPanel({ accountTypes , schedules , addAccountHead , selectedAccountHead , updateAccountHead , deleteAccountHead  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addAccountHeadDefault.default, {
-            accountHeadList: accountHeadList,
-            accountTypeList: accountTypeList,
-            scheduleList: scheduleList,
+            accountTypes: accountTypes,
+            schedules: schedules,
+            selectedAccountHead: selectedAccountHead,
             addAccountHead: addAccountHead,
             updateAccountHead: updateAccountHead,
-            deleteAccountHead: deleteAccountHead,
-            accountHead: accountHead
+            deleteAccountHead: deleteAccountHead
         }, void 0, false, {
             fileName: "src/components/AccountHeads/AccountHeadLeftPannel.jsx",
             lineNumber: 7,
@@ -30507,16 +30472,24 @@ var _react = require("react");
 var _multiOptionInput = require("../MultiOptionInput");
 var _multiOptionInputDefault = parcelHelpers.interopDefault(_multiOptionInput);
 var _s = $RefreshSig$();
-const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , updateAccountHead , deleteAccountHead , accountHead: accountHead1  })=>{
+const AddAccountHead = ({ accountTypes , schedules , selectedAccountHead , addAccountHead , updateAccountHead , deleteAccountHead  })=>{
     _s();
-    const [accountHeadId, setAccountHeadId] = _react.useState("");
-    const [accountTypeId, setAccountTypeId] = _react.useState("");
-    const [scheduleId, setScheduleId] = _react.useState("");
-    const [accountHeadName, setAccountHeadName] = _react.useState("");
-    const [schList, setScheduleList] = _react.useState([]);
-    const [scheduleName1, setScheduleName] = _react.useState('');
+    const [scheduleList, setScheduleList] = _react.useState([]);
     const [typeList, setTypeList] = _react.useState([]);
+    const [accountHeadId, setAccountHeadId] = _react.useState("");
+    const [scheduleId, setScheduleId] = _react.useState("");
+    const [scheduleName1, setScheduleName] = _react.useState('');
+    const [accountTypeId, setAccountTypeId] = _react.useState("");
     const [accountTypeName, setAccountTypeName] = _react.useState('');
+    const [accountHeadName, setAccountHeadName] = _react.useState("");
+    const fillSchedule = (schedule)=>{
+        setScheduleId(schedule.idField);
+        setScheduleName(schedule.textField);
+    };
+    const fillAccountType = (type)=>{
+        setAccountTypeId(type.idField);
+        setAccountTypeName(type.textField);
+    };
     const clearAccountHead = ()=>{
         setAccountHeadId("");
         setAccountTypeId("");
@@ -30525,60 +30498,38 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
         setScheduleId("");
         setAccountHeadName("");
     };
-    const returnSchedule = (scheduleName)=>{
+    const displayScheduleName = (scheduleName)=>{
         setScheduleName(scheduleName);
     };
-    const returnType = (type)=>{
+    const displayAccountType = (type)=>{
         setAccountTypeName(type);
     };
     _react.useEffect(()=>{
-        clearAccountHead();
-        showAccountHead(accountHead1);
+        setAccountHeadId(selectedAccountHead.accountHeadId);
+        setScheduleId(selectedAccountHead.scheduleId);
+        setScheduleName(selectedAccountHead.scheduleName);
+        setAccountTypeId(selectedAccountHead.accountTypeId);
+        setAccountTypeName(selectedAccountHead.accountTypeName);
+        setAccountHeadName(selectedAccountHead.accountHeadName);
     }, [
-        accountHead1
+        selectedAccountHead
     ]);
-    const fillType = (type)=>{
-        setAccountTypeId(type.idField);
-        setAccountTypeName(type.textField);
-    };
-    const fillSchedule = (schedule)=>{
-        setScheduleId(schedule.idField);
-        setScheduleName(schedule.textField);
-    };
     _react.useEffect(()=>{
-        const list = scheduleList.map((sch)=>new Object({
+        const list = schedules.map((sch)=>new Object({
                 idField: sch.scheduleId,
                 textField: sch.scheduleName
             })
         );
         setScheduleList(list);
-    }, [
-        scheduleList
-    ]);
+    }, []);
     _react.useEffect(()=>{
-        const list = accountTypeList.map((typ)=>new Object({
+        const list = accountTypes.map((typ)=>new Object({
                 idField: typ.accountTypeId,
                 textField: typ.accountTypeName
             })
         );
         setTypeList(list);
-    }, [
-        accountTypeList
-    ]);
-    const showAccountHead = (accountHead)=>{
-        if (accountHead.accountHeadId > 0) {
-            setAccountHeadId(accountHead.accountHeadId);
-            setScheduleId(accountHead.scheduleId);
-            const schName = scheduleList.filter((schedule)=>schedule.scheduleId === accountHead.scheduleId
-            )[0].scheduleName;
-            const tpName = accountTypeList.filter((type)=>type.accountTypeId === accountHead.accountTypeId
-            )[0].accountTypeName;
-            setAccountTypeName(tpName);
-            setScheduleName(schName);
-            setAccountTypeId(accountHead.accountTypeId);
-            setAccountHeadName(accountHead.accountHeadName);
-        }
-    };
+    }, []);
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
             className: "add-form",
@@ -30590,7 +30541,7 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "AccountHead Id"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 75,
+                            lineNumber: 61,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -30601,13 +30552,13 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             onChange: (e)=>setAccountHeadId(e.target.value)
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 76,
+                            lineNumber: 62,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                    lineNumber: 74,
+                    lineNumber: 60,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -30617,24 +30568,24 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "Schedule Name"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 85,
+                            lineNumber: 71,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_multiOptionInputDefault.default, {
-                            promptList: schList,
+                            promptList: scheduleList,
                             textField: scheduleName1,
                             idField: scheduleId,
                             fillText: fillSchedule,
-                            returnText: returnSchedule
+                            displayText: displayScheduleName
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 86,
+                            lineNumber: 72,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                    lineNumber: 84,
+                    lineNumber: 70,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -30644,24 +30595,24 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "AccountType"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 94,
+                            lineNumber: 80,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_multiOptionInputDefault.default, {
                             promptList: typeList,
                             textField: accountTypeName,
                             idField: accountTypeId,
-                            fillText: fillType,
-                            returnText: returnType
+                            fillText: fillAccountType,
+                            displayText: displayAccountType
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 95,
+                            lineNumber: 81,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                    lineNumber: 93,
+                    lineNumber: 79,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -30671,7 +30622,7 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "Account Head Name"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 103,
+                            lineNumber: 89,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -30681,13 +30632,13 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             onChange: (e)=>setAccountHeadName(e.target.value)
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 104,
+                            lineNumber: 90,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                    lineNumber: 102,
+                    lineNumber: 88,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -30704,7 +30655,7 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "Add"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 112,
+                            lineNumber: 98,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -30719,7 +30670,7 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "Update"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 113,
+                            lineNumber: 99,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -30728,7 +30679,7 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "Clear"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 114,
+                            lineNumber: 100,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -30738,24 +30689,24 @@ const AddAccountHead = ({ accountTypeList , scheduleList , addAccountHead , upda
                             children: "Delete"
                         }, void 0, false, {
                             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                            lineNumber: 115,
+                            lineNumber: 101,
                             columnNumber: 13
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-                    lineNumber: 111,
+                    lineNumber: 97,
                     columnNumber: 9
                 }, undefined)
             ]
         }, void 0, true, {
             fileName: "src/components/AccountHeads/AddAccountHead.jsx",
-            lineNumber: 73,
+            lineNumber: 59,
             columnNumber: 7
         }, undefined)
     }, void 0, false);
 };
-_s(AddAccountHead, "l44z8oiYSsCmT+YbzzSNRGV0dac=");
+_s(AddAccountHead, "zhICKvm/U2SI5eymWxINnXAObE8=");
 _c = AddAccountHead;
 exports.default = AddAccountHead;
 var _c;
@@ -30780,7 +30731,7 @@ var _react = require("react");
 var _textPrompt = require("./TextPrompt");
 var _textPromptDefault = parcelHelpers.interopDefault(_textPrompt);
 var _s = $RefreshSig$();
-const MultiOptionInput = ({ promptList , textField , idField , fillText , returnText  })=>{
+const MultiOptionInput = ({ promptList , textField , idField , fillText , displayText  })=>{
     _s();
     const [x, setX] = _react.useState("");
     const [y, setY] = _react.useState("");
@@ -30788,25 +30739,24 @@ const MultiOptionInput = ({ promptList , textField , idField , fillText , return
     const [showPrompt, setShowPrompt] = _react.useState(false);
     const whenChanged = (e)=>{
         const str = e.target.value;
-        returnText(str);
+        displayText(str);
         if (str.length < 1) {
             setPrompt([]);
+            closePrompt();
             return;
         }
         setPrompt(promptList.filter((p)=>p.textField.toLowerCase().indexOf(str.toLowerCase()) > -1
         ));
+        openPrompt();
         whenFocus(e);
     };
     const whenFocus = (e)=>{
         setX(e.target.getBoundingClientRect().right);
         setY(e.target.getBoundingClientRect().top);
     };
-    _react.useMemo(()=>{
-        setShowPrompt(false);
+    const openPrompt = ()=>{
         if (prompt.length > 0) setShowPrompt(true);
-    }, [
-        prompt
-    ]);
+    };
     const closePrompt = ()=>{
         setShowPrompt(false);
     };
@@ -30820,7 +30770,7 @@ const MultiOptionInput = ({ promptList , textField , idField , fillText , return
                 closePrompt: closePrompt
             }, void 0, false, {
                 fileName: "src/components/MultiOptionInput.jsx",
-                lineNumber: 37,
+                lineNumber: 38,
                 columnNumber: 26
             }, undefined),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -30828,7 +30778,7 @@ const MultiOptionInput = ({ promptList , textField , idField , fillText , return
                 value: idField
             }, void 0, false, {
                 fileName: "src/components/MultiOptionInput.jsx",
-                lineNumber: 38,
+                lineNumber: 39,
                 columnNumber: 11
             }, undefined),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -30838,13 +30788,13 @@ const MultiOptionInput = ({ promptList , textField , idField , fillText , return
                 onChange: (e)=>whenChanged(e)
             }, void 0, false, {
                 fileName: "src/components/MultiOptionInput.jsx",
-                lineNumber: 39,
+                lineNumber: 40,
                 columnNumber: 11
             }, undefined)
         ]
     }, void 0, true);
 };
-_s(MultiOptionInput, "vvr1aGxEm/zHrKktA9ww1YAkcIQ=");
+_s(MultiOptionInput, "qnvgwbYpL8hDfGhYHRs9XEyOanc=");
 _c = MultiOptionInput;
 exports.default = MultiOptionInput;
 var _c;
@@ -32714,10 +32664,13 @@ const getTransactions = async ()=>{
     }
 };
 const getAllDataArrays = async ()=>{
+    console.log("getAllarrays called");
     try {
         const data = await runGoogleScript('getAllDataArrays');
+        console.log(data);
         return data;
     } catch (error) {
+        console.log(error);
         return {};
     }
 };

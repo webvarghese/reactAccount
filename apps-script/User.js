@@ -36,10 +36,10 @@ const addUser=(data)=>{
     return objUpdated
   }
 
-  const deleteUser =(id)=>{
-      if(deleteObject_("Users",id)){
-          return id
-      } else {
-          return 0
-      }
-  }
+  // const deleteUser =(id)=>{
+  //     if(deleteObject_("Users",id)){
+  //         return id
+  //     } else {
+  //         return 0
+  //     }
+  // }

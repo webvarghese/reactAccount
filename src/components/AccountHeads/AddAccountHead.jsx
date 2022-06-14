@@ -2,17 +2,24 @@
 import { useEffect, useState } from "react";
 import MultiOptionInput from "../MultiOptionInput";
 
-const AddAccountHead = ({accountTypeList, scheduleList,addAccountHead,updateAccountHead, deleteAccountHead, accountHead}) => {
-  const [accountHeadId, setAccountHeadId] = useState("");  
-  const [accountTypeId, setAccountTypeId] = useState("")
-  const [scheduleId, setScheduleId] = useState("")
-  const [accountHeadName, setAccountHeadName] = useState("");
-  const [schList, setScheduleList] = useState([])
-  const [scheduleName, setScheduleName] = useState('')
+const AddAccountHead = ({accountTypes, schedules,selectedAccountHead, addAccountHead,updateAccountHead, deleteAccountHead}) => {
+  const [scheduleList, setScheduleList] = useState([])
   const [typeList, setTypeList] = useState([])
+  const [accountHeadId, setAccountHeadId] = useState("");
+  const [scheduleId, setScheduleId] = useState("")
+  const [scheduleName, setScheduleName] = useState('')
+  const [accountTypeId, setAccountTypeId] = useState("")
   const [accountTypeName, setAccountTypeName] = useState('')
+  const [accountHeadName, setAccountHeadName] = useState("");
   
-
+  const fillSchedule =(schedule)=>{
+    setScheduleId(schedule.idField)
+    setScheduleName(schedule.textField)
+  }
+  const fillAccountType=(type)=>{
+    setAccountTypeId(type.idField)
+    setAccountTypeName(type.textField)
+  }
   const clearAccountHead =()=>{
     setAccountHeadId("")    
     setAccountTypeId("")
@@ -21,52 +28,31 @@ const AddAccountHead = ({accountTypeList, scheduleList,addAccountHead,updateAcco
     setScheduleId("")
     setAccountHeadName("")
   }
-  const returnSchedule =(scheduleName)=>{
+  const displayScheduleName =(scheduleName)=>{
     setScheduleName(scheduleName)
   }
 
-  const returnType = (type)=>{
+  const displayAccountType = (type)=>{
     setAccountTypeName(type)
   }
 
   useEffect(()=>{
-    clearAccountHead()
-    showAccountHead(accountHead)
-  },[accountHead])
-
-  const fillType=(type)=>{
-    setAccountTypeId(type.idField)
-    setAccountTypeName(type.textField)
-  }
-
-  const fillSchedule =(schedule)=>{
-    setScheduleId(schedule.idField)
-    setScheduleName(schedule.textField)
-  }
+    setAccountHeadId(selectedAccountHead.accountHeadId) 
+    setScheduleId(selectedAccountHead.scheduleId)    
+    setScheduleName(selectedAccountHead.scheduleName)
+    setAccountTypeId(selectedAccountHead.accountTypeId)
+    setAccountTypeName(selectedAccountHead.accountTypeName)
+    setAccountHeadName(selectedAccountHead.accountHeadName)
+  },[selectedAccountHead])
   
   useEffect(()=>{
-    const list = scheduleList.map((sch)=>new Object({idField:sch.scheduleId, textField:sch.scheduleName}))
+    const list = schedules.map((sch)=>new Object({idField:sch.scheduleId, textField:sch.scheduleName}))
     setScheduleList(list)
-  },[scheduleList])
+  },[])
   useEffect(()=>{
-    const list = accountTypeList.map((typ)=>new Object({idField:typ.accountTypeId, textField:typ.accountTypeName}))
+    const list = accountTypes.map((typ)=>new Object({idField:typ.accountTypeId, textField:typ.accountTypeName}))
     setTypeList(list)
-  },[accountTypeList])
-
-  const showAccountHead=(accountHead)=>{
-    if(accountHead.accountHeadId > 0){
-      setAccountHeadId(accountHead.accountHeadId)
-      setScheduleId(accountHead.scheduleId)
-      const schName = scheduleList.filter((schedule)=>schedule.scheduleId=== accountHead.scheduleId)[0].scheduleName
-      const tpName = accountTypeList.filter((type)=>type.accountTypeId === accountHead.accountTypeId)[0].accountTypeName
-      setAccountTypeName(tpName)
-      setScheduleName(schName)
-      setAccountTypeId(accountHead.accountTypeId)
-      setAccountHeadName(accountHead.accountHeadName)
-    }
-  }
-
-  
+  },[])
  
   return (
     <>
@@ -83,11 +69,11 @@ const AddAccountHead = ({accountTypeList, scheduleList,addAccountHead,updateAcco
         </div>
         <div className="form-control">
           <label>Schedule Name</label>
-          <MultiOptionInput promptList ={schList} 
+          <MultiOptionInput promptList ={scheduleList} 
           textField={scheduleName} 
           idField={scheduleId} 
           fillText = {fillSchedule}
-          returnText={returnSchedule}
+          displayText={displayScheduleName}
           />
         </div>
         <div className="form-control">
@@ -95,8 +81,8 @@ const AddAccountHead = ({accountTypeList, scheduleList,addAccountHead,updateAcco
           <MultiOptionInput promptList ={typeList} 
           textField={accountTypeName} 
           idField ={accountTypeId} 
-          fillText ={fillType}
-          returnText={returnType}
+          fillText ={fillAccountType}
+          displayText={displayAccountType}
            />
         </div>
         <div className="form-control">
