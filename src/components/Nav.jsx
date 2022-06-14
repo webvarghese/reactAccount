@@ -23,7 +23,8 @@ function Nav() {
           <Link to="/accountType">Account Type</Link>
         </li>
         <li className="tablet">
-          <Link to="/subHead">Sub Head</Link>
+          <Link to="/prayerGroup">Prayer
+          Group</Link>
         </li>
       </ul>
     </>

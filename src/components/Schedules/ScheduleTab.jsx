@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 
-function ScheduleTab({ onSearch}) {
-  const [strSearch, setStrSearch] = useState("");
-  useEffect(() => {
-    onSearch(strSearch);
-  }, [strSearch]);
-
+function ScheduleTab({ filterList}) {
+  const [searchText, setSearchText] = useState("");
+  const onSearch=(e)=>{
+    const str = e.target.value
+    setSearchText(str)
+    filterList(str)
+  }
   return (
     <>
       <ul className="nav">
@@ -13,8 +14,8 @@ function ScheduleTab({ onSearch}) {
           <input
             type="text"
             placeholder="search here"
-            value={strSearch}
-            onChange={(e) => setStrSearch(e.target.value)}
+            value={searchText}
+            onChange={onSearch}
           />
         </li>
       </ul>

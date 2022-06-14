@@ -1,8 +1,6 @@
 import { useEffect} from "react";
-const AccountTypeTable = ({ inputList,selectAccountType }) => {
-  useEffect(()=>{
-
-  },[inputList])
+const AccountTypeTable = ({ list,selectAccountType }) => {
+ 
     return (
       <div className="list-table">
         <table>
@@ -13,7 +11,7 @@ const AccountTypeTable = ({ inputList,selectAccountType }) => {
             </tr>
           </thead>
           <tbody>
-              {inputList.map((input,index)=>{
+              {list.map((input,index)=>{
                   return (
                     <tr className="selectedRow" key={index} onClick={()=>selectAccountType(input.accountTypeId)}>
                     <td>{input.accountTypeId}</td>

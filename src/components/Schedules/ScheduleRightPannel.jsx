@@ -4,34 +4,30 @@ import { useState, useEffect, useCallback } from "react";
 import ScheduleTab from "./ScheduleTab";
 import ScheduleTable from "./ScheduleTable";
 
-function ScheduleRightPanel({ list, setSchedule}) {
-  const [searchList, setSearchList] = useState([]);
-  useCallback(()=>{
-    
-  },[list])
-  
-  useEffect(() => {
-    setSearchList(list);
-    filterList('')
-  }, [list]);
+function ScheduleRightPanel({ schedules, selectSchedule}) {
+  const [filteredList, setFilteredList] = useState([]);
 
+  useEffect(()=>{
+    setFilteredList(schedules)
+  },[schedules])
+  
   const filterList = (str) => {
     if (str.length > 1) {
-      setSearchList(
-        list.filter(
+      setFilteredList(
+        schedules.filter(
           (data) =>
             JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
         )
       );
     } else {
-      setSearchList(list);
+      setFilteredList(schedules);
     }
   };
  
   return (
     <div className="right-panel">
-      <ScheduleTab onSearch={filterList}  />
-      <ScheduleTable inputList={searchList} selectSchedule={setSchedule}/>
+      <ScheduleTab filterList={filterList}  />
+      <ScheduleTable list={filteredList} selectSchedule={selectSchedule}/>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-const AddSchedule = ({addSchedule,updateSchedule, deleteSchedule, schedule}) => {
+const AddSchedule = ({addSchedule,updateSchedule, deleteSchedule, selectedSchedule}) => {
   const [scheduleId, setScheduleId] = useState("");
   const [scheduleName, setScheduleName] = useState("");
 
@@ -11,15 +11,10 @@ const AddSchedule = ({addSchedule,updateSchedule, deleteSchedule, schedule}) => 
 
   useEffect(()=>{
     clearSchedule()
-    showSchedule(schedule)
-  },[schedule])
-
-  const showSchedule=(schedule)=>{
-    if(schedule.scheduleId > 0){
-      setScheduleId(schedule.scheduleId)
-      setScheduleName(schedule.scheduleName)
-    }
-  }
+    setScheduleId(selectedSchedule.scheduleId)
+    setScheduleName(selectedSchedule.scheduleName)
+  },[selectedSchedule])
+  
   return (
     <>
       <div className="add-form">

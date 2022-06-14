@@ -6,8 +6,9 @@ import Person from './Person/Person'
 import AccountHead from './AccountHeads/AccountHead' 
 import Schedule from './Schedules/Schedule'
 import AccountType from './AccountTypes/AccountType'
-import SubHead from './SubHeads/SubHead'
+import PrayerGroup from './PrayerGroups/PrayerGroup'
 import Nav from "./Nav";
+import MessageBox from "./MessageBox"
 import { getAllDataArrays,runGoogleScript } from "../functions/Utilities"
 
 function Main() {
@@ -20,6 +21,9 @@ function Main() {
   const [subHeads, setSubHeads] = useState([])
   const [items, setItems] = useState([])
   const [budgets, setBudgets] = useState([])
+
+  const [message, setMessage] = useState('')
+  const [messageBox, setMessageBox] = useState(false)
   
   
  
@@ -30,7 +34,7 @@ function Main() {
       const AccountHeads = dataArray.AccountHeads.splice(0)
       const AccountTypes = dataArray.AccountTypes.splice(0)
       const Persons = dataArray.Persons.splice(0)
-      //const PrayerGroups = dataArray.PrayerGroups.splice(0)
+      const PrayerGroups = dataArray.PrayerGroups.splice(0)
       const Schedules = dataArray.Schedules.splice(0)
       //const SubHeads = dataArray.SubHeads.splice(0)
       const Transactions = dataArray.Transactions.splice(0)
@@ -40,7 +44,7 @@ function Main() {
       setAccountTypes(AccountTypes)
       setSchedules(Schedules)
       setPersons(Persons)
-      //setPrayerGroups(PrayerGroups)
+      setPrayerGroups(PrayerGroups)
       //setSubHeads(SubHeads)
       setTransactions(Transactions)
       setItems(Items)
@@ -50,6 +54,15 @@ function Main() {
     
   },[])
   console.log(persons)
+  const showMessage =(msg)=>{
+    setMessage(msg)
+    setMessageBox(true)
+    setTimeout(()=>{
+     setMessage("")
+     setMessageBox(false) 
+    },3000)
+  }
+  
  const addPerson =async(obj)=>{
    const objPerson = await runGoogleScript("addPerson",obj)
    if(objPerson.personId > 0){
@@ -82,7 +95,7 @@ function Main() {
    }
  }
   const deletePrayerGroup = async(id)=>{
-    if (persons.some(person => person.prayerGroupId === obj.prayerGroupId)) {
+    if (persons.some(person => person.prayerGroupId === id)) {
     showMessage('Cant delete !! Prayer group contains members')
       return
 }
@@ -136,13 +149,13 @@ const deleteItems = (id)=>{
    }
  }
   const deleteSchedule = async(id)=>{
-    if (accountHeads.some(accountHead => accountHead.accountHeadId === obj.accountHeadId)) {
+    if (accountHeads.some(accountHead => accountHead.scheduleId === id)) {
     showMessage('Cant delete !! Schedule contains accountHeads')
       return
 }
     const returnId = await runGoogleScript("deleteSchedule", id)
     if(returnId === id){
-      setSchedules([schedules.filter((schedule)=>{return schedule.scheduleId !== returnId})])
+      setSchedules(schedules.filter((schedule)=>{return schedule.scheduleId !== returnId}))
     }
   }
   //account heads
@@ -178,11 +191,11 @@ const deleteItems = (id)=>{
    }
  }
   const deleteAccountType = async(id)=>{
-    if (accountHeads.some(accountHead => accountHead.accountHeadId === obj.accountHeadId)) {
+    if (accountHeads.some(accountHead => accountHead.accountTypeId === id)) {
     showMessage('Cant delete !! Account Types contain Account Heads')
       return
 }
-    const returnId = await runGoogleScript("deleteAccountHead", id)
+    const returnId = await runGoogleScript("deleteAccountType", id)
     if(returnId === id){
       setAccountTypes(accountTypes.filter((accountType)=>{return accountType.accountTypeId !== returnId}))
     }
@@ -191,14 +204,15 @@ const deleteItems = (id)=>{
   return (
     <>
       <Nav />
+      {messageBox && <MessageBox message={message}/>}
       <Routes>
         <Route path ="/transactions" element ={<Transactions transactions ={transactions} items ={items} persons ={persons} accountHeads ={accountHeads}/>}/>
         <Route path="/about" element={<About />} />
         <Route path="/person/*" element={<Person persons={persons} prayerGroups={prayerGroups} addPerson={addPerson}/>} />
         <Route path ="/accountHead/*" element={<AccountHead accountHeads = {accountHeads} accountTypes ={accountTypes} schedules={schedules} addAccountHead={addAccountHead} updateAccountHead={updateAccountHead} deleteAccountHead= {deleteAccountHead} />}/>
-        <Route path ="/schedule" element ={<Schedule schedules= {schedules}/>}/>
-        <Route path ="/accountType" element ={<AccountType accountTypes = {accountTypes}/>}/>
-        <Route path ="/subHead" element ={<SubHead subHeads = {subHeads}/>}/>
+        <Route path ="/schedule" element ={<Schedule schedules= {schedules} addSchedule={addSchedule} updateSchedule={updateSchedule} deleteSchedule={deleteSchedule} />}/>
+        <Route path ="/accountType" element ={<AccountType accountTypes = {accountTypes} addAccountType={addAccountType} updateAccountType={updateAccountType} deleteAccountType={deleteAccountType}/>}/>
+        <Route path ="/prayerGroup" element ={<PrayerGroup prayerGroups = {prayerGroups} addPrayerGroup={addPrayerGroup} updatePrayerGroup ={updatePrayerGroup} deletePrayerGroup={deletePrayerGroup} />}/>
       </Routes>
     </>
   );

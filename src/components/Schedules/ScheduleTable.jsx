@@ -1,8 +1,6 @@
 import { useEffect} from "react";
-const ScheduleTable = ({ inputList,selectSchedule }) => {
-  useEffect(()=>{
-
-  },[inputList])
+const ScheduleTable = ({ list,selectSchedule }) => {
+  
     return (
       <div className="list-table">
         <table>
@@ -13,7 +11,7 @@ const ScheduleTable = ({ inputList,selectSchedule }) => {
             </tr>
           </thead>
           <tbody>
-              {inputList.map((input,index)=>{
+              {list.map((input,index)=>{
                   return (
                     <tr className="selectedRow" key={index} onClick={()=>selectSchedule(input.scheduleId)}>
                     <td>{input.scheduleId}</td>

@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useMemo } from "react";
-const AddAccountType = ({addAccountType,updateAccountType, deleteAccountType, accountType, clearFields}) => {
+const AddAccountType = ({addAccountType,updateAccountType, deleteAccountType, selectedAccountType}) => {
   const [accountTypeId, setAccountTypeId] = useState("");
   const [accountTypeName, setAccountType] = useState("");
 
@@ -8,24 +8,12 @@ const AddAccountType = ({addAccountType,updateAccountType, deleteAccountType, ac
     setAccountTypeId("")
     setAccountType("")
   }
-
-  useMemo(()=>{
-    if(clearFields){
-      clearAccountType()
-    }
-  },[clearFields])
-
   useEffect(()=>{
-    clearAccountType()
-    showAccountType(accountType)
-  },[accountType])
+    setAccountTypeId(selectedAccountType.accountTypeId)
+    setAccountType(selectedAccountType.accountTypeName)
+  },[selectedAccountType])
 
-  const showAccountType=(accountType)=>{
-    if(accountType.accountTypeId > 0){
-      setAccountTypeId(accountType.accountTypeId)
-      setAccountType(accountType.accountTypeName)
-    }
-  }
+  
   return (
     <>
       <div className="add-form">

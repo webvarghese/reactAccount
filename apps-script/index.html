@@ -277,6 +277,18 @@ footer {
   grid-column: 4 / 5;
 }
 
+.msgBox {
+  height: 50px;
+  width: max-content;
+  color: #f08080;
+  background-color: #d3d3d3;
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+
 
 
 </style>
@@ -25714,10 +25726,12 @@ var _schedule = require("./Schedules/Schedule");
 var _scheduleDefault = parcelHelpers.interopDefault(_schedule);
 var _accountType = require("./AccountTypes/AccountType");
 var _accountTypeDefault = parcelHelpers.interopDefault(_accountType);
-var _subHead = require("./SubHeads/SubHead");
-var _subHeadDefault = parcelHelpers.interopDefault(_subHead);
+var _prayerGroup = require("./PrayerGroups/PrayerGroup");
+var _prayerGroupDefault = parcelHelpers.interopDefault(_prayerGroup);
 var _nav = require("./Nav");
 var _navDefault = parcelHelpers.interopDefault(_nav);
+var _messageBox = require("./MessageBox");
+var _messageBoxDefault = parcelHelpers.interopDefault(_messageBox);
 var _utilities = require("../functions/Utilities");
 var _s = $RefreshSig$();
 function Main() {
@@ -25731,6 +25745,8 @@ function Main() {
     const [subHeads, setSubHeads] = _react.useState([]);
     const [items, setItems] = _react.useState([]);
     const [budgets, setBudgets] = _react.useState([]);
+    const [message, setMessage] = _react.useState('');
+    const [messageBox, setMessageBox] = _react.useState(false);
     _react.useEffect(()=>{
         const getData = async ()=>{
             const dataArray = await _utilities.getAllDataArrays();
@@ -25738,7 +25754,7 @@ function Main() {
             const AccountHeads = dataArray.AccountHeads.splice(0);
             const AccountTypes = dataArray.AccountTypes.splice(0);
             const Persons = dataArray.Persons.splice(0);
-            //const PrayerGroups = dataArray.PrayerGroups.splice(0)
+            const PrayerGroups = dataArray.PrayerGroups.splice(0);
             const Schedules = dataArray.Schedules.splice(0);
             //const SubHeads = dataArray.SubHeads.splice(0)
             const Transactions = dataArray.Transactions.splice(0);
@@ -25748,7 +25764,7 @@ function Main() {
             setAccountTypes(AccountTypes);
             setSchedules(Schedules);
             setPersons(Persons);
-            //setPrayerGroups(PrayerGroups)
+            setPrayerGroups(PrayerGroups);
             //setSubHeads(SubHeads)
             setTransactions(Transactions);
             setItems(Items);
@@ -25757,6 +25773,14 @@ function Main() {
         getData();
     }, []);
     console.log(persons);
+    const showMessage = (msg)=>{
+        setMessage(msg);
+        setMessageBox(true);
+        setTimeout(()=>{
+            setMessage("");
+            setMessageBox(false);
+        }, 3000);
+    };
     const addPerson = async (obj)=>{
         const objPerson = await _utilities.runGoogleScript("addPerson", obj);
         if (objPerson.personId > 0) setPersons([
@@ -25795,7 +25819,7 @@ function Main() {
         }));
     };
     const deletePrayerGroup = async (id)=>{
-        if (persons.some((person)=>person.prayerGroupId === obj.prayerGroupId
+        if (persons.some((person)=>person.prayerGroupId === id
         )) {
             showMessage('Cant delete !! Prayer group contains members');
             return;
@@ -25867,17 +25891,15 @@ function Main() {
         }));
     };
     const deleteSchedule = async (id)=>{
-        if (accountHeads.some((accountHead)=>accountHead.accountHeadId === obj.accountHeadId
+        if (accountHeads.some((accountHead)=>accountHead.scheduleId === id
         )) {
             showMessage('Cant delete !! Schedule contains accountHeads');
             return;
         }
         const returnId = await _utilities.runGoogleScript("deleteSchedule", id);
-        if (returnId === id) setSchedules([
-            schedules.filter((schedule)=>{
-                return schedule.scheduleId !== returnId;
-            })
-        ]);
+        if (returnId === id) setSchedules(schedules.filter((schedule)=>{
+            return schedule.scheduleId !== returnId;
+        }));
     };
     //account heads
     const addAccountHead = async (obj)=>{
@@ -25916,12 +25938,12 @@ function Main() {
         }));
     };
     const deleteAccountType = async (id)=>{
-        if (accountHeads.some((accountHead)=>accountHead.accountHeadId === obj.accountHeadId
+        if (accountHeads.some((accountHead)=>accountHead.accountTypeId === id
         )) {
             showMessage('Cant delete !! Account Types contain Account Heads');
             return;
         }
-        const returnId = await _utilities.runGoogleScript("deleteAccountHead", id);
+        const returnId = await _utilities.runGoogleScript("deleteAccountType", id);
         if (returnId === id) setAccountTypes(accountTypes.filter((accountType)=>{
             return accountType.accountTypeId !== returnId;
         }));
@@ -25930,8 +25952,15 @@ function Main() {
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_navDefault.default, {}, void 0, false, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 193,
+                lineNumber: 206,
                 columnNumber: 7
+            }, this),
+            messageBox && /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_messageBoxDefault.default, {
+                message: message
+            }, void 0, false, {
+                fileName: "src/components/Main.jsx",
+                lineNumber: 207,
+                columnNumber: 22
             }, this),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Routes, {
                 children: [
@@ -25945,7 +25974,7 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 195,
+                        lineNumber: 209,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25953,7 +25982,7 @@ function Main() {
                         element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_aboutDefault.default, {}, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 196,
+                        lineNumber: 210,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25965,7 +25994,7 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 197,
+                        lineNumber: 211,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -25980,49 +26009,58 @@ function Main() {
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 198,
+                        lineNumber: 212,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
                         path: "/schedule",
                         element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_scheduleDefault.default, {
-                            schedules: schedules
+                            schedules: schedules,
+                            addSchedule: addSchedule,
+                            updateSchedule: updateSchedule,
+                            deleteSchedule: deleteSchedule
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 199,
+                        lineNumber: 213,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
                         path: "/accountType",
                         element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountTypeDefault.default, {
-                            accountTypes: accountTypes
+                            accountTypes: accountTypes,
+                            addAccountType: addAccountType,
+                            updateAccountType: updateAccountType,
+                            deleteAccountType: deleteAccountType
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 200,
+                        lineNumber: 214,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
-                        path: "/subHead",
-                        element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_subHeadDefault.default, {
-                            subHeads: subHeads
+                        path: "/prayerGroup",
+                        element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_prayerGroupDefault.default, {
+                            prayerGroups: prayerGroups,
+                            addPrayerGroup: addPrayerGroup,
+                            updatePrayerGroup: updatePrayerGroup,
+                            deletePrayerGroup: deletePrayerGroup
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 201,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 194,
+                lineNumber: 208,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 }
-_s(Main, "NFEJD5Z/UP9hSbTtgpQ8vse+yes=");
+_s(Main, "O5xaDX4wk3gSD9CSNVSR27RlX0g=");
 _c = Main;
 exports.default = Main;
 var _c;
@@ -26033,7 +26071,7 @@ $RefreshReg$(_c, "Main");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react-router-dom":"fdOAw","react":"21dqq","./Transactions/Transactions":"6VJAe","./About":"hkKyJ","./Person/Person":"kDVD4","./AccountHeads/AccountHead":"8xgS0","./Schedules/Schedule":"bWhHr","./AccountTypes/AccountType":"iWR9v","./SubHeads/SubHead":"akZQ3","./Nav":"s3SC8","../functions/Utilities":"ivds8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"fdOAw":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react-router-dom":"fdOAw","react":"21dqq","./Transactions/Transactions":"6VJAe","./About":"hkKyJ","./Person/Person":"kDVD4","./AccountHeads/AccountHead":"8xgS0","./Schedules/Schedule":"bWhHr","./AccountTypes/AccountType":"iWR9v","./Nav":"s3SC8","./MessageBox":"4X4JH","../functions/Utilities":"ivds8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./PrayerGroups/PrayerGroup":"aphdW"}],"fdOAw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "MemoryRouter", ()=>_reactRouter.MemoryRouter
@@ -30867,48 +30905,14 @@ var _scheduleLeftPannel = require("./ScheduleLeftPannel");
 var _scheduleLeftPannelDefault = parcelHelpers.interopDefault(_scheduleLeftPannel);
 var _react = require("react");
 var _s = $RefreshSig$();
-const Schedule = ({ dataArray  })=>{
+const Schedule = ({ schedules , addSchedule , updateSchedule , deleteSchedule  })=>{
     _s();
-    const [scheduleList, setScheduleList] = _react.useState([]);
-    const [sch, setSch] = _react.useState('');
-    const temp = dataArray.Schedules;
-    _react.useEffect(()=>{
-        setScheduleList([
-            ...temp
-        ]);
-    }, [
-        dataArray
-    ]);
-    const addSchedule = (objSchedule)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.scheduleId > 0) setScheduleList([
-                ...scheduleList,
-                d
-            ]);
-            else alert('Error while adding Schedule');
-        }).addSchedule(objSchedule);
-    };
-    const updateSchedule = (objSchedule)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.scheduleId > 0) setScheduleList(scheduleList.map((schedule)=>{
-                if (schedule.scheduleId === objSchedule.scheduleId) return d;
-                else return schedule;
-            }));
-            else alert("Error while updating the Schedule");
-        }).updateSchedule(objSchedule);
-    };
-    const deleteSchedule = (id1)=>{
-        google.script.run.withSuccessHandler((id)=>{
-            if (id > 0) setScheduleList(scheduleList.filter((schedule)=>{
-                return schedule.scheduleId !== id;
-            }));
-            else alert("Error while deleting Schedule");
-        }).deleteSchedule(id1);
-    };
-    const setSchedule = (id)=>{
-        const schedule1 = scheduleList.filter((schedule)=>schedule.scheduleId === id
-        )[0];
-        setSch(schedule1);
+    const [selectedSchedule, setSelectedSchedule] = _react.useState('');
+    const selectSchedule = (id)=>{
+        const objSchedule = schedules.filter((schedule)=>{
+            return schedule.scheduleId === id;
+        })[0];
+        setSelectedSchedule(objSchedule);
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "container",
@@ -30917,28 +30921,28 @@ const Schedule = ({ dataArray  })=>{
                 addSchedule: addSchedule,
                 updateSchedule: updateSchedule,
                 deleteSchedule: deleteSchedule,
-                schedule: sch
+                selectedSchedule: selectedSchedule
             }, void 0, false, {
                 fileName: "src/components/Schedules/Schedule.jsx",
-                lineNumber: 63,
+                lineNumber: 18,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_scheduleRightPannelDefault.default, {
-                list: scheduleList,
-                setSchedule: setSchedule
+                schedules: schedules,
+                selectSchedule: selectSchedule
             }, void 0, false, {
                 fileName: "src/components/Schedules/Schedule.jsx",
-                lineNumber: 64,
+                lineNumber: 19,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/Schedules/Schedule.jsx",
-        lineNumber: 62,
+        lineNumber: 17,
         columnNumber: 5
     }, undefined);
 };
-_s(Schedule, "b1rN/ji0zMBgCxaL+P/mscIXxFc=");
+_s(Schedule, "BDIM1CGYKbuNwYruQFIcPc90MNs=");
 _c = Schedule;
 exports.default = Schedule;
 var _c;
@@ -30965,49 +30969,45 @@ var _scheduleTabDefault = parcelHelpers.interopDefault(_scheduleTab);
 var _scheduleTable = require("./ScheduleTable");
 var _scheduleTableDefault = parcelHelpers.interopDefault(_scheduleTable);
 var _s = $RefreshSig$();
-function ScheduleRightPanel({ list , setSchedule  }) {
+function ScheduleRightPanel({ schedules , selectSchedule  }) {
     _s();
-    const [searchList, setSearchList] = _react.useState([]);
-    _react.useCallback(()=>{}, [
-        list
-    ]);
+    const [filteredList, setFilteredList] = _react.useState([]);
     _react.useEffect(()=>{
-        setSearchList(list);
-        filterList('');
+        setFilteredList(schedules);
     }, [
-        list
+        schedules
     ]);
     const filterList = (str)=>{
-        if (str.length > 1) setSearchList(list.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
+        if (str.length > 1) setFilteredList(schedules.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
         ));
-        else setSearchList(list);
+        else setFilteredList(schedules);
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "right-panel",
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_scheduleTabDefault.default, {
-                onSearch: filterList
+                filterList: filterList
             }, void 0, false, {
                 fileName: "src/components/Schedules/ScheduleRightPannel.jsx",
-                lineNumber: 33,
+                lineNumber: 29,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_scheduleTableDefault.default, {
-                inputList: searchList,
-                selectSchedule: setSchedule
+                list: filteredList,
+                selectSchedule: selectSchedule
             }, void 0, false, {
                 fileName: "src/components/Schedules/ScheduleRightPannel.jsx",
-                lineNumber: 34,
+                lineNumber: 30,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/Schedules/ScheduleRightPannel.jsx",
-        lineNumber: 32,
+        lineNumber: 28,
         columnNumber: 5
     }, this);
 }
-_s(ScheduleRightPanel, "66RVeBztRI7OTGPdLvmT53i/re0=");
+_s(ScheduleRightPanel, "ddTjyB4L7/Wk0QOq32VqRKTEp1o=");
 _c = ScheduleRightPanel;
 exports.default = ScheduleRightPanel;
 var _c;
@@ -31030,14 +31030,14 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _s = $RefreshSig$();
-function ScheduleTab({ onSearch  }) {
+function ScheduleTab({ filterList  }) {
     _s();
-    const [strSearch, setStrSearch] = _react.useState("");
-    _react.useEffect(()=>{
-        onSearch(strSearch);
-    }, [
-        strSearch
-    ]);
+    const [searchText, setSearchText] = _react.useState("");
+    const onSearch = (e)=>{
+        const str = e.target.value;
+        setSearchText(str);
+        filterList(str);
+    };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("ul", {
             className: "nav",
@@ -31046,26 +31046,26 @@ function ScheduleTab({ onSearch  }) {
                 children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
                     type: "text",
                     placeholder: "search here",
-                    value: strSearch,
-                    onChange: (e)=>setStrSearch(e.target.value)
+                    value: searchText,
+                    onChange: onSearch
                 }, void 0, false, {
                     fileName: "src/components/Schedules/ScheduleTab.jsx",
-                    lineNumber: 13,
+                    lineNumber: 14,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/Schedules/ScheduleTab.jsx",
-                lineNumber: 12,
+                lineNumber: 13,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "src/components/Schedules/ScheduleTab.jsx",
-            lineNumber: 11,
+            lineNumber: 12,
             columnNumber: 7
         }, this)
     }, void 0, false);
 }
-_s(ScheduleTab, "rhB8jZJXSMpAmEzcCOH6olLC7MQ=");
+_s(ScheduleTab, "OAGvOw28fBJQW7HtXCjc9nvla2M=");
 _c = ScheduleTab;
 exports.default = ScheduleTab;
 var _c;
@@ -31087,12 +31087,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _s = $RefreshSig$();
-const ScheduleTable = ({ inputList , selectSchedule  })=>{
-    _s();
-    _react.useEffect(()=>{}, [
-        inputList
-    ]);
+const ScheduleTable = ({ list , selectSchedule  })=>{
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "list-table",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("table", {
@@ -31104,29 +31099,29 @@ const ScheduleTable = ({ inputList , selectSchedule  })=>{
                                 children: "Schedule Id"
                             }, void 0, false, {
                                 fileName: "src/components/Schedules/ScheduleTable.jsx",
-                                lineNumber: 11,
+                                lineNumber: 9,
                                 columnNumber: 15
                             }, undefined),
                             /*#__PURE__*/ _jsxDevRuntime.jsxDEV("th", {
                                 children: "Schedule Name"
                             }, void 0, false, {
                                 fileName: "src/components/Schedules/ScheduleTable.jsx",
-                                lineNumber: 12,
+                                lineNumber: 10,
                                 columnNumber: 15
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/Schedules/ScheduleTable.jsx",
-                        lineNumber: 10,
+                        lineNumber: 8,
                         columnNumber: 13
                     }, undefined)
                 }, void 0, false, {
                     fileName: "src/components/Schedules/ScheduleTable.jsx",
-                    lineNumber: 9,
+                    lineNumber: 7,
                     columnNumber: 11
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tbody", {
-                    children: inputList.map((input, index)=>{
+                    children: list.map((input, index)=>{
                         return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
                             className: "selectedRow",
                             onClick: ()=>selectSchedule(input.scheduleId)
@@ -31136,41 +31131,40 @@ const ScheduleTable = ({ inputList , selectSchedule  })=>{
                                     children: input.scheduleId
                                 }, void 0, false, {
                                     fileName: "src/components/Schedules/ScheduleTable.jsx",
-                                    lineNumber: 19,
+                                    lineNumber: 17,
                                     columnNumber: 21
                                 }, undefined),
                                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("td", {
                                     children: input.scheduleName
                                 }, void 0, false, {
                                     fileName: "src/components/Schedules/ScheduleTable.jsx",
-                                    lineNumber: 20,
+                                    lineNumber: 18,
                                     columnNumber: 21
                                 }, undefined)
                             ]
                         }, index, true, {
                             fileName: "src/components/Schedules/ScheduleTable.jsx",
-                            lineNumber: 18,
+                            lineNumber: 16,
                             columnNumber: 21
                         }, undefined);
                     })
                 }, void 0, false, {
                     fileName: "src/components/Schedules/ScheduleTable.jsx",
-                    lineNumber: 15,
+                    lineNumber: 13,
                     columnNumber: 11
                 }, undefined)
             ]
         }, void 0, true, {
             fileName: "src/components/Schedules/ScheduleTable.jsx",
-            lineNumber: 8,
+            lineNumber: 6,
             columnNumber: 9
         }, undefined)
     }, void 0, false, {
         fileName: "src/components/Schedules/ScheduleTable.jsx",
-        lineNumber: 7,
+        lineNumber: 5,
         columnNumber: 7
     }, undefined);
 };
-_s(ScheduleTable, "OD7bBpZva5O2jO+Puf00hKivP7c=");
 _c = ScheduleTable;
 exports.default = ScheduleTable;
 var _c;
@@ -31193,14 +31187,14 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addSchedule = require("./AddSchedule");
 var _addScheduleDefault = parcelHelpers.interopDefault(_addSchedule);
-function ScheduleLeftPanel({ addSchedule , updateSchedule , deleteSchedule , schedule  }) {
+function ScheduleLeftPanel({ addSchedule , updateSchedule , deleteSchedule , selectedSchedule  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addScheduleDefault.default, {
             addSchedule: addSchedule,
             updateSchedule: updateSchedule,
             deleteSchedule: deleteSchedule,
-            schedule: schedule
+            selectedSchedule: selectedSchedule
         }, void 0, false, {
             fileName: "src/components/Schedules/ScheduleLeftPannel.jsx",
             lineNumber: 7,
@@ -31234,7 +31228,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _s = $RefreshSig$();
-const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule: schedule1  })=>{
+const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , selectedSchedule  })=>{
     _s();
     const [scheduleId, setScheduleId] = _react.useState("");
     const [scheduleName, setScheduleName] = _react.useState("");
@@ -31244,16 +31238,11 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
     };
     _react.useEffect(()=>{
         clearSchedule();
-        showSchedule(schedule1);
+        setScheduleId(selectedSchedule.scheduleId);
+        setScheduleName(selectedSchedule.scheduleName);
     }, [
-        schedule1
+        selectedSchedule
     ]);
-    const showSchedule = (schedule)=>{
-        if (schedule.scheduleId > 0) {
-            setScheduleId(schedule.scheduleId);
-            setScheduleName(schedule.scheduleName);
-        }
-    };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
             className: "add-form",
@@ -31265,7 +31254,7 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             children: "Schedule Id"
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 27,
+                            lineNumber: 22,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -31276,13 +31265,13 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             onChange: (e)=>setScheduleId(e.target.value)
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 28,
+                            lineNumber: 23,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/Schedules/AddSchedule.jsx",
-                    lineNumber: 26,
+                    lineNumber: 21,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -31292,7 +31281,7 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             children: "Schedule Name"
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 37,
+                            lineNumber: 32,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -31302,13 +31291,13 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             onChange: (e)=>setScheduleName(e.target.value)
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 38,
+                            lineNumber: 33,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/Schedules/AddSchedule.jsx",
-                    lineNumber: 36,
+                    lineNumber: 31,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -31323,7 +31312,7 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             children: "Add"
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 46,
+                            lineNumber: 41,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -31336,7 +31325,7 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             children: "Update"
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 47,
+                            lineNumber: 42,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -31345,7 +31334,7 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             children: "Clear"
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 48,
+                            lineNumber: 43,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -31355,19 +31344,19 @@ const AddSchedule = ({ addSchedule , updateSchedule , deleteSchedule , schedule:
                             children: "Delete"
                         }, void 0, false, {
                             fileName: "src/components/Schedules/AddSchedule.jsx",
-                            lineNumber: 49,
+                            lineNumber: 44,
                             columnNumber: 13
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/Schedules/AddSchedule.jsx",
-                    lineNumber: 45,
+                    lineNumber: 40,
                     columnNumber: 9
                 }, undefined)
             ]
         }, void 0, true, {
             fileName: "src/components/Schedules/AddSchedule.jsx",
-            lineNumber: 25,
+            lineNumber: 20,
             columnNumber: 7
         }, undefined)
     }, void 0, false);
@@ -31399,48 +31388,14 @@ var _accountTypeLeftPannel = require("./AccountTypeLeftPannel");
 var _accountTypeLeftPannelDefault = parcelHelpers.interopDefault(_accountTypeLeftPannel);
 var _react = require("react");
 var _s = $RefreshSig$();
-const AccountType = ()=>{
+const AccountType = ({ accountTypes , addAccountType , updateAccountType , deleteAccountType  })=>{
     _s();
-    const [accountTypeList, setAccountTypeList] = _react.useState([]);
-    const [accType, setAccType] = _react.useState('');
-    const [clearFields, setClearFields] = _react.useState(false);
-    _react.useEffect(()=>{
-        google.script.run.withSuccessHandler((list)=>{
-            setAccountTypeList(list);
-        }).getAccountTypes();
-    }, []);
-    const addAccountType = (objAccountType)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.accountTypeId > 0) setAccountTypeList([
-                ...accountTypeList,
-                d
-            ]);
-            else alert('Error while adding AccountType');
-        }).addAccountType(objAccountType);
-    };
-    const updateAccountType = (objAccountType)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.accountTypeId > 0) setAccountTypeList(accountTypeList.map((accountType)=>{
-                if (accountType.accountTypeId === objAccountType.accountTypeId) return d;
-                else return accountType;
-            }));
-            else alert("Error while updating the AccountType");
-        }).updateAccountType(objAccountType);
-    };
-    const deleteAccountType = (id1)=>{
-        google.script.run.withSuccessHandler((id)=>{
-            if (id > 0) {
-                setAccountTypeList(accountTypeList.filter((accountType)=>{
-                    return accountType.accountTypeId !== id;
-                }));
-                setClearFields(true);
-            } else alert("Error while deleting AccountType");
-        }).deleteAccountType(id1);
-    };
-    const setAccountType = (id)=>{
-        const accountType1 = accountTypeList.filter((accountType)=>accountType.accountTypeId === id
-        )[0];
-        setAccType(accountType1);
+    const [selectedAccountType, setSelectedAccountType] = _react.useState("");
+    const selectAccountType = (id)=>{
+        const objAccountType = accountTypes.filter((accountType)=>{
+            return accountType.accountTypeId === id;
+        })[0];
+        setSelectedAccountType(objAccountType);
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "container",
@@ -31449,29 +31404,28 @@ const AccountType = ()=>{
                 addAccountType: addAccountType,
                 updateAccountType: updateAccountType,
                 deleteAccountType: deleteAccountType,
-                accountType: accType,
-                clearFields: clearFields
+                selectedAccountType: selectedAccountType
             }, void 0, false, {
                 fileName: "src/components/AccountTypes/AccountType.jsx",
-                lineNumber: 66,
+                lineNumber: 17,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountTypeRightPannelDefault.default, {
-                list: accountTypeList,
-                setAccountType: setAccountType
+                accountTypes: accountTypes,
+                selectAccountType: selectAccountType
             }, void 0, false, {
                 fileName: "src/components/AccountTypes/AccountType.jsx",
-                lineNumber: 71,
+                lineNumber: 22,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/AccountTypes/AccountType.jsx",
-        lineNumber: 65,
+        lineNumber: 16,
         columnNumber: 5
     }, undefined);
 };
-_s(AccountType, "3KvyYKxO2kUOOJwHPDstIpJZcvM=");
+_s(AccountType, "DnR12PfsBVWaZNAC18hRg3KsthE=");
 _c = AccountType;
 exports.default = AccountType;
 var _c;
@@ -31498,46 +31452,45 @@ var _accountTypeTabDefault = parcelHelpers.interopDefault(_accountTypeTab);
 var _accountTypeTable = require("./AccountTypeTable");
 var _accountTypeTableDefault = parcelHelpers.interopDefault(_accountTypeTable);
 var _s = $RefreshSig$();
-function AccountTypeRightPanel({ list , setAccountType  }) {
+function AccountTypeRightPanel({ accountTypes , selectAccountType  }) {
     _s();
-    const [searchList, setSearchList] = _react.useState([]);
+    const [filteredList, setFilteredList] = _react.useState([]);
     _react.useEffect(()=>{
-        setSearchList(list);
-        filterList('');
+        setFilteredList(accountTypes);
     }, [
-        list
+        accountTypes
     ]);
     const filterList = (str)=>{
-        if (str.length > 1) setSearchList(list.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
+        if (str.length > 1) setFilteredList(accountTypes.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
         ));
-        else setSearchList(list);
+        else setFilteredList(accountTypes);
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "right-panel",
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountTypeTabDefault.default, {
-                onSearch: filterList
+                filterList: filterList
             }, void 0, false, {
                 fileName: "src/components/AccountTypes/AccountTypeRightPannel.jsx",
-                lineNumber: 31,
+                lineNumber: 30,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_accountTypeTableDefault.default, {
-                inputList: searchList,
-                selectAccountType: setAccountType
+                list: filteredList,
+                selectAccountType: selectAccountType
             }, void 0, false, {
                 fileName: "src/components/AccountTypes/AccountTypeRightPannel.jsx",
-                lineNumber: 32,
+                lineNumber: 31,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/AccountTypes/AccountTypeRightPannel.jsx",
-        lineNumber: 30,
+        lineNumber: 29,
         columnNumber: 5
     }, this);
 }
-_s(AccountTypeRightPanel, "zkyagqjRIk2PYCt+xI2v8UURLnE=");
+_s(AccountTypeRightPanel, "ddTjyB4L7/Wk0QOq32VqRKTEp1o=");
 _c = AccountTypeRightPanel;
 exports.default = AccountTypeRightPanel;
 var _c;
@@ -31560,14 +31513,14 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _s = $RefreshSig$();
-function AccountTypeTab({ onSearch  }) {
+function AccountTypeTab({ filterList  }) {
     _s();
-    const [strSearch, setStrSearch] = _react.useState("");
-    _react.useEffect(()=>{
-        onSearch(strSearch);
-    }, [
-        strSearch
-    ]);
+    const [searchText, setSearchText] = _react.useState("");
+    const onSearch = (e)=>{
+        const str = e.target.value;
+        filterList(str);
+        setSearchText(str);
+    };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("ul", {
             className: "nav",
@@ -31576,26 +31529,26 @@ function AccountTypeTab({ onSearch  }) {
                 children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
                     type: "text",
                     placeholder: "search here",
-                    value: strSearch,
-                    onChange: (e)=>setStrSearch(e.target.value)
+                    value: searchText,
+                    onChange: onSearch
                 }, void 0, false, {
                     fileName: "src/components/AccountTypes/AccountTypeTab.jsx",
-                    lineNumber: 13,
+                    lineNumber: 15,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "src/components/AccountTypes/AccountTypeTab.jsx",
-                lineNumber: 12,
+                lineNumber: 14,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "src/components/AccountTypes/AccountTypeTab.jsx",
-            lineNumber: 11,
+            lineNumber: 13,
             columnNumber: 7
         }, this)
     }, void 0, false);
 }
-_s(AccountTypeTab, "rhB8jZJXSMpAmEzcCOH6olLC7MQ=");
+_s(AccountTypeTab, "OAGvOw28fBJQW7HtXCjc9nvla2M=");
 _c = AccountTypeTab;
 exports.default = AccountTypeTab;
 var _c;
@@ -31617,12 +31570,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _s = $RefreshSig$();
-const AccountTypeTable = ({ inputList , selectAccountType  })=>{
-    _s();
-    _react.useEffect(()=>{}, [
-        inputList
-    ]);
+const AccountTypeTable = ({ list , selectAccountType  })=>{
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "list-table",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("table", {
@@ -31634,29 +31582,29 @@ const AccountTypeTable = ({ inputList , selectAccountType  })=>{
                                 children: "AccountType Id"
                             }, void 0, false, {
                                 fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                                lineNumber: 11,
+                                lineNumber: 9,
                                 columnNumber: 15
                             }, undefined),
                             /*#__PURE__*/ _jsxDevRuntime.jsxDEV("th", {
                                 children: "AccountType"
                             }, void 0, false, {
                                 fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                                lineNumber: 12,
+                                lineNumber: 10,
                                 columnNumber: 15
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                        lineNumber: 10,
+                        lineNumber: 8,
                         columnNumber: 13
                     }, undefined)
                 }, void 0, false, {
                     fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                    lineNumber: 9,
+                    lineNumber: 7,
                     columnNumber: 11
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tbody", {
-                    children: inputList.map((input, index)=>{
+                    children: list.map((input, index)=>{
                         return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
                             className: "selectedRow",
                             onClick: ()=>selectAccountType(input.accountTypeId)
@@ -31666,41 +31614,40 @@ const AccountTypeTable = ({ inputList , selectAccountType  })=>{
                                     children: input.accountTypeId
                                 }, void 0, false, {
                                     fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                                    lineNumber: 19,
+                                    lineNumber: 17,
                                     columnNumber: 21
                                 }, undefined),
                                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("td", {
                                     children: input.accountTypeName
                                 }, void 0, false, {
                                     fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                                    lineNumber: 20,
+                                    lineNumber: 18,
                                     columnNumber: 21
                                 }, undefined)
                             ]
                         }, index, true, {
                             fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                            lineNumber: 18,
+                            lineNumber: 16,
                             columnNumber: 21
                         }, undefined);
                     })
                 }, void 0, false, {
                     fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-                    lineNumber: 15,
+                    lineNumber: 13,
                     columnNumber: 11
                 }, undefined)
             ]
         }, void 0, true, {
             fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-            lineNumber: 8,
+            lineNumber: 6,
             columnNumber: 9
         }, undefined)
     }, void 0, false, {
         fileName: "src/components/AccountTypes/AccountTypeTable.jsx",
-        lineNumber: 7,
+        lineNumber: 5,
         columnNumber: 7
     }, undefined);
 };
-_s(AccountTypeTable, "OD7bBpZva5O2jO+Puf00hKivP7c=");
 _c = AccountTypeTable;
 exports.default = AccountTypeTable;
 var _c;
@@ -31723,15 +31670,14 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addAccountTypes = require("./AddAccountTypes");
 var _addAccountTypesDefault = parcelHelpers.interopDefault(_addAccountTypes);
-function AccountTypeLeftPanel({ addAccountType , updateAccountType , deleteAccountType , accountType , clearFields  }) {
+function AccountTypeLeftPanel({ addAccountType , updateAccountType , deleteAccountType , selectedAccountType  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addAccountTypesDefault.default, {
             addAccountType: addAccountType,
             updateAccountType: updateAccountType,
             deleteAccountType: deleteAccountType,
-            accountType: accountType,
-            clearFields: clearFields
+            selectedAccountType: selectedAccountType
         }, void 0, false, {
             fileName: "src/components/AccountTypes/AccountTypeLeftPannel.jsx",
             lineNumber: 7,
@@ -31765,7 +31711,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _s = $RefreshSig$();
-const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType , accountType: accountType1 , clearFields  })=>{
+const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType , selectedAccountType  })=>{
     _s();
     const [accountTypeId, setAccountTypeId] = _react.useState("");
     const [accountTypeName, setAccountType] = _react.useState("");
@@ -31773,23 +31719,12 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
         setAccountTypeId("");
         setAccountType("");
     };
-    _react.useMemo(()=>{
-        if (clearFields) clearAccountType();
-    }, [
-        clearFields
-    ]);
     _react.useEffect(()=>{
-        clearAccountType();
-        showAccountType(accountType1);
+        setAccountTypeId(selectedAccountType.accountTypeId);
+        setAccountType(selectedAccountType.accountTypeName);
     }, [
-        accountType1
+        selectedAccountType
     ]);
-    const showAccountType = (accountType)=>{
-        if (accountType.accountTypeId > 0) {
-            setAccountTypeId(accountType.accountTypeId);
-            setAccountType(accountType.accountTypeName);
-        }
-    };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
             className: "add-form",
@@ -31801,7 +31736,7 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             children: "AccountType Id"
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 33,
+                            lineNumber: 21,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -31812,13 +31747,13 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             onChange: (e)=>setAccountTypeId(e.target.value)
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 34,
+                            lineNumber: 22,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                    lineNumber: 32,
+                    lineNumber: 20,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -31828,7 +31763,7 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             children: "AccountType Name"
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 43,
+                            lineNumber: 31,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -31838,13 +31773,13 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             onChange: (e)=>setAccountType(e.target.value)
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 44,
+                            lineNumber: 32,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                    lineNumber: 42,
+                    lineNumber: 30,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -31859,7 +31794,7 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             children: "Add"
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 52,
+                            lineNumber: 40,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -31872,7 +31807,7 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             children: "Update"
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 53,
+                            lineNumber: 41,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -31881,7 +31816,7 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             children: "Clear"
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 54,
+                            lineNumber: 42,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -31891,559 +31826,30 @@ const AddAccountType = ({ addAccountType , updateAccountType , deleteAccountType
                             children: "Delete"
                         }, void 0, false, {
                             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                            lineNumber: 55,
+                            lineNumber: 43,
                             columnNumber: 13
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-                    lineNumber: 51,
+                    lineNumber: 39,
                     columnNumber: 9
                 }, undefined)
             ]
         }, void 0, true, {
             fileName: "src/components/AccountTypes/AddAccountTypes.jsx",
-            lineNumber: 31,
+            lineNumber: 19,
             columnNumber: 7
         }, undefined)
     }, void 0, false);
 };
-_s(AddAccountType, "ZmeCu73wbDEUvAxTmoeUysqWEqM=");
+_s(AddAccountType, "XG0AQZ24Qpk6aqO09L97UIsSNTY=");
 _c = AddAccountType;
 exports.default = AddAccountType;
 var _c;
 $RefreshReg$(_c, "AddAccountType");
 
   $parcel$ReactRefreshHelpers$5fb4.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"akZQ3":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$937f = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$937f.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _subHeadRightPannel = require("./SubHeadRightPannel");
-var _subHeadRightPannelDefault = parcelHelpers.interopDefault(_subHeadRightPannel);
-var _subHeadLeftPannel = require("./SubHeadLeftPannel");
-var _subHeadLeftPannelDefault = parcelHelpers.interopDefault(_subHeadLeftPannel);
-var _react = require("react");
-var _s = $RefreshSig$();
-const SubHead = ()=>{
-    _s();
-    const [subHeadList, setSubHeadList] = _react.useState([]);
-    const [subHd, setSubHd] = _react.useState('');
-    _react.useEffect(()=>{
-        google.script.run.withSuccessHandler((list)=>{
-            setSubHeadList(list);
-        }).getSubHeads();
-    }, []);
-    const addSubHead = (objSubHead)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.subHeadId > 0) setSubHeadList([
-                ...subHeadList,
-                d
-            ]);
-            else alert('Error while adding SubHead');
-        }).addSubHead(objSubHead);
-    };
-    const updateSubHead = (objSubHead)=>{
-        google.script.run.withSuccessHandler((d)=>{
-            if (d.subHeadId > 0) setSubHeadList(subHeadList.map((subHead)=>{
-                if (subHead.subHeadId === objSubHead.subHeadId) return d;
-                else return subHead;
-            }));
-            else alert("Error while updating the SubHead");
-        }).updateSubHead(objSubHead);
-    };
-    const deleteSubHead = (id1)=>{
-        google.script.run.withSuccessHandler((id)=>{
-            if (id > 0) setSubHeadList(subHeadList.filter((subHead)=>{
-                return subHead.subHeadId !== id;
-            }));
-            else alert("Error while deleting SubHead");
-        }).deleteSubHead(id1);
-    };
-    const setSubHead = (id)=>{
-        const subHead1 = subHeadList.filter((subHead)=>subHead.subHeadId === id
-        )[0];
-        setSubHd(subHead1);
-    };
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-        className: "container",
-        children: [
-            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_subHeadLeftPannelDefault.default, {
-                addSubHead: addSubHead,
-                updateSubHead: updateSubHead,
-                deleteSubHead: deleteSubHead,
-                subHead: subHd
-            }, void 0, false, {
-                fileName: "src/components/SubHeads/SubHead.jsx",
-                lineNumber: 64,
-                columnNumber: 7
-            }, undefined),
-            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_subHeadRightPannelDefault.default, {
-                list: subHeadList,
-                setSubHead: setSubHead
-            }, void 0, false, {
-                fileName: "src/components/SubHeads/SubHead.jsx",
-                lineNumber: 65,
-                columnNumber: 7
-            }, undefined)
-        ]
-    }, void 0, true, {
-        fileName: "src/components/SubHeads/SubHead.jsx",
-        lineNumber: 63,
-        columnNumber: 5
-    }, undefined);
-};
-_s(SubHead, "bYQfHOoUmLl3ZAznfRK2VSFUKmU=");
-_c = SubHead;
-exports.default = SubHead;
-var _c;
-$RefreshReg$(_c, "SubHead");
-
-  $parcel$ReactRefreshHelpers$937f.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","./SubHeadRightPannel":"11DNB","./SubHeadLeftPannel":"6e6V7","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"11DNB":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$32b6 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$32b6.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _subHeadTab = require("./SubHeadTab");
-var _subHeadTabDefault = parcelHelpers.interopDefault(_subHeadTab);
-var _subHeadTable = require("./SubHeadTable");
-var _subHeadTableDefault = parcelHelpers.interopDefault(_subHeadTable);
-var _s = $RefreshSig$();
-function SubHeadRightPanel({ list , setSubHead  }) {
-    _s();
-    const [searchList, setSearchList] = _react.useState([]);
-    _react.useCallback(()=>{}, [
-        list
-    ]);
-    _react.useEffect(()=>{
-        setSearchList(list);
-        filterList('');
-    }, [
-        list
-    ]);
-    const filterList = (str)=>{
-        if (str.length > 1) setSearchList(list.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
-        ));
-        else setSearchList(list);
-    };
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-        className: "right-panel",
-        children: [
-            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_subHeadTabDefault.default, {
-                onSearch: filterList
-            }, void 0, false, {
-                fileName: "src/components/SubHeads/SubHeadRightPannel.jsx",
-                lineNumber: 33,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_subHeadTableDefault.default, {
-                inputList: searchList,
-                selectSubHead: setSubHead
-            }, void 0, false, {
-                fileName: "src/components/SubHeads/SubHeadRightPannel.jsx",
-                lineNumber: 34,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true, {
-        fileName: "src/components/SubHeads/SubHeadRightPannel.jsx",
-        lineNumber: 32,
-        columnNumber: 5
-    }, this);
-}
-_s(SubHeadRightPanel, "66RVeBztRI7OTGPdLvmT53i/re0=");
-_c = SubHeadRightPanel;
-exports.default = SubHeadRightPanel;
-var _c;
-$RefreshReg$(_c, "SubHeadRightPanel");
-
-  $parcel$ReactRefreshHelpers$32b6.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","./SubHeadTab":"5Ch2C","./SubHeadTable":"6mDWo","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"5Ch2C":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$3bac = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$3bac.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _s = $RefreshSig$();
-function SubHeadTab({ onSearch  }) {
-    _s();
-    const [strSearch, setStrSearch] = _react.useState("");
-    _react.useEffect(()=>{
-        onSearch(strSearch);
-    }, [
-        strSearch
-    ]);
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
-        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("ul", {
-            className: "nav",
-            children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("li", {
-                className: "tablet",
-                children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                    type: "text",
-                    placeholder: "search here",
-                    value: strSearch,
-                    onChange: (e)=>setStrSearch(e.target.value)
-                }, void 0, false, {
-                    fileName: "src/components/SubHeads/SubHeadTab.jsx",
-                    lineNumber: 13,
-                    columnNumber: 11
-                }, this)
-            }, void 0, false, {
-                fileName: "src/components/SubHeads/SubHeadTab.jsx",
-                lineNumber: 12,
-                columnNumber: 9
-            }, this)
-        }, void 0, false, {
-            fileName: "src/components/SubHeads/SubHeadTab.jsx",
-            lineNumber: 11,
-            columnNumber: 7
-        }, this)
-    }, void 0, false);
-}
-_s(SubHeadTab, "rhB8jZJXSMpAmEzcCOH6olLC7MQ=");
-_c = SubHeadTab;
-exports.default = SubHeadTab;
-var _c;
-$RefreshReg$(_c, "SubHeadTab");
-
-  $parcel$ReactRefreshHelpers$3bac.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"6mDWo":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$2e5f = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$2e5f.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _s = $RefreshSig$();
-const SubHeadTable = ({ inputList , selectSubHead  })=>{
-    _s();
-    _react.useEffect(()=>{}, [
-        inputList
-    ]);
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-        className: "list-table",
-        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("table", {
-            children: [
-                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("thead", {
-                    children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("th", {
-                                children: "SubHead Id"
-                            }, void 0, false, {
-                                fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                                lineNumber: 11,
-                                columnNumber: 15
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("th", {
-                                children: "SubHead Name"
-                            }, void 0, false, {
-                                fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                                lineNumber: 12,
-                                columnNumber: 15
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                        lineNumber: 10,
-                        columnNumber: 13
-                    }, undefined)
-                }, void 0, false, {
-                    fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                    lineNumber: 9,
-                    columnNumber: 11
-                }, undefined),
-                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tbody", {
-                    children: inputList.map((input, index)=>{
-                        return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
-                            className: "selectedRow",
-                            onClick: ()=>selectSubHead(input.subHeadId)
-                            ,
-                            children: [
-                                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("td", {
-                                    children: input.subHeadId
-                                }, void 0, false, {
-                                    fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                                    lineNumber: 19,
-                                    columnNumber: 21
-                                }, undefined),
-                                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("td", {
-                                    children: input.subHeadName
-                                }, void 0, false, {
-                                    fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                                    lineNumber: 20,
-                                    columnNumber: 21
-                                }, undefined)
-                            ]
-                        }, index, true, {
-                            fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                            lineNumber: 18,
-                            columnNumber: 21
-                        }, undefined);
-                    })
-                }, void 0, false, {
-                    fileName: "src/components/SubHeads/SubHeadTable.jsx",
-                    lineNumber: 15,
-                    columnNumber: 11
-                }, undefined)
-            ]
-        }, void 0, true, {
-            fileName: "src/components/SubHeads/SubHeadTable.jsx",
-            lineNumber: 8,
-            columnNumber: 9
-        }, undefined)
-    }, void 0, false, {
-        fileName: "src/components/SubHeads/SubHeadTable.jsx",
-        lineNumber: 7,
-        columnNumber: 7
-    }, undefined);
-};
-_s(SubHeadTable, "OD7bBpZva5O2jO+Puf00hKivP7c=");
-_c = SubHeadTable;
-exports.default = SubHeadTable;
-var _c;
-$RefreshReg$(_c, "SubHeadTable");
-
-  $parcel$ReactRefreshHelpers$2e5f.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"6e6V7":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$46a0 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$46a0.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _addSubHeads = require("./AddSubHeads");
-var _addSubHeadsDefault = parcelHelpers.interopDefault(_addSubHeads);
-function SubHeadLeftPanel({ addSubHead , updateSubHead , deleteSubHead , subHead  }) {
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-        className: "left-panel",
-        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addSubHeadsDefault.default, {
-            addSubHead: addSubHead,
-            updateSubHead: updateSubHead,
-            deleteSubHead: deleteSubHead,
-            subHead: subHead
-        }, void 0, false, {
-            fileName: "src/components/SubHeads/SubHeadLeftPannel.jsx",
-            lineNumber: 7,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "src/components/SubHeads/SubHeadLeftPannel.jsx",
-        lineNumber: 6,
-        columnNumber: 5
-    }, this);
-}
-_c = SubHeadLeftPanel;
-exports.default = SubHeadLeftPanel;
-var _c;
-$RefreshReg$(_c, "SubHeadLeftPanel");
-
-  $parcel$ReactRefreshHelpers$46a0.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","./AddSubHeads":"0552x","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"0552x":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$e323 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$e323.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
-var _s = $RefreshSig$();
-const AddSubHead = ({ addSubHead , updateSubHead , deleteSubHead , subHead: subHead1  })=>{
-    _s();
-    const [subHeadId, setSubHeadId] = _react.useState("");
-    const [subHeadName, setSubHeadName] = _react.useState("");
-    const clearSubHead = ()=>{
-        setSubHeadId("");
-        setSubHeadName("");
-    };
-    _react.useEffect(()=>{
-        clearSubHead();
-        showSubHead(subHead1);
-    }, [
-        subHead1
-    ]);
-    const showSubHead = (subHead)=>{
-        if (subHead.subHeadId > 0) {
-            setSubHeadId(subHead.subHeadId);
-            setSubHeadName(subHead.subHeadName);
-        }
-    };
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
-        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-            className: "add-form",
-            children: [
-                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                    className: "form-control",
-                    children: [
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                            children: "SubHead Id"
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 27,
-                            columnNumber: 11
-                        }, undefined),
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                            type: "text",
-                            readOnly: true,
-                            placeholder: "SubHead Id",
-                            value: subHeadId,
-                            onChange: (e)=>setSubHeadId(e.target.value)
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 28,
-                            columnNumber: 11
-                        }, undefined)
-                    ]
-                }, void 0, true, {
-                    fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                    lineNumber: 26,
-                    columnNumber: 9
-                }, undefined),
-                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                    className: "form-control",
-                    children: [
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                            children: "SubHead Name"
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 37,
-                            columnNumber: 11
-                        }, undefined),
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                            type: "text",
-                            placeholder: "SubHead Name",
-                            value: subHeadName,
-                            onChange: (e)=>setSubHeadName(e.target.value)
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 38,
-                            columnNumber: 11
-                        }, undefined)
-                    ]
-                }, void 0, true, {
-                    fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                    lineNumber: 36,
-                    columnNumber: 9
-                }, undefined),
-                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                    className: "button-block",
-                    children: [
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                            className: "btn-add",
-                            onClick: ()=>addSubHead({
-                                    subHeadName
-                                })
-                            ,
-                            children: "Add"
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 46,
-                            columnNumber: 13
-                        }, undefined),
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                            className: "btn-update",
-                            onClick: ()=>updateSubHead({
-                                    subHeadId,
-                                    subHeadName
-                                })
-                            ,
-                            children: "Update"
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 47,
-                            columnNumber: 13
-                        }, undefined),
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                            className: "btn-clear",
-                            onClick: clearSubHead,
-                            children: "Clear"
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 48,
-                            columnNumber: 13
-                        }, undefined),
-                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                            className: "btn-delete",
-                            onClick: ()=>deleteSubHead(subHeadId)
-                            ,
-                            children: "Delete"
-                        }, void 0, false, {
-                            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                            lineNumber: 49,
-                            columnNumber: 13
-                        }, undefined)
-                    ]
-                }, void 0, true, {
-                    fileName: "src/components/SubHeads/AddSubHeads.jsx",
-                    lineNumber: 45,
-                    columnNumber: 9
-                }, undefined)
-            ]
-        }, void 0, true, {
-            fileName: "src/components/SubHeads/AddSubHeads.jsx",
-            lineNumber: 25,
-            columnNumber: 7
-        }, undefined)
-    }, void 0, false);
-};
-_s(AddSubHead, "EBRza6WrZZtnNKpdDzQGIIgAKmw=");
-_c = AddSubHead;
-exports.default = AddSubHead;
-var _c;
-$RefreshReg$(_c, "AddSubHead");
-
-  $parcel$ReactRefreshHelpers$e323.postlude(module);
 } finally {
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
@@ -32557,8 +31963,8 @@ function Nav() {
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("li", {
                     className: "tablet",
                     children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Link, {
-                        to: "/subHead",
-                        children: "Sub Head"
+                        to: "/prayerGroup",
+                        children: "Prayer Group"
                     }, void 0, false, {
                         fileName: "src/components/Nav.jsx",
                         lineNumber: 26,
@@ -32587,7 +31993,43 @@ $RefreshReg$(_c, "Nav");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react-router-dom":"fdOAw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"ivds8":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react-router-dom":"fdOAw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"4X4JH":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$8072 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$8072.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+const MessageBox = ({ message  })=>{
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+        className: "msgBox",
+        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("h4", {
+            children: message
+        }, void 0, false, {
+            fileName: "src/components/MessageBox.jsx",
+            lineNumber: 4,
+            columnNumber: 7
+        }, undefined)
+    }, void 0, false, {
+        fileName: "src/components/MessageBox.jsx",
+        lineNumber: 3,
+        columnNumber: 5
+    }, undefined);
+};
+_c = MessageBox;
+exports.default = MessageBox;
+var _c;
+$RefreshReg$(_c, "MessageBox");
+
+  $parcel$ReactRefreshHelpers$8072.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"ivds8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "runGoogleScript", ()=>runGoogleScript
@@ -32675,7 +32117,490 @@ const getAllDataArrays = async ()=>{
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["kn9T2","dpnCh","cc6EV"], "cc6EV", "parcelRequiree97b")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"aphdW":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$9c72 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$9c72.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _prayerGroupRightPannel = require("./PrayerGroupRightPannel");
+var _prayerGroupRightPannelDefault = parcelHelpers.interopDefault(_prayerGroupRightPannel);
+var _prayerGroupLeftPannel = require("./PrayerGroupLeftPannel");
+var _prayerGroupLeftPannelDefault = parcelHelpers.interopDefault(_prayerGroupLeftPannel);
+var _react = require("react");
+var _s = $RefreshSig$();
+const PrayerGroup = ({ prayerGroups , addPrayerGroup , updatePrayerGroup , deletePrayerGroup  })=>{
+    _s();
+    const [selectedPrayerGroup, setSelectedPrayerGroup] = _react.useState('');
+    const selectPrayerGroup = (id)=>{
+        const objPrayerGroup = prayerGroups.filter((prayerGroup)=>{
+            return prayerGroup.prayerGroupId === id;
+        })[0];
+        setSelectedPrayerGroup(objPrayerGroup);
+    };
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+        className: "container",
+        children: [
+            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_prayerGroupLeftPannelDefault.default, {
+                addPrayerGroup: addPrayerGroup,
+                updatePrayerGroup: updatePrayerGroup,
+                deletePrayerGroup: deletePrayerGroup,
+                selectedPrayerGroup: selectedPrayerGroup
+            }, void 0, false, {
+                fileName: "src/components/PrayerGroups/PrayerGroup.jsx",
+                lineNumber: 18,
+                columnNumber: 7
+            }, undefined),
+            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_prayerGroupRightPannelDefault.default, {
+                prayerGroups: prayerGroups,
+                selectPrayerGroup: selectPrayerGroup
+            }, void 0, false, {
+                fileName: "src/components/PrayerGroups/PrayerGroup.jsx",
+                lineNumber: 19,
+                columnNumber: 7
+            }, undefined)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/PrayerGroups/PrayerGroup.jsx",
+        lineNumber: 17,
+        columnNumber: 5
+    }, undefined);
+};
+_s(PrayerGroup, "7uXwTa3gEhlFRQuUXJ53vulEEHw=");
+_c = PrayerGroup;
+exports.default = PrayerGroup;
+var _c;
+$RefreshReg$(_c, "PrayerGroup");
+
+  $parcel$ReactRefreshHelpers$9c72.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","./PrayerGroupRightPannel":"e4umR","./PrayerGroupLeftPannel":"1d9Tg","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"e4umR":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$b50e = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$b50e.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _prayerGroupTab = require("./PrayerGroupTab");
+var _prayerGroupTabDefault = parcelHelpers.interopDefault(_prayerGroupTab);
+var _prayerGroupTable = require("./PrayerGroupTable");
+var _prayerGroupTableDefault = parcelHelpers.interopDefault(_prayerGroupTable);
+var _s = $RefreshSig$();
+function PrayerGroupRightPanel({ prayerGroups , selectPrayerGroup  }) {
+    _s();
+    const [filteredList, setFilteredList] = _react.useState([]);
+    _react.useEffect(()=>{
+        setFilteredList(prayerGroups);
+    }, [
+        prayerGroups
+    ]);
+    const filterList = (str)=>{
+        if (str.length > 1) setFilteredList(prayerGroups.filter((data)=>JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
+        ));
+        else setFilteredList(prayerGroups);
+    };
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+        className: "right-panel",
+        children: [
+            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_prayerGroupTabDefault.default, {
+                filterList: filterList
+            }, void 0, false, {
+                fileName: "src/components/PrayerGroups/PrayerGroupRightPannel.jsx",
+                lineNumber: 29,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_prayerGroupTableDefault.default, {
+                list: filteredList,
+                selectPrayerGroup: selectPrayerGroup
+            }, void 0, false, {
+                fileName: "src/components/PrayerGroups/PrayerGroupRightPannel.jsx",
+                lineNumber: 30,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "src/components/PrayerGroups/PrayerGroupRightPannel.jsx",
+        lineNumber: 28,
+        columnNumber: 5
+    }, this);
+}
+_s(PrayerGroupRightPanel, "ddTjyB4L7/Wk0QOq32VqRKTEp1o=");
+_c = PrayerGroupRightPanel;
+exports.default = PrayerGroupRightPanel;
+var _c;
+$RefreshReg$(_c, "PrayerGroupRightPanel");
+
+  $parcel$ReactRefreshHelpers$b50e.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","./PrayerGroupTab":"ch9Y7","./PrayerGroupTable":"87qjE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"ch9Y7":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$385d = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$385d.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
+function PrayerGroupTab({ filterList  }) {
+    _s();
+    const [searchText, setSearchText] = _react.useState("");
+    const onSearch = (e)=>{
+        const str = e.target.value;
+        setSearchText(str);
+        filterList(str);
+    };
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
+        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("ul", {
+            className: "nav",
+            children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("li", {
+                className: "tablet",
+                children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                    type: "text",
+                    placeholder: "search here",
+                    value: searchText,
+                    onChange: onSearch
+                }, void 0, false, {
+                    fileName: "src/components/PrayerGroups/PrayerGroupTab.jsx",
+                    lineNumber: 14,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "src/components/PrayerGroups/PrayerGroupTab.jsx",
+                lineNumber: 13,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
+            fileName: "src/components/PrayerGroups/PrayerGroupTab.jsx",
+            lineNumber: 12,
+            columnNumber: 7
+        }, this)
+    }, void 0, false);
+}
+_s(PrayerGroupTab, "OAGvOw28fBJQW7HtXCjc9nvla2M=");
+_c = PrayerGroupTab;
+exports.default = PrayerGroupTab;
+var _c;
+$RefreshReg$(_c, "PrayerGroupTab");
+
+  $parcel$ReactRefreshHelpers$385d.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"87qjE":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$6403 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$6403.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+const PrayerGroupTable = ({ list , selectPrayerGroup  })=>{
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+        className: "list-table",
+        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("table", {
+            children: [
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("thead", {
+                    children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
+                        children: [
+                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("th", {
+                                children: "PrayerGroup Id"
+                            }, void 0, false, {
+                                fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                                lineNumber: 9,
+                                columnNumber: 15
+                            }, undefined),
+                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("th", {
+                                children: "PrayerGroup Name"
+                            }, void 0, false, {
+                                fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                                lineNumber: 10,
+                                columnNumber: 15
+                            }, undefined)
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                        lineNumber: 8,
+                        columnNumber: 13
+                    }, undefined)
+                }, void 0, false, {
+                    fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                    lineNumber: 7,
+                    columnNumber: 11
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tbody", {
+                    children: list.map((input, index)=>{
+                        return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("tr", {
+                            className: "selectedRow",
+                            onClick: ()=>selectPrayerGroup(input.prayerGroupId)
+                            ,
+                            children: [
+                                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("td", {
+                                    children: input.prayerGroupId
+                                }, void 0, false, {
+                                    fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                                    lineNumber: 17,
+                                    columnNumber: 21
+                                }, undefined),
+                                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("td", {
+                                    children: input.prayerGroupName
+                                }, void 0, false, {
+                                    fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                                    lineNumber: 18,
+                                    columnNumber: 21
+                                }, undefined)
+                            ]
+                        }, index, true, {
+                            fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                            lineNumber: 16,
+                            columnNumber: 21
+                        }, undefined);
+                    })
+                }, void 0, false, {
+                    fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+                    lineNumber: 13,
+                    columnNumber: 11
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+            lineNumber: 6,
+            columnNumber: 9
+        }, undefined)
+    }, void 0, false, {
+        fileName: "src/components/PrayerGroups/PrayerGroupTable.jsx",
+        lineNumber: 5,
+        columnNumber: 7
+    }, undefined);
+};
+_c = PrayerGroupTable;
+exports.default = PrayerGroupTable;
+var _c;
+$RefreshReg$(_c, "PrayerGroupTable");
+
+  $parcel$ReactRefreshHelpers$6403.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"1d9Tg":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$604c = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$604c.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _addPrayerGroup = require("./AddPrayerGroup");
+var _addPrayerGroupDefault = parcelHelpers.interopDefault(_addPrayerGroup);
+function PrayerGroupLeftPanel({ addPrayerGroup , updatePrayerGroup , deletePrayerGroup , selectedPrayerGroup  }) {
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+        className: "left-panel",
+        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addPrayerGroupDefault.default, {
+            addPrayerGroup: addPrayerGroup,
+            updatePrayerGroup: updatePrayerGroup,
+            deletePrayerGroup: deletePrayerGroup,
+            selectedPrayerGroup: selectedPrayerGroup
+        }, void 0, false, {
+            fileName: "src/components/PrayerGroups/PrayerGroupLeftPannel.jsx",
+            lineNumber: 6,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "src/components/PrayerGroups/PrayerGroupLeftPannel.jsx",
+        lineNumber: 5,
+        columnNumber: 5
+    }, this);
+}
+_c = PrayerGroupLeftPanel;
+exports.default = PrayerGroupLeftPanel;
+var _c;
+$RefreshReg$(_c, "PrayerGroupLeftPanel");
+
+  $parcel$ReactRefreshHelpers$604c.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","./AddPrayerGroup":"7LlbI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"7LlbI":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$cac9 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$cac9.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _s = $RefreshSig$();
+const AddPrayerGroup = ({ addPrayerGroup , updatePrayerGroup , deletePrayerGroup , selectedPrayerGroup  })=>{
+    _s();
+    const [prayerGroupId, setPrayerGroupId] = _react.useState("");
+    const [prayerGroupName, setPrayerGroupName] = _react.useState("");
+    const clearPrayerGroup = ()=>{
+        setPrayerGroupId("");
+        setPrayerGroupName("");
+    };
+    _react.useEffect(()=>{
+        clearPrayerGroup();
+        setPrayerGroupId(selectedPrayerGroup.prayerGroupId);
+        setPrayerGroupName(selectedPrayerGroup.prayerGroupName);
+    }, [
+        selectedPrayerGroup
+    ]);
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
+        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+            className: "add-form",
+            children: [
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "PrayerGroup Id"
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 21,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            readOnly: true,
+                            placeholder: "PrayerGroup Id",
+                            value: prayerGroupId,
+                            onChange: (e)=>setPrayerGroupId(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 22,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                    lineNumber: 20,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "PrayerGroup Name"
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 31,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            placeholder: "PrayerGroup Name",
+                            value: prayerGroupName,
+                            onChange: (e)=>setPrayerGroupName(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 32,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                    lineNumber: 30,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "button-block",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-add",
+                            onClick: ()=>addPrayerGroup({
+                                    prayerGroupName
+                                })
+                            ,
+                            children: "Add"
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 40,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-update",
+                            onClick: ()=>updatePrayerGroup({
+                                    prayerGroupId,
+                                    prayerGroupName
+                                })
+                            ,
+                            children: "Update"
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 41,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-clear",
+                            onClick: clearPrayerGroup,
+                            children: "Clear"
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 42,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-delete",
+                            onClick: ()=>deletePrayerGroup(prayerGroupId)
+                            ,
+                            children: "Delete"
+                        }, void 0, false, {
+                            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                            lineNumber: 43,
+                            columnNumber: 13
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+                    lineNumber: 39,
+                    columnNumber: 9
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "src/components/PrayerGroups/AddPrayerGroup.jsx",
+            lineNumber: 19,
+            columnNumber: 7
+        }, undefined)
+    }, void 0, false);
+};
+_s(AddPrayerGroup, "ZksjU9ixfV2iZwEjNkUCmOY9748=");
+_c = AddPrayerGroup;
+exports.default = AddPrayerGroup;
+var _c;
+$RefreshReg$(_c, "AddPrayerGroup");
+
+  $parcel$ReactRefreshHelpers$cac9.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["kn9T2","dpnCh","cc6EV"], "cc6EV", "parcelRequiree97b")
 
 </script>
   </body>

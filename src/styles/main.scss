@@ -247,5 +247,16 @@ footer {
   border: none;
   border-radius: 5px;
 }
+.msgBox {
+  position: absolute;
+  top:40%;
+  left:40%;
+  height:50px;
+  width: max-content;
+  background-color:lightgray;
+  color:lightcoral;
+  border-radius:10px;
+  padding:10px;
+}
 
 

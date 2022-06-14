@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 
-function AccountTypeTab({filterList}) {
+function PrayerGroupTab({ filterList}) {
   const [searchText, setSearchText] = useState("");
-  const onSearch = (e)=>{
+  const onSearch=(e)=>{
     const str = e.target.value
-    filterList(str)
     setSearchText(str)
+    filterList(str)
   }
-  
   return (
     <>
       <ul className="nav">
@@ -24,4 +23,4 @@ function AccountTypeTab({filterList}) {
   );
 }
 
-export default AccountTypeTab;
+export default PrayerGroupTab;

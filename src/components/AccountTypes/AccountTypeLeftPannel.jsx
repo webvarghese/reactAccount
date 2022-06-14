@@ -1,14 +1,14 @@
 
 import AddAccountType from "./AddAccountTypes"
-function AccountTypeLeftPanel({addAccountType,updateAccountType,deleteAccountType,accountType, clearFields}) {
+function AccountTypeLeftPanel({addAccountType,updateAccountType,deleteAccountType,selectedAccountType}) {
   
   return (
     <div className="left-panel">
       <AddAccountType addAccountType={addAccountType} 
       updateAccountType ={updateAccountType} 
       deleteAccountType={deleteAccountType} 
-      accountType={accountType} 
-      clearFields={clearFields}/>
+      selectedAccountType={selectedAccountType} 
+      />
     </div>
   );
 }
