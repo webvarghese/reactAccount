@@ -7,6 +7,7 @@ import AccountHead from './AccountHeads/AccountHead'
 import Schedule from './Schedules/Schedule'
 import AccountType from './AccountTypes/AccountType'
 import PrayerGroup from './PrayerGroups/PrayerGroup'
+import Budget from "./Budgets/Budget"
 import Nav from "./Nav";
 import MessageBox from "./MessageBox"
 import { getAllDataArrays,runGoogleScript } from "../functions/Utilities"
@@ -18,7 +19,7 @@ function Main() {
   const [persons, setPersons] = useState([])
   const [prayerGroups, setPrayerGroups] = useState([])
   const [transactions, setTransactions] = useState([])
-  const [subHeads, setSubHeads] = useState([])
+  //const [subHeads, setSubHeads] = useState([])
   const [items, setItems] = useState([])
   const [budgets, setBudgets] = useState([])
 
@@ -39,21 +40,20 @@ function Main() {
       //const SubHeads = dataArray.SubHeads.splice(0)
       const Transactions = dataArray.Transactions.splice(0)
       const Items = dataArray.Items.splice(0)
-      //const Budgets = dataArray.Budgets.splice(0)
+      const Budgets = dataArray.Budgets.splice(0)
       setAccountHeads(AccountHeads)
       setAccountTypes(AccountTypes)
       setSchedules(Schedules)
       setPersons(Persons)
       setPrayerGroups(PrayerGroups)
-      //setSubHeads(SubHeads)
+      setBudgets(Budgets)
       setTransactions(Transactions)
       setItems(Items)
-      //setBudgets(Budgets)
     }
     getData()
     
   },[])
-  console.log(persons)
+  console.log(budgets)
   const showMessage =(msg)=>{
     setMessage(msg)
     setMessageBox(true)
@@ -78,7 +78,7 @@ function Main() {
   const deletePerson = async(id)=>{
     const returnId = await runGoogleScript("deletePerson", id)
     if(returnId === id){
-      setPersons([persons.filter((person)=>{ return person.personId !== returnId})])
+      setPersons(persons.filter((person)=>{ return person.personId !== returnId}))
     }
   }
   //Prayer Groups
@@ -177,6 +177,27 @@ const deleteItems = (id)=>{
       setAccountHeads(accountHeads.filter((accountHead)=>{ return accountHead.accountHeadId !== returnId}))
     }
   }
+  
+  //budgets
+ const addBudget =async(obj)=>{
+   const objBudget = await runGoogleScript("addBudget",obj)
+   if(objBudget.budgetId > 0){
+     setBudgets([...budgets,objBudget])
+   }
+ }
+  const updateBudget =async(obj)=>{
+   const objBudget = await runGoogleScript("updateBudget",obj)
+   if(objBudget.budgetId > 0){
+     setBudgets(budgets.map((budget)=>{if(budget.budgetId === objBudget.budgetId){return objBudget} else {return budget}}))
+   }
+ }
+  const deleteBudget = async(id)=>{
+    const returnId = await runGoogleScript("deleteBudget", id)
+    if(returnId === id){
+      setBudgets(budgets.filter((budget)=>{ return budget.budgetId !== returnId}))
+    }
+  }
+  
   // account types
   const addAccountType =async(obj)=>{
    const objAccountType = await runGoogleScript("addAccountType",obj)
@@ -208,11 +229,13 @@ const deleteItems = (id)=>{
       <Routes>
         <Route path ="/transactions" element ={<Transactions transactions ={transactions} items ={items} persons ={persons} accountHeads ={accountHeads}/>}/>
         <Route path="/about" element={<About />} />
-        <Route path="/person/*" element={<Person persons={persons} prayerGroups={prayerGroups} addPerson={addPerson}/>} />
+        <Route path="/person/*" element={<Person persons={persons} prayerGroups={prayerGroups} addPerson={addPerson} updatePerson ={updatePerson} deletePerson ={deletePerson} />} />
         <Route path ="/accountHead/*" element={<AccountHead accountHeads = {accountHeads} accountTypes ={accountTypes} schedules={schedules} addAccountHead={addAccountHead} updateAccountHead={updateAccountHead} deleteAccountHead= {deleteAccountHead} />}/>
         <Route path ="/schedule" element ={<Schedule schedules= {schedules} addSchedule={addSchedule} updateSchedule={updateSchedule} deleteSchedule={deleteSchedule} />}/>
         <Route path ="/accountType" element ={<AccountType accountTypes = {accountTypes} addAccountType={addAccountType} updateAccountType={updateAccountType} deleteAccountType={deleteAccountType}/>}/>
         <Route path ="/prayerGroup" element ={<PrayerGroup prayerGroups = {prayerGroups} addPrayerGroup={addPrayerGroup} updatePrayerGroup ={updatePrayerGroup} deletePrayerGroup={deletePrayerGroup} />}/>
+        <Route path ="/budget" element ={<Budget 
+accountHeads= {accountHeads} budgets = {budgets} addBudget={addBudget} updateBudget ={updateBudget} deleteBudget={deleteBudget} />}/>
       </Routes>
     </>
   );

@@ -11,9 +11,13 @@ const AddSchedule = ({addSchedule,updateSchedule, deleteSchedule, selectedSchedu
 
   useEffect(()=>{
     clearSchedule()
-    setScheduleId(selectedSchedule.scheduleId)
-    setScheduleName(selectedSchedule.scheduleName)
+    fillSchedule(selectedSchedule)
   },[selectedSchedule])
+  
+  const fillSchedule = (schedule)=>{
+    setScheduleId(schedule.scheduleId)
+    setScheduleName(schedule.scheduleName)
+  }
   
   return (
     <>

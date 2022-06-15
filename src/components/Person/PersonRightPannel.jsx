@@ -3,35 +3,49 @@ import PersonTable from "./PersonTable";
 import { useState, useEffect, useCallback } from "react";
 import PersonTab from "./PersonTab";
 
-function PersonRightPanel({ list, setPerson}) {
-  const [searchList, setSearchList] = useState([]);
-  useCallback(()=>{
-    
-  },[list])
+function PersonRightPanel({ persons, prayerGroups, selectPerson}) {
+  const [filteredList, setFilteredList] = useState([]);
+  const [list,setList] = useState([])
   
   useEffect(() => {
-    setSearchList(list);
-    filterList('')
-  }, [list]);
+    const combinedList = persons.map((person)=>{
+      const newObj = {}
+      newObj.personId = person.personId
+      newObj.personName = person.personName
+      newObj.personAddress = person.personAddress
+      if(person.prayerGroupId > 0){
+        newObj.prayerGroupId = person.prayerGroupId
+        const prayerGroupName = prayerGroups.filter((prayerGroup)=>prayerGroup.prayerGroupId === person.prayerGroupId)[0].prayerGroupName
+      console.log(prayerGroupName)
+      newObj.prayerGroupName = prayerGroupName
+      }
+      return newObj
+    })
+    console.log(combinedList)
+    setList(combinedList);
+  }, [persons]);
+  
+  useEffect(()=>{
+    setFilteredList(list)
+  },[list])
 
   const filterList = (str) => {
-   
     if (str.length > 1) {
-      setSearchList(
+      setFilteredList(
         list.filter(
           (data) =>
             JSON.stringify(data).toLowerCase().indexOf(str.toLowerCase()) !== -1
         )
       );
     } else {
-      setSearchList(list);
+      setFilteredList(list);
     }
   };
  
   return (
     <div className="right-panel">
-      <PersonTab onSearch={filterList}  />
-      <PersonTable inputList={searchList} selectPerson={setPerson}/>
+      <PersonTab filterList={filterList}  />
+      <PersonTable list={filteredList} selectPerson={selectPerson}/>
     </div>
   );
 }

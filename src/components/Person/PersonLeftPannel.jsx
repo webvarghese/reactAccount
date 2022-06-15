@@ -1,10 +1,10 @@
 
 import AddPerson from "./AddPerson"
-function PersonLeftPanel({addPerson,updatePerson,deletePerson,person}) {
+function PersonLeftPanel({prayerGroups, addPerson,updatePerson,deletePerson,selectedPerson}) {
   
   return (
     <div className="left-panel">
-      <AddPerson addPerson={addPerson} updatePerson ={updatePerson} deletePerson={deletePerson} person={person} />
+      <AddPerson prayerGroups={prayerGroups} addPerson={addPerson} updatePerson ={updatePerson} deletePerson={deletePerson} selectedPerson={selectedPerson} />
     </div>
   );
 }

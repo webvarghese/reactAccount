@@ -1,27 +1,56 @@
 
 import { useEffect, useState } from "react";
-const AddPerson = ({addPerson,updatePerson, deletePerson, person}) => {
+import MultiOptionInput from "../MultiOptionInput"
+const AddPerson = ({prayerGroups, addPerson,updatePerson, deletePerson, selectedPerson}) => {
   const [personId, setPersonId] = useState("");
   const [personName, setPersonName] = useState('')
   const [personAddress, setPersonAddress] = useState("");
+  const [prayerGroupId, setPrayerGroupId] = useState("")
+  const [prayerGroupName, setPrayerGroupName] = useState("")
+  const [prayerGroupList, setPrayerGroupList] = useState([])
 
   const clearPerson =()=>{
     setPersonId("")
     setPersonName('')
     setPersonAddress('')
+    setPrayerGroupId("")
+    setPrayerGroupName("")
   }
 
   useEffect(()=>{
     clearPerson()
-    showPerson(person)
-  },[person])
+    showPerson(selectedPerson)
+  },[selectedPerson])
+
+  useEffect(()=>{
+    console.log(prayerGroups)
+    setPrayerGroupList(prayerGroups.map((prayerGroup)=>{
+      const objPrayerGroup = {}
+      objPrayerGroup.idField = prayerGroup.prayerGroupId
+      objPrayerGroup.textField = prayerGroup.prayerGroupName
+      return objPrayerGroup
+    }))
+  },[prayerGroups])
 
   const showPerson=(person)=>{
     if(person.personId > 0){
       setPersonId(person.personId)
       setPersonName(person.personName)
       setPersonAddress(person.personAddress)
+      setPrayerGroupId(person.prayerGroupId)
+      if(person.prayerGroupId > 0){
+        const prayerGroupName = prayerGroups.filter((prayerGroup)=>prayerGroup.prayerGroupId === person.prayerGroupId)[0].prayerGroupName
+      setPrayerGroupName(prayerGroupName)
+      }
+      
     }
+  }
+  const fillPrayerGroup =(prayerGroup)=>{
+    setPrayerGroupId(prayerGroup.idField)
+    setPrayerGroupName(prayerGroup.textField)
+  }
+  const displayPrayerGroupName = (str)=>{
+    setPrayerGroupName(str)
   }
   return (
     <>
@@ -55,9 +84,18 @@ const AddPerson = ({addPerson,updatePerson, deletePerson, person}) => {
             onChange={(e) => setPersonAddress(e.target.value)} 
           />
         </div>
+        <div className="form-control">
+          <label>Prayer Group</label>
+          <MultiOptionInput promptList ={prayerGroupList} 
+          textField={prayerGroupName} 
+          idField={prayerGroupId} 
+          fillText = {fillPrayerGroup}
+          displayText={displayPrayerGroupName}
+          />
+        </div>
         <div className="button-block">
-            <button className="btn-add" onClick={()=>addPerson({personName,personAddress})}>Add</button>
-            <button className="btn-update" onClick={()=>updatePerson({personId,personName,personAddress})}>Update</button>
+            <button className="btn-add" onClick={()=>addPerson({personName,personAddress,prayerGroupId})}>Add</button>
+            <button className="btn-update" onClick={()=>updatePerson({personId,personName,personAddress,prayerGroupId})}>Update</button>
             <button className="btn-clear" onClick={clearPerson}>Clear</button>
             <button className="btn-delete" onClick={()=>deletePerson(personId)}>Delete</button>
         </div>

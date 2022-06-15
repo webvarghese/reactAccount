@@ -26,6 +26,9 @@ function Nav() {
           <Link to="/prayerGroup">Prayer
           Group</Link>
         </li>
+        <li className="tablet">
+          <Link to="/budget">Budget</Link>
+        </li>
       </ul>
     </>
   );

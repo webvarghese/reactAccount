@@ -1,11 +1,12 @@
 const getAllDataArrays = ()=>{
-    const dataArray = {}
-    dataArray.AccountHeads = getAccountHeads();
-    dataArray.AccountTypes = getAccountTypes();
-    dataArray.Persons = getPersons();
-    dataArray.Schedules = getSchedules();
-    dataArray.PrayerGroups = getPrayerGroups();
-    dataArray.Transactions = getTransactions()
-    dataArray.Items = getItems()
-    return dataArray;
+  const dataArray = {}
+  dataArray.AccountHeads = getAccountHeads()
+  dataArray.AccountTypes = getAccountTypes()
+  dataArray.Persons = getPersons()
+  dataArray.PrayerGroups = getPrayerGroups()
+  dataArray.Budgets = getBudgets()
+  dataArray.Schedules = getSchedules()
+  dataArray.Items = getItems()
+  dataArray.Transactions = getTransactions()
+  return dataArray
 }

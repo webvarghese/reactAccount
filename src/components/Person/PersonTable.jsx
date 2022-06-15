@@ -1,10 +1,5 @@
 import { useState,useEffect} from "react";
-const PersonTable = ({ inputList,selectPerson }) => {
-  const [list, setList] = useState([])
-  useEffect(()=>{
-    setList(inputList)
-    
-  },[list])
+const PersonTable = ({ list,selectPerson }) => {
     return (
       <div className="list-table">
         <table>
@@ -12,7 +7,8 @@ const PersonTable = ({ inputList,selectPerson }) => {
             <tr>
               <th>Person Id</th>
               <th>Person Name</th>
-              <th>Person Address</th>              
+              <th>Person Address</th>
+              <th>Prayer Group</th>
             </tr>
           </thead>
           <tbody>
@@ -22,6 +18,7 @@ const PersonTable = ({ inputList,selectPerson }) => {
                     <td>{input.personId}</td>
                     <td>{input.personName}</td>
                     <td>{input.personAddress}</td>
+                    <td>{input.prayerGroupName}</td>
                   </tr>
                   )
               })}

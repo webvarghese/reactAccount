@@ -1,67 +1,19 @@
 import PersonRightPanel from "./PersonRightPannel";
 import PersonLeftPanel from "./PersonLeftPannel"
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
-const Person = ({dataArray}) => {
-  const [personList,setPersonList] = useState([])  
-  const [perso, setPerso] = useState('')
-  
-  const temp = dataArray.Persons
+const Person = ({persons, prayerGroups, addPerson, updatePerson, deletePerson}) => {
+   
+  const [selectedPerson, setSelectedPerson] = useState('')
  
-  useEffect(()=>{
-   setPersonList([...temp])
-  },[dataArray])
-
-  
- 
-  const addPerson =(objPerson)=>{
-    google.script.run.withSuccessHandler((d)=>{
-      if(d.personId > 1){
-        setPersonList([...personList,d]) 
-      } else {
-        alert('Error while adding person')
-      }
-        
-      }).addPerson(objPerson);      
-  }
-  
-  const updatePerson = (objPerson)=>{
-    google.script.run.withSuccessHandler((d)=>{
-      if(d.personId > 0){
-        setPersonList(personList.map((person)=>{
-          if(person.personId === objPerson.personId){
-            return d
-          } else {
-            return person
-          }
-        }))
-      } else {
-        alert("Error while updating the person")
-      }
-    }).updatePerson(objPerson);
-  }
-  
-  
-
-  const deletePerson = (id)=>{
-      google.script.run.withSuccessHandler((id)=>{
-        if(id > 0){
-          setPersonList(personList.filter((person)=>{
-            return person.personId !== id
-          }))
-        } else {
-          alert("Error while deleting person")
-        }
-      }).deletePerson(id)
-  }
-  const setPerson =(id)=>{
-    const person = personList.filter((person)=>person.personId=== id)[0]
-    setPerso(person)
+  const selectPerson =(id)=>{
+    const person = persons.filter((person)=>person.personId=== id)[0]
+    setSelectedPerson(person)
   }
   return (
     <div className="container">
-      <PersonLeftPanel addPerson={addPerson} updatePerson={updatePerson} deletePerson ={deletePerson} person={perso}/>
-      <PersonRightPanel list={personList} setPerson={setPerson} />
+      <PersonLeftPanel prayerGroups = {prayerGroups} addPerson={addPerson} updatePerson={updatePerson} deletePerson ={deletePerson} selectedPerson={selectedPerson}/>
+      <PersonRightPanel persons={persons} prayerGroups ={prayerGroups} selectPerson={selectPerson} />
     </div>
   );
 };

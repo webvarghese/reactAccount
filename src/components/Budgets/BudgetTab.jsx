@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function PersonTab({filterList}) {
+function BudgetTab({filterList}) {
   const [searchText, setSearchText] = useState("");
   const onSearch =(e)=>{
     const str = e.target.value
     setSearchText(str)
     filterList(str)
   }
-  
+
   return (
     <>
       <ul className="nav">
@@ -24,4 +24,4 @@ function PersonTab({filterList}) {
   );
 }
 
-export default PersonTab;
+export default BudgetTab;

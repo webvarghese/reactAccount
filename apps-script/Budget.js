@@ -17,6 +17,7 @@ const getBudget =(id)=>{
       objBudget.budgetAmount = data[2]
       budgets.push(objBudget)
     })
+    
     return budgets
   }
 
@@ -36,7 +37,7 @@ const addBudget=(data)=>{
     return objUpdated
   }
 
-  const deleteUser =(id)=>{
+  const deleteBudget =(id)=>{
       if(deleteObject_("Budgets",id)){
           return id
       } else {

@@ -8,9 +8,14 @@ const AddAccountType = ({addAccountType,updateAccountType, deleteAccountType, se
     setAccountTypeId("")
     setAccountType("")
   }
+
+  const fillAccountType =(accountType)=>{
+    setAccountTypeId(accountType.accountTypeId)
+    setAccountType(accountType.accountTypeName)
+  }
   useEffect(()=>{
-    setAccountTypeId(selectedAccountType.accountTypeId)
-    setAccountType(selectedAccountType.accountTypeName)
+    clearAccountType()
+    fillAccountType(selectedAccountType)
   },[selectedAccountType])
 
   
