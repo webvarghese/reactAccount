@@ -76,11 +76,12 @@ const addItem=(data)=>{
         const objItem = {}
         objItem.itemId = data[0]
         objItem.transactionId = data[1]
-        objItem.purposeId = data[2]
+        objItem.accountHeadId = data[2]
         objItem.amount = data[3]
         objItem.details = data[4]
         items.push(objItem)
       }
     })
+    console.log(id)
     return items
   }

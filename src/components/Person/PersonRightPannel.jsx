@@ -15,13 +15,11 @@ function PersonRightPanel({ persons, prayerGroups, selectPerson}) {
       newObj.personAddress = person.personAddress
       if(person.prayerGroupId > 0){
         newObj.prayerGroupId = person.prayerGroupId
-        const prayerGroupName = prayerGroups.filter((prayerGroup)=>prayerGroup.prayerGroupId === person.prayerGroupId)[0].prayerGroupName
-      console.log(prayerGroupName)
+        const prayerGroupName = prayerGroups.filter((prayerGroup)=>prayerGroup.prayerGroupId === person.prayerGroupId)[0].prayerGroupName     
       newObj.prayerGroupName = prayerGroupName
       }
       return newObj
     })
-    console.log(combinedList)
     setList(combinedList);
   }, [persons]);
   

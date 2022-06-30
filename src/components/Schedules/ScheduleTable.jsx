@@ -3,14 +3,14 @@ const ScheduleTable = ({ list,selectSchedule }) => {
   
     return (
       <div className="list-table">
-        <table>
+        <table >
           <thead>
             <tr>
               <th>Schedule Id</th>
               <th>Schedule Name</th>              
             </tr>
           </thead>
-          <tbody>
+          <tbody >
               {list.map((input,index)=>{
                   return (
                     <tr className="selectedRow" key={index} onClick={()=>selectSchedule(input.scheduleId)}>

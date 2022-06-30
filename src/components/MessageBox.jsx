@@ -1,7 +1,7 @@
-const MessageBox =({message})=>{
+const MessageBox =({message,color})=>{
   return (
-    <div className ='msgBox'>
-      <h4>{message}</h4>
+    <div className ={`msgBox ${color}`}>
+      <p>{message}</p>
     </div>
   )
 }

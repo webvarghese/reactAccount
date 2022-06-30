@@ -1,14 +1,9 @@
 
 import {useState,useEffect} from 'react'
 
-function TransactionLeftTab({show,toggleHeading}) { 
+function TransactionLeftTab({showHeading,toggleHeading}) { 
   
-  const [showHeading, setShowHeading] = useState(true) 
-  
-  useEffect(()=>{
-    setShowHeading(show)
-  },[show])
-
+ 
   return (
     <>
       <ul className="nav" onClick={e=>toggleHeading(e)} >

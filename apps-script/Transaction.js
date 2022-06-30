@@ -6,9 +6,9 @@ const getTransaction =(id)=>{
     objTransaction.transactionBillNo = data[2]
     objTransaction.personId = data[3]
     objTransaction.transactionBy = data[4]
-    objTransaction.transanctionBankDetails = data[5]
+    objTransaction.transactionBankDetails = data[5]
     objTransaction.savedTimeStamp = data[6]
-    objTransaction.userId = data[7]
+    objTransaction.userName = data[7]
     return objTransaction
   }
 
@@ -22,9 +22,9 @@ const getTransaction =(id)=>{
       objTransaction.transactionBillNo = data[2]
       objTransaction.personId = data[3]
       objTransaction.transactionBy = data[4]
-      objTransaction.transanctionBankDetails = data[5]
+      objTransaction.transactionBankDetails = data[5]
       objTransaction.savedTimeStamp = data[6]
-      objTransaction.userId = data[7]
+      objTransaction.userName = data[7]
       transactions.push(objTransaction)
     })
     return transactions
@@ -32,33 +32,34 @@ const getTransaction =(id)=>{
 
 
 const addTransaction=(data)=>{
-    const objArray = [data.transactionDate, 
+    const objArray = [data.transactionDate,
                       data.transactionBillNo,
                       data.personId,
                       data.transactionBy,
                       data.transactionBankDetails,
                       data.savedTimeStamp,
-                      data.userId]
+                      data.userName]
     const id = addObject_('Transactions',objArray)
     data.transactionItems.map((item)=>{
       addItem({...item, transactionId:id})
     })
     const objTrans = getTransaction(id)
     const itemsArray = getItemsForTransaction_(id)
+    console.log(id)
     const objAdded = {...objTrans, transactionItems : itemsArray}
     return objAdded
   }
 
  
   const updateTransaction=(data)=>{
-    const objArray = [data.transactionId, 
-                      data.transactionDate, 
+    const objArray = [data.transactionId,
+                      data.transactionDate,
                       data.transactionBillNo,
                       data.personId,
                       data.transactionBy,
                       data.transactionBankDetails,
                       data.savedTimeStamp,
-                      data.userId]
+                      data.userName]
     const id = updateField_('Transactions',data.transactionId,8,objArray)
     deleteItemsOfTransaction_(id)
     data.transactionItems.map((item)=>{

@@ -5,11 +5,9 @@ import { useState} from "react";
 
 import TransactionLeftTab from "./TransactionLeftTab";
 
-function TransactionLeftPanel({dataArray,addTransaction, updateTransaction, deleteTransaction, transaction}) {
+function TransactionLeftPanel({accountHeads, user, persons, items ,addTransaction, updateTransaction, deleteTransaction, selectedTransaction}) {
   
   const [showHeading, setShowHeading] = useState(false)
-  
-
   const toggleHeading =(e)=>{
     if(e.target.textContent==='Reciept'){
       setShowHeading(false)
@@ -17,26 +15,20 @@ function TransactionLeftPanel({dataArray,addTransaction, updateTransaction, dele
       setShowHeading(true)
     }
   }
-  
-
-  
-
   return (
     <div className="left-panel">
-      <TransactionLeftTab toggleHeading= {toggleHeading} show={showHeading} />
+      <TransactionLeftTab toggleHeading= {toggleHeading} showHeading={showHeading} />
 
         {showHeading ?
         <AddReciept addTransaction={addTransaction} 
         updateTransaction={updateTransaction} 
-        deleteTransaction={deleteTransaction}
-        dataArray ={dataArray} 
-        transaction ={transaction} />
+        deleteTransaction={deleteTransaction} user={user}
+        items ={items} accountHeads = {accountHeads} persons ={persons} selectedTransaction = {selectedTransaction} />
         :
         <AddPayment addTransaction={addTransaction} 
         updateTransaction={updateTransaction} 
-        deleteTransaction={deleteTransaction}
-        dataArray ={dataArray} 
-        transaction ={transaction} />
+        deleteTransaction={deleteTransaction} user ={user}
+        items ={items} accountHeads = {accountHeads} persons ={persons} selectedTransaction = {selectedTransaction} />
         }
   
     </div>

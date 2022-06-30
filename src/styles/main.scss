@@ -2,6 +2,7 @@
 
 #app {
   font-family: "Poppins", sans-serif;
+  height: 90vh;
 }
 h1 {
   color: green;
@@ -123,10 +124,11 @@ h1 {
   width: 80%;
 }
 .list-table {
-  height: 80vh;
+  height: 60vh;
   width: 60vw;
-  overflow: auto;
-  
+  overflow:scroll;
+  position: absolute;
+
   .selectedRow:hover {
     background-color:darkgoldenrod;
     cursor: pointer;
@@ -188,6 +190,7 @@ footer {
   background-color: khaki;
   overflow: auto;
   border-radius: 10px;
+  height: 80vh;
 }
 .left-panel {
   grid-column: 1 / 2;
@@ -195,14 +198,17 @@ footer {
   background-color: darkseagreen;
   overflow: auto;
   border-radius: 10px;
+  height: 70vh;
 }
 
 .prompt {
   z-index: 1;
   height: 100px;
-  width: 100px;
-  background-color: violet;
+  width: max-content;
+  background-color:lightskyblue;
   transform: translate(-50% -50%);
+  overflow: scroll;
+  cursor: pointer;
 }
 .sub-menu-1 {
   display: none;
@@ -249,14 +255,32 @@ footer {
 }
 .msgBox {
   position: absolute;
-  top:40%;
-  left:40%;
+  z-index: 1;
+  top:50%;
+  left:20%;
   height:50px;
   width: max-content;
-  background-color:lightgray;
-  color:lightcoral;
   border-radius:10px;
   padding:10px;
+}
+
+.addMsg {
+  background-color: rgba(127, 255, 212,1);
+  color: blue;
+}
+
+.updateMsg {
+  background-color: rgba(222, 184, 135,1);
+  color: green;
+}
+
+.deleteMsg {
+  background-color: rgba(205, 92, 92,1);
+  color: blanchedalmond;
+}
+
+.warnMsg{
+  background-color: rgba(255, 255, 0,1);
 }
 
 

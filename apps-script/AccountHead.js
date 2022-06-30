@@ -19,7 +19,6 @@ const getAccountHead =(id)=>{
       objAccountHead.accountHeadName = accountHead[3]
       accountHeads.push(objAccountHead)
     })
-    console.log(accountHeads)
     return accountHeads
   }
 

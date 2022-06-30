@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 
-function Tab({ onSearch, searchByDate }) {
-  const [strSearch, setStrSearch] = useState("");
+function Tab({ filterList}) {
+  const [searchText, setSearchText] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  useEffect(() => {
-    searchByDate(fromDate, toDate);
-  }, [fromDate, toDate]);
-
-  useEffect(() => {
-    onSearch(strSearch);
-  }, [strSearch]);
+  const onSearch =(e)=>{
+    const str=e.target.value
+    filterList(str)
+    setSearchText(str)
+  }
 
   return (
     <>
@@ -37,8 +35,8 @@ function Tab({ onSearch, searchByDate }) {
           <input
             type="text"
             placeholder="search here"
-            value={strSearch}
-            onChange={(e) => setStrSearch((prev) => e.target.value)}
+            value={searchText}
+            onChange={onSearch}
           />
         </li>
         <li className="tablet">

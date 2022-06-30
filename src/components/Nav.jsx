@@ -29,6 +29,9 @@ function Nav() {
         <li className="tablet">
           <Link to="/budget">Budget</Link>
         </li>
+        <li className="tablet">
+          <Link to="/user">User</Link>
+        </li>
       </ul>
     </>
   );

@@ -23,7 +23,6 @@ const AddPerson = ({prayerGroups, addPerson,updatePerson, deletePerson, selected
   },[selectedPerson])
 
   useEffect(()=>{
-    console.log(prayerGroups)
     setPrayerGroupList(prayerGroups.map((prayerGroup)=>{
       const objPrayerGroup = {}
       objPrayerGroup.idField = prayerGroup.prayerGroupId

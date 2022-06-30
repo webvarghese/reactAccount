@@ -8,6 +8,5 @@ const getAllDataArrays = ()=>{
     dataArray.Transactions = getTransactions()
     dataArray.Budgets = getBudgets()
     dataArray.Items = getItems()
-  console.log(dataArray)
     return dataArray;
 }

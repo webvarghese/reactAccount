@@ -6,6 +6,7 @@ const getAllDataArrays = ()=>{
   dataArray.PrayerGroups = getPrayerGroups()
   dataArray.Budgets = getBudgets()
   dataArray.Schedules = getSchedules()
+  dataArray.Users = getUsers()
   dataArray.Items = getItems()
   dataArray.Transactions = getTransactions()
   return dataArray

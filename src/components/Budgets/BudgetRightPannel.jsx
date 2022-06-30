@@ -20,13 +20,11 @@ function BudgetRightPanel({ budgets, accountHeads, selectBudget}) {
       }
       return objBudget
     })
-    console.log(budgets)
     setList(combinedList);
     setFilteredList(combinedList)
   }, [budgets]);
 
   const filterList = (str) => {
-    console.log(list)
     if (str.length > 0) {
       setFilteredList(
         list.filter(
