@@ -25813,6 +25813,8 @@ function Main() {
             setMessageBox(false);
         }, 3000);
     };
+    const clearFields = ()=>{};
+    // =================== Persons ===========================================
     const addPerson = async (obj)=>{
         const objPerson = await _utilities.runGoogleScript("addPerson", obj);
         if (objPerson.personId > 0) {
@@ -25821,6 +25823,7 @@ function Main() {
                 objPerson
             ]);
             showMessage(`Successfully added the person ${objPerson.personName} !!`, "addMsg");
+            clearFields();
         }
     };
     const updatePerson = async (obj)=>{
@@ -25831,6 +25834,7 @@ function Main() {
                 else return person;
             }));
             showMessage(`Successfully updated the person ${objPerson.personName} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deletePerson = async (id)=>{
@@ -25840,6 +25844,7 @@ function Main() {
                 return person.personId !== returnId;
             }));
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     //Prayer Groups
@@ -25851,6 +25856,7 @@ function Main() {
                 objPrayerGroup
             ]);
             showMessage(`Successfully added the prayer group ${objPrayerGroup.prayerGroupName} !!`, "addMsg");
+            clearFields();
         }
     };
     const updatePrayerGroup = async (obj)=>{
@@ -25861,6 +25867,7 @@ function Main() {
                 else return prayerGroup;
             }));
             showMessage(`Successfully updated the prayer group ${objPrayerGroup.prayerGroupName} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deletePrayerGroup = async (id)=>{
@@ -25877,6 +25884,7 @@ function Main() {
                 })
             ]);
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     //Transactions 
@@ -25889,6 +25897,7 @@ function Main() {
             ]);
             addItems(objTransaction.transactionItems);
             showMessage(`Successfully added the entry for ${objTransaction.transactionBillNo} !!`, "addMsg");
+            clearFields();
         }
     };
     const updateTransaction = async (obj)=>{
@@ -25905,6 +25914,7 @@ function Main() {
                 ...objTransaction.transactionItems
             ]);
             showMessage(`Successfully updated the transaction for ${objTransaction.transactionBillNo} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deleteTransaction = async (id)=>{
@@ -25915,6 +25925,7 @@ function Main() {
             }));
             deleteItems(returnId);
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     //Items
@@ -25937,6 +25948,7 @@ function Main() {
                 objSchedule
             ]);
             showMessage(`Successfully added the schedule ${objSchedule.scheduleName} !!`, "addMsg");
+            clearFields();
         }
     };
     const updateSchedule = async (obj)=>{
@@ -25947,6 +25959,7 @@ function Main() {
                 else return schedule;
             }));
             showMessage(`Successfully updated the schedule ${objSchedule.scheduleName} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deleteSchedule = async (id)=>{
@@ -25961,6 +25974,7 @@ function Main() {
                 return schedule.scheduleId !== returnId;
             }));
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     //account heads
@@ -25972,6 +25986,7 @@ function Main() {
                 objAccountHead
             ]);
             showMessage(`Successfully added account head ${objAccountHead.accountHeadName} !!`, "addMsg");
+            clearFields();
         }
     };
     const updateAccountHead = async (obj)=>{
@@ -25982,15 +25997,22 @@ function Main() {
                 else return accountHead;
             }));
             showMessage(`Successfully updated the account head ${objAccountHead.accountHeadName} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deleteAccountHead = async (id)=>{
+        if (items.some((item)=>item.accountHeadId === id
+        )) {
+            showMessage('Cant delete !! AccountHead contains itemss', "warnMsg");
+            return;
+        }
         const returnId = await _utilities.runGoogleScript("deleteAccountHead", id);
         if (returnId === id) {
             setAccountHeads(accountHeads.filter((accountHead)=>{
                 return accountHead.accountHeadId !== returnId;
             }));
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     //budgets
@@ -26002,6 +26024,7 @@ function Main() {
                 objBudget
             ]);
             showMessage(`Successfully added budget for ${objBudget.budgetAmount} !!`, "addMsg");
+            clearFields();
         }
     };
     const updateBudget = async (obj)=>{
@@ -26012,6 +26035,7 @@ function Main() {
                 else return budget;
             }));
             showMessage(`Successfully updated the budget for ${objBudget.budgetAmount} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deleteBudget = async (id)=>{
@@ -26021,6 +26045,7 @@ function Main() {
                 return budget.budgetId !== returnId;
             }));
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     //Users
@@ -26032,6 +26057,7 @@ function Main() {
                 objUser
             ]);
             showMessage(`Successfully added User ${objUser.userName} !!`, "addMsg");
+            clearFields();
         }
     };
     const updateUser = async (obj)=>{
@@ -26042,6 +26068,7 @@ function Main() {
                 else return user;
             }));
             showMessage(`Successfully updated the user ${objUser.userName} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deleteUser = async (id)=>{
@@ -26051,6 +26078,7 @@ function Main() {
                 return user.userId !== returnId;
             }));
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     // account types
@@ -26062,6 +26090,7 @@ function Main() {
                 objAccountType
             ]);
             showMessage(`Successfully added account type ${objAccountType.accountTypeName} !!`, "addMsg");
+            clearFields();
         }
     };
     const updateAccountType = async (obj)=>{
@@ -26072,6 +26101,7 @@ function Main() {
                 else return accountType;
             }));
             showMessage(`Successfully updated the account head ${objAccountType.accountTypeName} !!`, "updateMsg");
+            clearFields();
         }
     };
     const deleteAccountType = async (id)=>{
@@ -26086,13 +26116,14 @@ function Main() {
                 return accountType.accountTypeId !== returnId;
             }));
             showMessage(`Deleted the record. Cant be undone !!`, "deleteMsg");
+            clearFields();
         }
     };
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_navDefault.default, {}, void 0, false, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 276,
+                lineNumber: 306,
                 columnNumber: 7
             }, this),
             messageBox && /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_messageBoxDefault.default, {
@@ -26100,7 +26131,7 @@ function Main() {
                 color: color
             }, void 0, false, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 277,
+                lineNumber: 307,
                 columnNumber: 22
             }, this),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Routes, {
@@ -26115,11 +26146,12 @@ function Main() {
                             user: user1,
                             addTransaction: addTransaction,
                             updateTransaction: updateTransaction,
-                            deleteTransaction: deleteTransaction
+                            deleteTransaction: deleteTransaction,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 279,
+                        lineNumber: 309,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26127,7 +26159,7 @@ function Main() {
                         element: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_aboutDefault.default, {}, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 280,
+                        lineNumber: 310,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26137,11 +26169,12 @@ function Main() {
                             prayerGroups: prayerGroups,
                             addPerson: addPerson,
                             updatePerson: updatePerson,
-                            deletePerson: deletePerson
+                            deletePerson: deletePerson,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 281,
+                        lineNumber: 311,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26152,11 +26185,12 @@ function Main() {
                             schedules: schedules,
                             addAccountHead: addAccountHead,
                             updateAccountHead: updateAccountHead,
-                            deleteAccountHead: deleteAccountHead
+                            deleteAccountHead: deleteAccountHead,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 282,
+                        lineNumber: 312,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26165,11 +26199,12 @@ function Main() {
                             schedules: schedules,
                             addSchedule: addSchedule,
                             updateSchedule: updateSchedule,
-                            deleteSchedule: deleteSchedule
+                            deleteSchedule: deleteSchedule,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 283,
+                        lineNumber: 313,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26178,11 +26213,12 @@ function Main() {
                             accountTypes: accountTypes,
                             addAccountType: addAccountType,
                             updateAccountType: updateAccountType,
-                            deleteAccountType: deleteAccountType
+                            deleteAccountType: deleteAccountType,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 284,
+                        lineNumber: 314,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26191,11 +26227,12 @@ function Main() {
                             prayerGroups: prayerGroups,
                             addPrayerGroup: addPrayerGroup,
                             updatePrayerGroup: updatePrayerGroup,
-                            deletePrayerGroup: deletePrayerGroup
+                            deletePrayerGroup: deletePrayerGroup,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 285,
+                        lineNumber: 315,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26205,11 +26242,12 @@ function Main() {
                             budgets: budgets,
                             addBudget: addBudget,
                             updateBudget: updateBudget,
-                            deleteBudget: deleteBudget
+                            deleteBudget: deleteBudget,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 286,
+                        lineNumber: 316,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactRouterDom.Route, {
@@ -26218,17 +26256,18 @@ function Main() {
                             users: users,
                             addUser: addUser,
                             updateUser: updateUser,
-                            deleteUser: deleteUser
+                            deleteUser: deleteUser,
+                            clearFields: clearFields
                         }, void 0, false, void 0, void 0)
                     }, void 0, false, {
                         fileName: "src/components/Main.jsx",
-                        lineNumber: 288,
+                        lineNumber: 318,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/components/Main.jsx",
-                lineNumber: 278,
+                lineNumber: 308,
                 columnNumber: 7
             }, this)
         ]
@@ -28053,14 +28092,22 @@ var _transactionLeftPanel = require("./TransactionLeftPanel");
 var _transactionLeftPanelDefault = parcelHelpers.interopDefault(_transactionLeftPanel);
 var _react = require("react");
 var _s = $RefreshSig$();
-const Transactions = ({ persons , user , accountHeads , transactions , items , addTransaction , updateTransaction , deleteTransaction  })=>{
+const Transactions = ({ persons , user , accountHeads , transactions , items , addTransaction , updateTransaction , deleteTransaction , clearFields  })=>{
     _s();
     const [selectedTransaction, setSelectedTransaction] = _react.useState([]);
     const selectTransaction = (id)=>{
-        const transaction1 = transactions.filter((transaction)=>transaction.transactionId === id
-        )[0];
-        setSelectedTransaction(transaction1);
+        console.log("select transaction called");
+        if (id > 0) {
+            const transaction1 = transactions.filter((transaction)=>transaction.transactionId === id
+            )[0];
+            setSelectedTransaction(transaction1);
+        }
     };
+    _react.useEffect(()=>{
+        selectTransaction(0);
+    }, [
+        clearFields
+    ]);
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "container",
         children: [
@@ -28072,10 +28119,11 @@ const Transactions = ({ persons , user , accountHeads , transactions , items , a
                 addTransaction: addTransaction,
                 updateTransaction: updateTransaction,
                 deleteTransaction: deleteTransaction,
-                selectedTransaction: selectedTransaction
+                selectedTransaction: selectedTransaction,
+                clearFields: clearFields
             }, void 0, false, {
                 fileName: "src/components/Transactions/Transactions.jsx",
-                lineNumber: 18,
+                lineNumber: 23,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_transactionRightPanelDefault.default, {
@@ -28087,17 +28135,17 @@ const Transactions = ({ persons , user , accountHeads , transactions , items , a
                 user: user
             }, void 0, false, {
                 fileName: "src/components/Transactions/Transactions.jsx",
-                lineNumber: 25,
+                lineNumber: 31,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/Transactions/Transactions.jsx",
-        lineNumber: 17,
+        lineNumber: 22,
         columnNumber: 5
     }, undefined);
 };
-_s(Transactions, "kkgWBO5G6XzlP0Nkico5TlQVM1s=");
+_s(Transactions, "nYXyDVGFAAuoH//iyEu/9xSaLMw=");
 _c = Transactions;
 exports.default = Transactions;
 var _c;
@@ -28635,10 +28683,25 @@ var _react = require("react");
 var _transactionLeftTab = require("./TransactionLeftTab");
 var _transactionLeftTabDefault = parcelHelpers.interopDefault(_transactionLeftTab);
 var _s = $RefreshSig$();
-function TransactionLeftPanel({ accountHeads , user , persons , items , addTransaction , updateTransaction , deleteTransaction , selectedTransaction  }) {
+function TransactionLeftPanel({ accountHeads , user , persons , items , addTransaction , updateTransaction , deleteTransaction , selectedTransaction , clearFields  }) {
     _s();
     const [showHeading, setShowHeading] = _react.useState(false);
+    _react.useEffect(()=>{
+        if (selectedTransaction.transactionId > 0) {
+            console.log(selectedTransaction);
+            const selectedItem = items.filter((item)=>item.transactionId === selectedTransaction.transactionId
+            )[0];
+            console.log(selectedItem);
+            const selectedAccountHead = accountHeads.filter((accountHead)=>accountHead.accountHeadId === selectedItem.accountHeadId
+            )[0];
+            if (selectedAccountHead.accountTypeId === 1) setShowHeading(true);
+            else setShowHeading(false);
+        }
+    }, [
+        selectedTransaction
+    ]);
     const toggleHeading = (e)=>{
+        clearFields();
         if (e.target.textContent === 'Reciept') setShowHeading(false);
         else if (e.target.textContent === 'Payment') setShowHeading(true);
     };
@@ -28647,10 +28710,11 @@ function TransactionLeftPanel({ accountHeads , user , persons , items , addTrans
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_transactionLeftTabDefault.default, {
                 toggleHeading: toggleHeading,
-                showHeading: showHeading
+                showHeading: showHeading,
+                clearFields: clearFields
             }, void 0, false, {
                 fileName: "src/components/Transactions/TransactionLeftPanel.jsx",
-                lineNumber: 20,
+                lineNumber: 36,
                 columnNumber: 7
             }, this),
             showHeading ? /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addRecieptDefault.default, {
@@ -28661,10 +28725,11 @@ function TransactionLeftPanel({ accountHeads , user , persons , items , addTrans
                 items: items,
                 accountHeads: accountHeads,
                 persons: persons,
-                selectedTransaction: selectedTransaction
+                selectedTransaction: selectedTransaction,
+                clearFields: clearFields
             }, void 0, false, {
                 fileName: "src/components/Transactions/TransactionLeftPanel.jsx",
-                lineNumber: 23,
+                lineNumber: 39,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addPaymentDefault.default, {
                 addTransaction: addTransaction,
@@ -28674,20 +28739,21 @@ function TransactionLeftPanel({ accountHeads , user , persons , items , addTrans
                 items: items,
                 accountHeads: accountHeads,
                 persons: persons,
-                selectedTransaction: selectedTransaction
+                selectedTransaction: selectedTransaction,
+                clearFields: clearFields
             }, void 0, false, {
                 fileName: "src/components/Transactions/TransactionLeftPanel.jsx",
-                lineNumber: 28,
+                lineNumber: 44,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/components/Transactions/TransactionLeftPanel.jsx",
-        lineNumber: 19,
+        lineNumber: 35,
         columnNumber: 5
     }, this);
 }
-_s(TransactionLeftPanel, "0OOYamOhfIZ9mYFGbDi8qORwQS0=");
+_s(TransactionLeftPanel, "UiXTJEIo6ij1Etza9nwLgb58Q+Y=");
 _c = TransactionLeftPanel;
 exports.default = TransactionLeftPanel;
 var _c;
@@ -28709,496 +28775,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
-var _s = $RefreshSig$();
-const AddReceipt = ({ addTransaction , updateTransaction , deleteTransaction , dataArray , transaction: transaction1  })=>{
-    _s();
-    const [transactionId, setTransactionId] = _react.useState("");
-    const [transactionDate, setDate] = _react.useState("");
-    const [transactionReceiptNo, setReceiptNo] = _react.useState("");
-    const [transactionFrom, setFrom] = _react.useState("");
-    const [purpose, setPurpose] = _react.useState("");
-    const [amount, setAmount] = _react.useState("");
-    const [details, setDetails] = _react.useState("");
-    const [transactionItems, setItems] = _react.useState([]);
-    const [transactionBy, setBy] = _react.useState("");
-    const [transactionType, setType] = _react.useState("Reciept");
-    const [bankDetails, setBankDetails] = _react.useState("");
-    const [x, setX] = _react.useState("");
-    const [y, setY] = _react.useState("");
-    const [prompt, setPrompt] = _react.useState([]);
-    const [target, setTarget] = _react.useState("");
-    const [showPrompt, setShowPrompt] = _react.useState(false);
-    const [personList, setPersonList] = _react.useState([]);
-    setPersonList([
-        ...dataArray.Persons
-    ]);
-    const clearTransaction = ()=>{
-        setDate("");
-        setReceiptNo("");
-        setFrom("");
-        setPurpose("");
-        setAmount("");
-        setItems([]);
-        setBy("");
-        setType("Receipt");
-        setBankDetails("");
-    };
-    const fillTransaction = (transaction)=>{
-        if (transaction.transactionId > 0 && transaction.transactionType === "Receipt") {
-            setTransactionId(transaction.transactionId);
-            setDate(transaction.transactionDate);
-            setReceiptNo(transaction.transactionReceiptNo);
-            setFrom(transaction.transactionFrom);
-            setItems(transaction.transactionItems);
-            setBy(transaction.transactionBy);
-            setType(transaction.transactionType);
-            setBankDetails(transaction.transactionBankDetails);
-        }
-    };
-    const addItem = ()=>{
-        setItems([
-            ...transactionItems,
-            {
-                purpose,
-                amount,
-                details
-            }
-        ]);
-        setPurpose('');
-        setAmount('');
-        setDetails("");
-    };
-    const whenChanged = (e, promptList)=>{
-        const str = e.target.value;
-        if (str.length < 1) {
-            setShowPrompt(false);
-            return;
-        }
-        setTarget(e);
-        setPrompt(promptList.filter((p)=>p.toLowerCase().indexOf(str) >= 0
-        ));
-    };
-    const whenFocus = (e)=>{
-        setX(e.target.getBoundingClientRect().right);
-        setY(e.target.getBoundingClientRect().top);
-    };
-    _react.useEffect(()=>{
-        setShowPrompt(false);
-        if (prompt.length > 0) setShowPrompt(true);
-    }, [
-        prompt
-    ]);
-    _react.useEffect(()=>{
-        if (transaction1.transactionId > 0) fillTransaction(transaction1);
-    }, [
-        transaction1
-    ]);
-    const fillText = (text)=>{
-        switch(target.target.placeholder){
-            case "From":
-                setFrom(text);
-                break;
-            case "To":
-                setTo(text);
-                break;
-            case "Purpose":
-                setPurpose(text);
-                break;
-            default:
-                break;
-        }
-        setShowPrompt(false);
-    };
-    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
-        children: [
-            showPrompt && /*#__PURE__*/ _jsxDevRuntime.jsxDEV(TextPrompt, {
-                x: x,
-                y: y,
-                prompt: prompt,
-                fillText: fillText
-            }, void 0, false, {
-                fileName: "src/components/Transactions/AddReciept.jsx",
-                lineNumber: 104,
-                columnNumber: 9
-            }, undefined),
-            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                className: "add-form",
-                children: [
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "Date"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 108,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "date",
-                                placeholder: "Date",
-                                value: transactionDate,
-                                onChange: (e)=>setDate(e.target.value)
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 109,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 107,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "Receipt No"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 117,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "text",
-                                placeholder: "Receipt No",
-                                value: transactionReceiptNo,
-                                onChange: (e)=>setReceiptNo(e.target.value)
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 118,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 116,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "From"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 126,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "text",
-                                placeholder: "From",
-                                value: transactionFrom,
-                                onChange: (e)=>{
-                                    setFrom(e.target.value);
-                                    whenChanged(e, personList);
-                                },
-                                onFocus: whenFocus
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 127,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 125,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "Purpose"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 139,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "text",
-                                placeholder: "Purpose",
-                                value: purpose,
-                                onChange: (e)=>{
-                                    setPurpose(e.target.value);
-                                    whenChanged(e);
-                                },
-                                onFocus: whenFocus
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 140,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 138,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "Amount"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 152,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "text",
-                                placeholder: "Amount",
-                                value: amount,
-                                onChange: (e)=>setAmount(e.target.value)
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 153,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 151,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "Details"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 161,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "text",
-                                placeholder: "Details",
-                                value: details,
-                                onChange: (e)=>setDetails(e.target.value)
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 162,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 160,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                        className: "btn-small",
-                        onClick: addItem,
-                        children: "Add Item"
-                    }, void 0, false, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 169,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        children: [
-                            items.map((item, index)=>{
-                                return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("p", {
-                                    children: item.purpose + " : " + item.amount
-                                }, index, false, {
-                                    fileName: "src/components/Transactions/AddReciept.jsx",
-                                    lineNumber: 174,
-                                    columnNumber: 20
-                                }, undefined);
-                            }),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("h3", {
-                                children: [
-                                    "Total : ",
-                                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("span", {
-                                        children: "\u20A8"
-                                    }, void 0, false, {
-                                        fileName: "src/components/Transactions/AddReciept.jsx",
-                                        lineNumber: 176,
-                                        columnNumber: 27
-                                    }, undefined),
-                                    " ",
-                                    +items.reduce((tot, item)=>{
-                                        return tot + parseInt(item.amount, 10);
-                                    }, 0)
-                                ]
-                            }, void 0, true, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 176,
-                                columnNumber: 11
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 172,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        value: by,
-                        onChange: (e)=>setBy(e.target.value)
-                        ,
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "By"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 185,
-                                columnNumber: 11
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "radio",
-                                value: "Cash",
-                                name: "by"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 186,
-                                columnNumber: 11
-                            }, undefined),
-                            " Cash",
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "radio",
-                                value: "Bank",
-                                name: "by"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 187,
-                                columnNumber: 11
-                            }, undefined),
-                            " Bank"
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 180,
-                        columnNumber: 9
-                    }, undefined),
-                    by === "Bank" && /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "form-control",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                                children: "Bank Details"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 191,
-                                columnNumber: 13
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
-                                type: "text",
-                                placeholder: "Bank Details",
-                                value: transactioBankDetails,
-                                onChange: (e)=>setBankDetails(e.target.value)
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 192,
-                                columnNumber: 13
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 190,
-                        columnNumber: 11
-                    }, undefined),
-                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
-                        className: "button-block",
-                        children: [
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                                className: "btn-add",
-                                onClick: ()=>addTransaction({
-                                        transactionDate,
-                                        transactionReceiptNo,
-                                        transactionFrom,
-                                        transactionItems,
-                                        transactionBy,
-                                        transactionType,
-                                        transactionBankDetails
-                                    })
-                                ,
-                                children: "Add"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 201,
-                                columnNumber: 13
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                                className: "btn-update",
-                                onClick: ()=>updateTransaction({
-                                        transactionId,
-                                        transactionDate,
-                                        transactionReceiptNo,
-                                        transactionFrom,
-                                        transactionItems,
-                                        transactionBy,
-                                        transactionType,
-                                        transactionBankDetails
-                                    })
-                                ,
-                                children: "Update"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 208,
-                                columnNumber: 13
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                                className: "btn-clear",
-                                onClick: clearTransaction,
-                                children: "Clear"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 216,
-                                columnNumber: 13
-                            }, undefined),
-                            /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
-                                className: "btn-delete",
-                                onClick: ()=>deleteTransaction(transactionId)
-                                ,
-                                children: "Delete"
-                            }, void 0, false, {
-                                fileName: "src/components/Transactions/AddReciept.jsx",
-                                lineNumber: 217,
-                                columnNumber: 13
-                            }, undefined)
-                        ]
-                    }, void 0, true, {
-                        fileName: "src/components/Transactions/AddReciept.jsx",
-                        lineNumber: 200,
-                        columnNumber: 9
-                    }, undefined)
-                ]
-            }, void 0, true, {
-                fileName: "src/components/Transactions/AddReciept.jsx",
-                lineNumber: 106,
-                columnNumber: 7
-            }, undefined)
-        ]
-    }, void 0, true);
-};
-_s(AddReceipt, "DjIRC1ZOKjh2b/FVHRmy77UgheI=");
-_c = AddReceipt;
-exports.default = AddReceipt;
-var _c;
-$RefreshReg$(_c, "AddReceipt");
-
-  $parcel$ReactRefreshHelpers$c950.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"1IvNJ":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$0db0 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$0db0.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _react = require("react");
 var _multiOptionInput = require("../MultiOptionInput");
 var _multiOptionInputDefault = parcelHelpers.interopDefault(_multiOptionInput);
 var _s = $RefreshSig$();
-const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , items , accountHeads , persons , selectedTransaction , user  })=>{
+const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , items , accountHeads , persons , selectedTransaction , user , clearFields  })=>{
     _s();
     const [transactionId, setTransactionId] = _react.useState("");
     const [transactionDate, setDate] = _react.useState("");
@@ -29227,6 +28807,11 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
         persons
     ]);
     _react.useEffect(()=>{
+        clearTransaction();
+    }, [
+        clearFields
+    ]);
+    _react.useEffect(()=>{
         const list = accountHeads.map((accountHead)=>{
             const objAccountHead = {};
             objAccountHead.idField = accountHead.accountHeadId;
@@ -29238,6 +28823,7 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
         accountHeads
     ]);
     const clearTransaction = ()=>{
+        console.log("clear transactions called");
         setTransactionId("");
         setDate("");
         setBillNo("");
@@ -29320,8 +28906,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Date"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 114,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 119,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29330,14 +28916,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: transactionDate,
                             onChange: (e)=>setDate(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 115,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 120,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 113,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 118,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29346,8 +28932,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Transaction Id"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 123,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 128,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29357,24 +28943,24 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: transactionId,
                             onChange: (e)=>setTransactionId(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 124,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 129,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 122,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 127,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
                     className: "form-control",
                     children: [
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
-                            children: "Bill/Receipt No"
+                            children: "Receipt No"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 133,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 138,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29383,14 +28969,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: transactionBillNo,
                             onChange: (e)=>setBillNo(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 134,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 139,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 132,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 137,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29399,8 +28985,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Person Name"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 142,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 147,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_multiOptionInputDefault.default, {
@@ -29410,14 +28996,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             fillText: fillPerson,
                             displayText: displayPerson
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 143,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 148,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 141,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 146,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29426,8 +29012,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Person Address"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 151,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 156,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29437,14 +29023,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: personAddress,
                             onChange: (e)=>setPersonAddress(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 152,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 157,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 150,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 155,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29453,8 +29039,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Purpose"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 161,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 166,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_multiOptionInputDefault.default, {
@@ -29464,14 +29050,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             fillText: fillAccountHead,
                             displayText: displayAccountHead
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 162,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 167,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 160,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 165,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29480,8 +29066,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Amount"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 170,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 175,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29490,14 +29076,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: amount,
                             onChange: (e)=>setAmount(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 171,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 176,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 169,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 174,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29506,8 +29092,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Details"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 179,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 184,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29516,14 +29102,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: details,
                             onChange: (e)=>setDetails(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 180,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 185,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 178,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 183,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -29531,8 +29117,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                     onClick: addItem,
                     children: "Add Item"
                 }, void 0, false, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 187,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 192,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29550,20 +29136,20 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                                             ,
                                             children: "X"
                                         }, void 0, false, {
-                                            fileName: "src/components/Transactions/AddPayment.jsx",
-                                            lineNumber: 193,
+                                            fileName: "src/components/Transactions/AddReciept.jsx",
+                                            lineNumber: 198,
                                             columnNumber: 104
                                         }, undefined)
                                     }, void 0, false, {
-                                        fileName: "src/components/Transactions/AddPayment.jsx",
-                                        lineNumber: 193,
+                                        fileName: "src/components/Transactions/AddReciept.jsx",
+                                        lineNumber: 198,
                                         columnNumber: 98
                                     }, undefined),
                                     " "
                                 ]
                             }, index, true, {
-                                fileName: "src/components/Transactions/AddPayment.jsx",
-                                lineNumber: 193,
+                                fileName: "src/components/Transactions/AddReciept.jsx",
+                                lineNumber: 198,
                                 columnNumber: 20
                             }, undefined);
                         }),
@@ -29573,8 +29159,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("span", {
                                     children: "\u20A8"
                                 }, void 0, false, {
-                                    fileName: "src/components/Transactions/AddPayment.jsx",
-                                    lineNumber: 195,
+                                    fileName: "src/components/Transactions/AddReciept.jsx",
+                                    lineNumber: 200,
                                     columnNumber: 27
                                 }, undefined),
                                 " ",
@@ -29583,14 +29169,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                                 }, 0)
                             ]
                         }, void 0, true, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 195,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 200,
                             columnNumber: 11
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 190,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 195,
                     columnNumber: 9
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29602,8 +29188,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "By"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 204,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 209,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29611,8 +29197,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: "Cash",
                             name: "by"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 205,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 210,
                             columnNumber: 11
                         }, undefined),
                         " Cash",
@@ -29621,15 +29207,15 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: "Bank",
                             name: "by"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 206,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 211,
                             columnNumber: 11
                         }, undefined),
                         " Bank"
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 199,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 204,
                     columnNumber: 9
                 }, undefined),
                 transactionBy === "Bank" && /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29638,8 +29224,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
                             children: "Bank Details"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 210,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 215,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
@@ -29648,14 +29234,14 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             value: transactionBankDetails,
                             onChange: (e)=>setBankDetails(e.target.value)
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 211,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 216,
                             columnNumber: 13
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 209,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 214,
                     columnNumber: 11
                 }, undefined),
                 /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
@@ -29676,8 +29262,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             ,
                             children: "Add"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 220,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 225,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -29696,8 +29282,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             ,
                             children: "Update"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 228,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 233,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -29705,8 +29291,8 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             onClick: clearTransaction,
                             children: "Clear"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 237,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 242,
                             columnNumber: 13
                         }, undefined),
                         /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
@@ -29715,36 +29301,36 @@ const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , i
                             ,
                             children: "Delete"
                         }, void 0, false, {
-                            fileName: "src/components/Transactions/AddPayment.jsx",
-                            lineNumber: 238,
+                            fileName: "src/components/Transactions/AddReciept.jsx",
+                            lineNumber: 243,
                             columnNumber: 13
                         }, undefined)
                     ]
                 }, void 0, true, {
-                    fileName: "src/components/Transactions/AddPayment.jsx",
-                    lineNumber: 219,
+                    fileName: "src/components/Transactions/AddReciept.jsx",
+                    lineNumber: 224,
                     columnNumber: 9
                 }, undefined)
             ]
         }, void 0, true, {
-            fileName: "src/components/Transactions/AddPayment.jsx",
-            lineNumber: 112,
+            fileName: "src/components/Transactions/AddReciept.jsx",
+            lineNumber: 117,
             columnNumber: 7
         }, undefined)
     }, void 0, false);
 };
-_s(AddPayment, "YTfXRqS2mbMm/iGC5ahapNmOux0=");
+_s(AddPayment, "GAMPOtKmrew0oh6Kv00NFieCNI0=");
 _c = AddPayment;
 exports.default = AddPayment;
 var _c;
 $RefreshReg$(_c, "AddPayment");
 
-  $parcel$ReactRefreshHelpers$0db0.postlude(module);
+  $parcel$ReactRefreshHelpers$c950.postlude(module);
 } finally {
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../MultiOptionInput":"dCE8d","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"dCE8d":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../MultiOptionInput":"dCE8d"}],"dCE8d":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$6dee = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -29878,7 +29464,574 @@ $RefreshReg$(_c, "TextPrompt");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"hLLMW":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"1IvNJ":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$0db0 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$0db0.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _multiOptionInput = require("../MultiOptionInput");
+var _multiOptionInputDefault = parcelHelpers.interopDefault(_multiOptionInput);
+var _s = $RefreshSig$();
+const AddPayment = ({ addTransaction , updateTransaction , deleteTransaction , items , accountHeads , persons , selectedTransaction , user , clearFields  })=>{
+    _s();
+    const [transactionId, setTransactionId] = _react.useState("");
+    const [transactionDate, setDate] = _react.useState("");
+    const [transactionBillNo, setBillNo] = _react.useState("");
+    const [personId, setPersonId] = _react.useState("");
+    const [personName, setPersonName] = _react.useState("");
+    const [personAddress, setPersonAddress] = _react.useState("");
+    const [transactionBy, setBy] = _react.useState("");
+    const [transactionBankDetails, setBankDetails] = _react.useState("");
+    const [accountHeadId, setAccountHeadId] = _react.useState("");
+    const [accountHeadName, setAccountHeadName] = _react.useState("");
+    const [amount, setAmount] = _react.useState("");
+    const [details, setDetails] = _react.useState("");
+    const [transactionItems, setItems] = _react.useState([]);
+    const [personList, setPersonList] = _react.useState([]);
+    const [accountHeadList, setAccountHeadList] = _react.useState([]);
+    _react.useEffect(()=>{
+        const list = persons.map((person)=>{
+            const objPerson = {};
+            objPerson.idField = person.personId;
+            objPerson.textField = person.personName + ", " + person.personAddress;
+            return objPerson;
+        });
+        setPersonList(list);
+    }, [
+        persons
+    ]);
+    _react.useEffect(()=>{
+        clearTransaction();
+        console.log(selectedTransaction);
+    }, [
+        clearFields
+    ]);
+    _react.useEffect(()=>{
+        const list = accountHeads.map((accountHead)=>{
+            const objAccountHead = {};
+            objAccountHead.idField = accountHead.accountHeadId;
+            objAccountHead.textField = accountHead.accountHeadName;
+            return objAccountHead;
+        });
+        setAccountHeadList(list);
+    }, [
+        accountHeads
+    ]);
+    const clearTransaction = ()=>{
+        console.log("clear transactions called");
+        setTransactionId("");
+        setDate("");
+        setBillNo("");
+        setPersonId("");
+        setPersonName("");
+        setPersonAddress("");
+        setBy("");
+        setBankDetails("");
+        setAccountHeadId("");
+        setAccountHeadName("");
+        setAmount("");
+        setDetails("");
+        setItems([]);
+    };
+    _react.useEffect(()=>{
+        const ShowTransaction = (transaction)=>{
+            if (transaction.transactionId > 0) {
+                setTransactionId(transaction.transactionId);
+                setDate(transaction.transactionDate);
+                setBillNo(transaction.transactionBillNo);
+                setPersonId(transaction.personId);
+                setBy(transaction.transactionBy);
+                setBankDetails(transaction.transactionBankDetails);
+                const person1 = persons.filter((person)=>person.personId === transaction.personId
+                )[0];
+                setPersonName(person1.personName);
+                setPersonAddress(person1.personAddress);
+                const itemList = items.filter((item)=>item.transactionId === transaction.transactionId
+                );
+                setItems(itemList);
+            }
+        };
+        ShowTransaction(selectedTransaction);
+    }, [
+        selectedTransaction
+    ]);
+    const addItem = ()=>{
+        setItems([
+            ...transactionItems,
+            {
+                accountHeadId,
+                amount,
+                details
+            }
+        ]);
+        setAccountHeadId('');
+        setAccountHeadName("");
+        setAmount('');
+        setDetails("");
+    };
+    const fillPerson = (person)=>{
+        const id = person.idField;
+        const objPerson = persons.filter((per)=>per.personId === id
+        )[0];
+        setPersonId(objPerson.personId);
+        setPersonName(objPerson.personName);
+        setPersonAddress(objPerson.personAddress);
+    };
+    const displayPerson = (str)=>{
+        setPersonName(str);
+    };
+    const deleteItem = (id)=>{
+        setItems(transactionItems.filter((tItem)=>tItem.itemId !== id
+        ));
+    };
+    const fillAccountHead = (accountHead)=>{
+        setAccountHeadId(accountHead.idField);
+        setAccountHeadName(accountHead.textField);
+    };
+    const displayAccountHead = (str)=>{
+        setAccountHeadName(str);
+    };
+    return /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_jsxDevRuntime.Fragment, {
+        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+            className: "add-form",
+            children: [
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Date"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 120,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "date",
+                            placeholder: "Date",
+                            value: transactionDate,
+                            onChange: (e)=>setDate(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 121,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 119,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Transaction Id"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 129,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            readOnly: true,
+                            placeholder: "Transaction Id",
+                            value: transactionId,
+                            onChange: (e)=>setTransactionId(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 130,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 128,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Voucher No"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 139,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            placeholder: "Bill/Receipt No",
+                            value: transactionBillNo,
+                            onChange: (e)=>setBillNo(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 140,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 138,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Person Name"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 148,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_multiOptionInputDefault.default, {
+                            promptList: personList,
+                            textField: personName,
+                            idField: personId,
+                            fillText: fillPerson,
+                            displayText: displayPerson
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 149,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 147,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Person Address"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 157,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            readOnly: true,
+                            placeholder: "Person Address",
+                            value: personAddress,
+                            onChange: (e)=>setPersonAddress(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 158,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 156,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Purpose"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 167,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_multiOptionInputDefault.default, {
+                            promptList: accountHeadList,
+                            textField: accountHeadName,
+                            idField: accountHeadId,
+                            fillText: fillAccountHead,
+                            displayText: displayAccountHead
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 168,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 166,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Amount"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 176,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            placeholder: "Amount",
+                            value: amount,
+                            onChange: (e)=>setAmount(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 177,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 175,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Details"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 185,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            placeholder: "Details",
+                            value: details,
+                            onChange: (e)=>setDetails(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 186,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 184,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                    className: "btn-small",
+                    onClick: addItem,
+                    children: "Add Item"
+                }, void 0, false, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 193,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    children: [
+                        transactionItems.map((item, index)=>{
+                            const purpose = accountHeads.filter((accountHead)=>accountHead.accountHeadId === item.accountHeadId
+                            )[0].accountHeadName;
+                            return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("p", {
+                                children: [
+                                    purpose + " : " + item.amount + "( " + item.details + " )",
+                                    " ",
+                                    /*#__PURE__*/ _jsxDevRuntime.jsxDEV("span", {
+                                        children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                                            onClick: ()=>deleteItem(item.itemId)
+                                            ,
+                                            children: "X"
+                                        }, void 0, false, {
+                                            fileName: "src/components/Transactions/AddPayment.jsx",
+                                            lineNumber: 199,
+                                            columnNumber: 104
+                                        }, undefined)
+                                    }, void 0, false, {
+                                        fileName: "src/components/Transactions/AddPayment.jsx",
+                                        lineNumber: 199,
+                                        columnNumber: 98
+                                    }, undefined),
+                                    " "
+                                ]
+                            }, index, true, {
+                                fileName: "src/components/Transactions/AddPayment.jsx",
+                                lineNumber: 199,
+                                columnNumber: 20
+                            }, undefined);
+                        }),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("h3", {
+                            children: [
+                                "Total : ",
+                                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("span", {
+                                    children: "\u20A8"
+                                }, void 0, false, {
+                                    fileName: "src/components/Transactions/AddPayment.jsx",
+                                    lineNumber: 201,
+                                    columnNumber: 27
+                                }, undefined),
+                                " ",
+                                +transactionItems.reduce((tot, item)=>{
+                                    return tot + parseInt(item.amount, 10);
+                                }, 0)
+                            ]
+                        }, void 0, true, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 201,
+                            columnNumber: 11
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 196,
+                    columnNumber: 9
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    value: transactionBy,
+                    onChange: (e)=>setBy(e.target.value)
+                    ,
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "By"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 210,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "radio",
+                            value: "Cash",
+                            name: "by"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 211,
+                            columnNumber: 11
+                        }, undefined),
+                        " Cash",
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "radio",
+                            value: "Bank",
+                            name: "by"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 212,
+                            columnNumber: 11
+                        }, undefined),
+                        " Bank"
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 205,
+                    columnNumber: 9
+                }, undefined),
+                transactionBy === "Bank" && /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "form-control",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("label", {
+                            children: "Bank Details"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 216,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("input", {
+                            type: "text",
+                            placeholder: "Bank Details",
+                            value: transactionBankDetails,
+                            onChange: (e)=>setBankDetails(e.target.value)
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 217,
+                            columnNumber: 13
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 215,
+                    columnNumber: 11
+                }, undefined),
+                /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
+                    className: "button-block",
+                    children: [
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-add",
+                            onClick: ()=>addTransaction({
+                                    transactionDate,
+                                    transactionBillNo,
+                                    personId,
+                                    transactionBy,
+                                    transactionItems,
+                                    transactionBankDetails,
+                                    savedTimeStamp: Date(),
+                                    userName: user.userName
+                                })
+                            ,
+                            children: "Add"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 226,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-update",
+                            onClick: ()=>updateTransaction({
+                                    transactionId,
+                                    transactionDate,
+                                    transactionBillNo,
+                                    personId,
+                                    transactionBy,
+                                    transactionItems,
+                                    transactionBankDetails,
+                                    savedTimeStamp: Date(),
+                                    userName: user.userName
+                                })
+                            ,
+                            children: "Update"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 234,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-clear",
+                            onClick: clearTransaction,
+                            children: "Clear"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 243,
+                            columnNumber: 13
+                        }, undefined),
+                        /*#__PURE__*/ _jsxDevRuntime.jsxDEV("button", {
+                            className: "btn-delete",
+                            onClick: ()=>deleteTransaction(transactionId)
+                            ,
+                            children: "Delete"
+                        }, void 0, false, {
+                            fileName: "src/components/Transactions/AddPayment.jsx",
+                            lineNumber: 244,
+                            columnNumber: 13
+                        }, undefined)
+                    ]
+                }, void 0, true, {
+                    fileName: "src/components/Transactions/AddPayment.jsx",
+                    lineNumber: 225,
+                    columnNumber: 9
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "src/components/Transactions/AddPayment.jsx",
+            lineNumber: 118,
+            columnNumber: 7
+        }, undefined)
+    }, void 0, false);
+};
+_s(AddPayment, "GAMPOtKmrew0oh6Kv00NFieCNI0=");
+_c = AddPayment;
+exports.default = AddPayment;
+var _c;
+$RefreshReg$(_c, "AddPayment");
+
+  $parcel$ReactRefreshHelpers$0db0.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","../MultiOptionInput":"dCE8d","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"hLLMW":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$8f69 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -30309,7 +30462,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addPerson = require("./AddPerson");
 var _addPersonDefault = parcelHelpers.interopDefault(_addPerson);
-function PersonLeftPanel({ prayerGroups , addPerson , updatePerson , deletePerson , selectedPerson  }) {
+function PersonLeftPanel({ prayerGroups , addPerson , updatePerson , deletePerson , selectedPerson , clearFields  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addPersonDefault.default, {
@@ -30317,7 +30470,8 @@ function PersonLeftPanel({ prayerGroups , addPerson , updatePerson , deletePerso
             addPerson: addPerson,
             updatePerson: updatePerson,
             deletePerson: deletePerson,
-            selectedPerson: selectedPerson
+            selectedPerson: selectedPerson,
+            clearFields: clearFields
         }, void 0, false, {
             fileName: "src/components/Person/PersonLeftPannel.jsx",
             lineNumber: 7,
@@ -30947,7 +31101,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addAccountHead = require("./AddAccountHead");
 var _addAccountHeadDefault = parcelHelpers.interopDefault(_addAccountHead);
-function AccountHeadLeftPanel({ accountTypes , schedules , addAccountHead , selectedAccountHead , updateAccountHead , deleteAccountHead  }) {
+function AccountHeadLeftPanel({ accountTypes , schedules , addAccountHead , selectedAccountHead , updateAccountHead , deleteAccountHead , clearFields  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addAccountHeadDefault.default, {
@@ -30956,7 +31110,8 @@ function AccountHeadLeftPanel({ accountTypes , schedules , addAccountHead , sele
             selectedAccountHead: selectedAccountHead,
             addAccountHead: addAccountHead,
             updateAccountHead: updateAccountHead,
-            deleteAccountHead: deleteAccountHead
+            deleteAccountHead: deleteAccountHead,
+            clearFields: clearFields
         }, void 0, false, {
             fileName: "src/components/AccountHeads/AccountHeadLeftPannel.jsx",
             lineNumber: 7,
@@ -31253,7 +31408,7 @@ var _scheduleLeftPannel = require("./ScheduleLeftPannel");
 var _scheduleLeftPannelDefault = parcelHelpers.interopDefault(_scheduleLeftPannel);
 var _react = require("react");
 var _s = $RefreshSig$();
-const Schedule = ({ schedules , addSchedule , updateSchedule , deleteSchedule  })=>{
+const Schedule = ({ schedules , addSchedule , updateSchedule , deleteSchedule , clearFields  })=>{
     _s();
     const [selectedSchedule, setSelectedSchedule] = _react.useState('');
     const selectSchedule = (id)=>{
@@ -32021,14 +32176,15 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addAccountTypes = require("./AddAccountTypes");
 var _addAccountTypesDefault = parcelHelpers.interopDefault(_addAccountTypes);
-function AccountTypeLeftPanel({ addAccountType , updateAccountType , deleteAccountType , selectedAccountType  }) {
+function AccountTypeLeftPanel({ addAccountType , updateAccountType , deleteAccountType , selectedAccountType , clearFields  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addAccountTypesDefault.default, {
             addAccountType: addAccountType,
             updateAccountType: updateAccountType,
             deleteAccountType: deleteAccountType,
-            selectedAccountType: selectedAccountType
+            selectedAccountType: selectedAccountType,
+            clearFields: clearFields
         }, void 0, false, {
             fileName: "src/components/AccountTypes/AccountTypeLeftPannel.jsx",
             lineNumber: 7,
@@ -32507,14 +32663,15 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addPrayerGroup = require("./AddPrayerGroup");
 var _addPrayerGroupDefault = parcelHelpers.interopDefault(_addPrayerGroup);
-function PrayerGroupLeftPanel({ addPrayerGroup , updatePrayerGroup , deletePrayerGroup , selectedPrayerGroup  }) {
+function PrayerGroupLeftPanel({ addPrayerGroup , updatePrayerGroup , deletePrayerGroup , selectedPrayerGroup , clearFields  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addPrayerGroupDefault.default, {
             addPrayerGroup: addPrayerGroup,
             updatePrayerGroup: updatePrayerGroup,
             deletePrayerGroup: deletePrayerGroup,
-            selectedPrayerGroup: selectedPrayerGroup
+            selectedPrayerGroup: selectedPrayerGroup,
+            clearFields: clearFields
         }, void 0, false, {
             fileName: "src/components/PrayerGroups/PrayerGroupLeftPannel.jsx",
             lineNumber: 6,
@@ -33019,7 +33176,7 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addBudget = require("./AddBudget");
 var _addBudgetDefault = parcelHelpers.interopDefault(_addBudget);
-function BudgetLeftPanel({ accountHeads , addBudget , updateBudget , deleteBudget , selectedBudget  }) {
+function BudgetLeftPanel({ accountHeads , addBudget , updateBudget , deleteBudget , selectedBudget , clearFields  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addBudgetDefault.default, {
@@ -33027,7 +33184,8 @@ function BudgetLeftPanel({ accountHeads , addBudget , updateBudget , deleteBudge
             addBudget: addBudget,
             updateBudget: updateBudget,
             deleteBudget: deleteBudget,
-            selectedBudget: selectedBudget
+            selectedBudget: selectedBudget,
+            clearFields: clearFields
         }, void 0, false, {
             fileName: "src/components/Budgets/BudgetLeftPannel.jsx",
             lineNumber: 7,
@@ -33581,14 +33739,15 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _addUser = require("./AddUser");
 var _addUserDefault = parcelHelpers.interopDefault(_addUser);
-function UserLeftPanel({ addUser , updateUser , deleteUser , selectedUser  }) {
+function UserLeftPanel({ addUser , updateUser , deleteUser , selectedUser , clearFields  }) {
     return /*#__PURE__*/ _jsxDevRuntime.jsxDEV("div", {
         className: "left-panel",
         children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_addUserDefault.default, {
             addUser: addUser,
             updateUser: updateUser,
             deleteUser: deleteUser,
-            selectedUser: selectedUser
+            selectedUser: selectedUser,
+            clearFields: clearFields
         }, void 0, false, {
             fileName: "src/components/Users/UserLeftPannel.jsx",
             lineNumber: 6,

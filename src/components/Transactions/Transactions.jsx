@@ -3,16 +3,21 @@ import TransactionRightPanel from "./TransactionRightPanel";
 import TransactionLeftPanel from "./TransactionLeftPanel"
 import {useState, useEffect}  from 'react'
 
-const Transactions = ({persons, user, accountHeads, transactions, items, addTransaction, updateTransaction, deleteTransaction }) => {
+const Transactions = ({persons, user, accountHeads, transactions, items, addTransaction, updateTransaction, deleteTransaction,clearFields }) => {
   const [selectedTransaction, setSelectedTransaction] = useState([]);
   
-  
-
-  
   const selectTransaction =(id)=>{
-    const transaction = transactions.filter((transaction)=>transaction.transactionId=== id)[0]
-    setSelectedTransaction(transaction)
+    console.log("select transaction called")
+    if(id>0){
+      const transaction = transactions.filter((transaction)=>transaction.transactionId=== id)[0]
+      setSelectedTransaction(transaction)
+    }
   }
+
+  useEffect(()=>{
+    selectTransaction(0)
+  },[clearFields])
+
   return (
     <div className="container">
       <TransactionLeftPanel
@@ -21,6 +26,7 @@ const Transactions = ({persons, user, accountHeads, transactions, items, addTran
       updateTransaction={updateTransaction} 
       deleteTransaction={deleteTransaction}
       selectedTransaction = {selectedTransaction}
+      clearFields={clearFields}
       />
       <TransactionRightPanel transactions ={transactions} accountHeads = {accountHeads} items ={items} persons = {persons} selectTransaction={selectTransaction} user ={user} />
     </div>

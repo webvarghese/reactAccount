@@ -65,12 +65,15 @@ function Main() {
      setMessageBox(false) 
     },3000)
   }
-  
+
+  const clearFields = ()=>{}
+  // =================== Persons ===========================================
  const addPerson =async(obj)=>{
    const objPerson = await runGoogleScript("addPerson",obj)
    if(objPerson.personId > 0){
      setPersons([...persons,objPerson])
      showMessage(`Successfully added the person ${objPerson.personName} !!`,"addMsg")
+     clearFields()
    }
  }
   const updatePerson =async(obj)=>{
@@ -78,6 +81,7 @@ function Main() {
    if(objPerson.personId > 0){
      setPersons(persons.map((person)=>{if(person.personId === objPerson.personId){return objPerson} else {return person}}))
      showMessage(`Successfully updated the person ${objPerson.personName} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deletePerson = async(id)=>{
@@ -85,6 +89,7 @@ function Main() {
     if(returnId === id){
       setPersons(persons.filter((person)=>{ return person.personId !== returnId}))
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
   //Prayer Groups
@@ -93,6 +98,7 @@ function Main() {
    if(objPrayerGroup.prayerGroupId > 0){
      setPrayerGroups([...prayerGroups,objPrayerGroup])
      showMessage(`Successfully added the prayer group ${objPrayerGroup.prayerGroupName} !!`,"addMsg")
+     clearFields()
    }
  }
   const updatePrayerGroup =async(obj)=>{
@@ -100,6 +106,7 @@ function Main() {
    if(objPrayerGroup.prayerGroupId > 0){
      setPrayerGroups(prayerGroups.map((prayerGroup)=>{if(prayerGroup.prayerGroupId === objPrayerGroup.prayerGroupId){return objPrayerGroup} else {return prayerGroup}}))
      showMessage(`Successfully updated the prayer group ${objPrayerGroup.prayerGroupName} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deletePrayerGroup = async(id)=>{
@@ -111,6 +118,7 @@ function Main() {
     if(returnId === id){
       setPrayerGroups([prayerGroups.filter((prayerGroup)=>{return prayerGroup.prayerGroupId !== returnId})])
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
   //Transactions 
@@ -120,6 +128,7 @@ function Main() {
      setTransactions([...transactions,objTransaction])
      addItems(objTransaction.transactionItems)
      showMessage(`Successfully added the entry for ${objTransaction.transactionBillNo} !!`,"addMsg")
+     clearFields()
    }
  }
   const updateTransaction =async(obj)=>{
@@ -129,6 +138,7 @@ function Main() {
      const itemListAfterDelete = items.filter((item)=>item.transactionId !== objTransaction.transactionId)
      setItems([...itemListAfterDelete, ...objTransaction.transactionItems])
      showMessage(`Successfully updated the transaction for ${objTransaction.transactionBillNo} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deleteTransaction = async(id)=>{
@@ -137,6 +147,7 @@ function Main() {
       setTransactions(transactions.filter((transaction)=>{return transaction.transactionId !== returnId}))
       deleteItems(returnId)
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
 
@@ -154,6 +165,7 @@ const deleteItems = (id)=>{
    if(objSchedule.scheduleId > 0){
      setSchedules([...schedules,objSchedule])
      showMessage(`Successfully added the schedule ${objSchedule.scheduleName} !!`,"addMsg")
+     clearFields()
    }
  }
   const updateSchedule =async(obj)=>{
@@ -161,6 +173,7 @@ const deleteItems = (id)=>{
    if(objSchedule.scheduleId > 0){
      setSchedules(schedules.map((schedule)=>{if(schedule.scheduleId === objSchedule.scheduleId){return objSchedule} else {return schedule}}))
      showMessage(`Successfully updated the schedule ${objSchedule.scheduleName} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deleteSchedule = async(id)=>{
@@ -172,6 +185,7 @@ const deleteItems = (id)=>{
     if(returnId === id){
       setSchedules(schedules.filter((schedule)=>{return schedule.scheduleId !== returnId}))
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
   //account heads
@@ -180,6 +194,7 @@ const deleteItems = (id)=>{
    if(objAccountHead.accountHeadId > 0){
      setAccountHeads([...accountHeads,objAccountHead])
      showMessage(`Successfully added account head ${objAccountHead.accountHeadName} !!`,"addMsg")
+     clearFields()
    }
  }
   const updateAccountHead =async(obj)=>{
@@ -187,13 +202,19 @@ const deleteItems = (id)=>{
    if(objAccountHead.accountHeadId > 0){
      setAccountHeads(accountHeads.map((accountHead)=>{if(accountHead.accountHeadId === objAccountHead.accountHeadId){return objAccountHead} else {return accountHead}}))
      showMessage(`Successfully updated the account head ${objAccountHead.accountHeadName} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deleteAccountHead = async(id)=>{
+    if (items.some(item => item.accountHeadId === id)) {
+      showMessage('Cant delete !! AccountHead contains itemss',"warnMsg")
+        return
+    }
     const returnId = await runGoogleScript("deleteAccountHead", id)
     if(returnId === id){
       setAccountHeads(accountHeads.filter((accountHead)=>{ return accountHead.accountHeadId !== returnId}))
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
   
@@ -203,6 +224,7 @@ const deleteItems = (id)=>{
    if(objBudget.budgetId > 0){
      setBudgets([...budgets,objBudget])
      showMessage(`Successfully added budget for ${objBudget.budgetAmount} !!`,"addMsg")
+     clearFields()
    }
  }
   const updateBudget =async(obj)=>{
@@ -210,6 +232,7 @@ const deleteItems = (id)=>{
    if(objBudget.budgetId > 0){
      setBudgets(budgets.map((budget)=>{if(budget.budgetId === objBudget.budgetId){return objBudget} else {return budget}}))
      showMessage(`Successfully updated the budget for ${objBudget.budgetAmount} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deleteBudget = async(id)=>{
@@ -217,6 +240,7 @@ const deleteItems = (id)=>{
     if(returnId === id){
       setBudgets(budgets.filter((budget)=>{ return budget.budgetId !== returnId}))
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
 
@@ -227,6 +251,7 @@ const deleteItems = (id)=>{
   if(objUser.userId > 0){
     setUsers([...users,objUser])
     showMessage(`Successfully added User ${objUser.userName} !!`,"addMsg")
+    clearFields()
   }
 }
  const updateUser =async(obj)=>{
@@ -234,6 +259,7 @@ const deleteItems = (id)=>{
   if(objUser.userId > 0){
     setUsers(users.map((user)=>{if(user.userId === objUser.userId){return objUser} else {return user}}))
     showMessage(`Successfully updated the user ${objUser.userName} !!`,"updateMsg")
+    clearFields()
   }
 }
  const deleteUser = async(id)=>{
@@ -241,6 +267,7 @@ const deleteItems = (id)=>{
    if(returnId === id){
      setUsers(users.filter((user)=>{ return user.userId !== returnId}))
      showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+     clearFields()
    }
  }
   
@@ -250,6 +277,7 @@ const deleteItems = (id)=>{
    if(objAccountType.accountTypeId > 0){
      setAccountTypes([...accountTypes,objAccountType])
      showMessage(`Successfully added account type ${objAccountType.accountTypeName} !!`,"addMsg")
+     clearFields()
    }
  }
   const updateAccountType =async(obj)=>{
@@ -257,17 +285,19 @@ const deleteItems = (id)=>{
    if(objAccountType.accountTypeId > 0){
      setAccountTypes(accountTypes.map((accountType)=>{if(accountType.accountTypeId === objAccountType.accountTypeId){return objAccountType} else {return accountType}}))
      showMessage(`Successfully updated the account head ${objAccountType.accountTypeName} !!`,"updateMsg")
+     clearFields()
    }
  }
   const deleteAccountType = async(id)=>{
     if (accountHeads.some(accountHead => accountHead.accountTypeId === id)) {
     showMessage('Cant delete !! Account Types contain Account Heads')
       return
-}
+  }
     const returnId = await runGoogleScript("deleteAccountType", id)
     if(returnId === id){
       setAccountTypes(accountTypes.filter((accountType)=>{return accountType.accountTypeId !== returnId}))
       showMessage(`Deleted the record. Cant be undone !!`,"deleteMsg")
+      clearFields()
     }
   }
   
@@ -276,16 +306,16 @@ const deleteItems = (id)=>{
       <Nav />
       {messageBox && <MessageBox message={message} color ={color}/>}
       <Routes>
-        <Route path ="/transactions" element ={<Transactions transactions ={transactions} items ={items} persons ={persons} accountHeads ={accountHeads} user={user} addTransaction={addTransaction} updateTransaction={updateTransaction} deleteTransaction={deleteTransaction} />}/>
+        <Route path ="/transactions" element ={<Transactions transactions ={transactions} items ={items} persons ={persons} accountHeads ={accountHeads} user={user} addTransaction={addTransaction} updateTransaction={updateTransaction} deleteTransaction={deleteTransaction} clearFields ={clearFields}/>}/>
         <Route path="/about" element={<About />} />
-        <Route path="/person/*" element={<Person persons={persons} prayerGroups={prayerGroups} addPerson={addPerson} updatePerson ={updatePerson} deletePerson ={deletePerson} />} />
-        <Route path ="/accountHead/*" element={<AccountHead accountHeads = {accountHeads} accountTypes ={accountTypes} schedules={schedules} addAccountHead={addAccountHead} updateAccountHead={updateAccountHead} deleteAccountHead= {deleteAccountHead} />}/>
-        <Route path ="/schedule" element ={<Schedule schedules= {schedules} addSchedule={addSchedule} updateSchedule={updateSchedule} deleteSchedule={deleteSchedule} />}/>
-        <Route path ="/accountType" element ={<AccountType accountTypes = {accountTypes} addAccountType={addAccountType} updateAccountType={updateAccountType} deleteAccountType={deleteAccountType}/>}/>
-        <Route path ="/prayerGroup" element ={<PrayerGroup prayerGroups = {prayerGroups} addPrayerGroup={addPrayerGroup} updatePrayerGroup ={updatePrayerGroup} deletePrayerGroup={deletePrayerGroup} />}/>
+        <Route path="/person/*" element={<Person persons={persons} prayerGroups={prayerGroups} addPerson={addPerson} updatePerson ={updatePerson} deletePerson ={deletePerson} clearFields ={clearFields} />} />
+        <Route path ="/accountHead/*" element={<AccountHead accountHeads = {accountHeads} accountTypes ={accountTypes} schedules={schedules} addAccountHead={addAccountHead} updateAccountHead={updateAccountHead} deleteAccountHead= {deleteAccountHead} clearFields ={clearFields} />}/>
+        <Route path ="/schedule" element ={<Schedule schedules= {schedules} addSchedule={addSchedule} updateSchedule={updateSchedule} deleteSchedule={deleteSchedule} clearFields ={clearFields} />}/>
+        <Route path ="/accountType" element ={<AccountType accountTypes = {accountTypes} addAccountType={addAccountType} updateAccountType={updateAccountType} deleteAccountType={deleteAccountType} clearFields ={clearFields}/>}/>
+        <Route path ="/prayerGroup" element ={<PrayerGroup prayerGroups = {prayerGroups} addPrayerGroup={addPrayerGroup} updatePrayerGroup ={updatePrayerGroup} deletePrayerGroup={deletePrayerGroup} clearFields ={clearFields} />}/>
         <Route path ="/budget" element ={<Budget 
-accountHeads= {accountHeads} budgets = {budgets} addBudget={addBudget} updateBudget ={updateBudget} deleteBudget={deleteBudget} />}/>
-        <Route path ="/user" element ={<User users = {users} addUser={addUser} updateUser ={updateUser} deleteUser={deleteUser} />}/>
+accountHeads= {accountHeads} budgets = {budgets} addBudget={addBudget} updateBudget ={updateBudget} deleteBudget={deleteBudget} clearFields ={clearFields} />}/>
+        <Route path ="/user" element ={<User users = {users} addUser={addUser} updateUser ={updateUser} deleteUser={deleteUser} clearFields ={clearFields} />}/>
       </Routes>
     </>
   );

@@ -1,6 +1,6 @@
 
 import AddAccountHead from "./AddAccountHead"
-function AccountHeadLeftPanel({accountTypes, schedules,addAccountHead,selectedAccountHead, updateAccountHead,deleteAccountHead}) {
+function AccountHeadLeftPanel({accountTypes, schedules,addAccountHead,selectedAccountHead, updateAccountHead,deleteAccountHead, clearFields}) {
   
   return (
     <div className="left-panel">
@@ -9,7 +9,8 @@ function AccountHeadLeftPanel({accountTypes, schedules,addAccountHead,selectedAc
       schedules = {schedules} selectedAccountHead = {selectedAccountHead}
       addAccountHead={addAccountHead} 
       updateAccountHead ={updateAccountHead} 
-      deleteAccountHead={deleteAccountHead} 
+      deleteAccountHead={deleteAccountHead}
+      clearFields ={clearFields} 
       />
     </div>
   );

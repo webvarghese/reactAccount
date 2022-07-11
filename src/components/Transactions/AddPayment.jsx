@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MultiOptionInput from "../MultiOptionInput";
 
-const AddPayment = ({ addTransaction, updateTransaction, deleteTransaction, items, accountHeads, persons, selectedTransaction, user }) => {
+const AddPayment = ({ addTransaction, updateTransaction, deleteTransaction, items, accountHeads, persons, selectedTransaction, user, clearFields }) => {
   const [transactionId, setTransactionId] = useState("")
   const [transactionDate, setDate] = useState("");
   const [transactionBillNo, setBillNo] = useState("");
@@ -30,6 +30,11 @@ const AddPayment = ({ addTransaction, updateTransaction, deleteTransaction, item
   },[persons])
 
   useEffect(()=>{
+    clearTransaction()
+    console.log(selectedTransaction)
+  },[clearFields])
+
+  useEffect(()=>{
     const list = accountHeads.map((accountHead)=>{
       const objAccountHead = {}
       objAccountHead.idField = accountHead.accountHeadId
@@ -40,6 +45,7 @@ const AddPayment = ({ addTransaction, updateTransaction, deleteTransaction, item
   },[accountHeads])
 
     const clearTransaction = ()=>{
+      console.log("clear transactions called")
       setTransactionId("")
       setDate("");
       setBillNo("");
@@ -130,7 +136,7 @@ const AddPayment = ({ addTransaction, updateTransaction, deleteTransaction, item
           />
         </div>
         <div className="form-control">
-          <label>Bill/Receipt No</label>
+          <label>Voucher No</label>
           <input
             type="text"
             placeholder="Bill/Receipt No"

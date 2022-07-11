@@ -1,109 +1,120 @@
 import { useEffect, useState } from "react";
+import MultiOptionInput from "../MultiOptionInput";
 
-const AddReceipt = ({ addTransaction, updateTransaction, deleteTransaction, dataArray, transaction }) => {
+const AddPayment = ({ addTransaction, updateTransaction, deleteTransaction, items, accountHeads, persons, selectedTransaction, user, clearFields }) => {
   const [transactionId, setTransactionId] = useState("")
   const [transactionDate, setDate] = useState("");
-  const [transactionReceiptNo, setReceiptNo] = useState("");
-  const [transactionFrom, setFrom] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [amount, setAmount] = useState("");
+  const [transactionBillNo, setBillNo] = useState("");
+  const [personId, setPersonId] = useState("")
+  const [personName, setPersonName] = useState("");
+  const [personAddress, setPersonAddress] = useState("");
+  const [transactionBy, setBy] = useState("");
+  const [transactionBankDetails, setBankDetails] = useState("");
+  const [accountHeadId, setAccountHeadId] = useState("")
+  const [accountHeadName, setAccountHeadName] = useState("")
+  const [amount, setAmount] = useState("") 
   const [details, setDetails] = useState("")
   const [transactionItems, setItems] = useState([]);
-  const [transactionBy, setBy] = useState("");
-  const [transactionType, setType] = useState("Reciept")
-  const [bankDetails, setBankDetails] = useState("");
-
-  const [x, setX] = useState("");
-  const [y, setY] = useState("");
-  const [prompt, setPrompt] = useState([]);
-
-  const [target, setTarget] = useState("");
-
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [personList, setPersonList] = useState([])
   
-  setPersonList([...dataArray.Persons])
+  const [personList, setPersonList] = useState([])
+  const [accountHeadList, setAccountHeadList] = useState([])
+
+  useEffect(()=>{
+    const list = persons.map((person)=>{
+      const objPerson = {}
+      objPerson.idField = person.personId
+      objPerson.textField = person.personName + ", " + person.personAddress
+      return objPerson
+    })
+    setPersonList(list)
+  },[persons])
+
+  useEffect(()=>{
+    clearTransaction()
+  },[clearFields])
+
+  useEffect(()=>{
+    const list = accountHeads.map((accountHead)=>{
+      const objAccountHead = {}
+      objAccountHead.idField = accountHead.accountHeadId
+      objAccountHead.textField = accountHead.accountHeadName 
+      return objAccountHead
+    })
+    setAccountHeadList(list)
+  },[accountHeads])
 
     const clearTransaction = ()=>{
-      setDate("");
-      setReceiptNo("");
-      setFrom("");
-      setPurpose("");
-      setAmount("");
-      setItems([])
-      setBy("");
-      setType("Receipt");
+      console.log("clear transactions called")
+      setTransactionId("")
+      setDate("")
+      setBillNo("")
+      setPersonId("")
+      setPersonName("")
+      setPersonAddress("")
+      setBy("")
       setBankDetails("")
+      setAccountHeadId("")
+      setAccountHeadName("")
+      setAmount("")
+      setDetails("")
+      setItems([])
     }
-    const fillTransaction = (transaction)=>{
-      if(transaction.transactionId > 0 && transaction.transactionType === "Receipt"){
-        setTransactionId(transaction.transactionId)
-        setDate(transaction.transactionDate);
-        setReceiptNo(transaction.transactionReceiptNo);
-        setFrom(transaction.transactionFrom);
-        setItems(transaction.transactionItems)
-        setBy(transaction.transactionBy);
-        setType(transaction.transactionType);
-        setBankDetails(transaction.transactionBankDetails)
+
+    useEffect(()=>{
+      const ShowTransaction = (transaction)=>{
+        if(transaction.transactionId > 0 ){
+          setTransactionId(transaction.transactionId)
+          setDate(transaction.transactionDate)
+          setBillNo(transaction.transactionBillNo)
+          setPersonId(transaction.personId)        
+          setBy(transaction.transactionBy)
+          setBankDetails(transaction.transactionBankDetails)
+          const person = persons.filter((person)=>person.personId === transaction.personId)[0]
+          setPersonName(person.personName)
+          setPersonAddress(person.personAddress)
+          const itemList = items.filter(item=>item.transactionId === transaction.transactionId)
+          setItems(itemList)
+        }
       }
-    }
+      ShowTransaction(selectedTransaction)
+    },[selectedTransaction])
+    
     
   const addItem = () => {
-    setItems([...transactionItems, { purpose, amount,details }]);
-    setPurpose('')
+    setItems([...transactionItems, { accountHeadId, amount,details }])
+    setAccountHeadId('')
+    setAccountHeadName("")
     setAmount('')
     setDetails("")
   };
-  const whenChanged = (e,promptList) => {
-    const str = e.target.value;
-    if (str.length < 1){
-      setShowPrompt(false);
-      return
-    } 
-    setTarget(e);
-    setPrompt(promptList.filter((p) => p.toLowerCase().indexOf(str) >= 0));
-  };
-  const whenFocus = (e) => {
-    setX(e.target.getBoundingClientRect().right);
-    setY(e.target.getBoundingClientRect().top);
-  };
-  useEffect(() => {
-    setShowPrompt(false);
-    if (prompt.length > 0) {
-      setShowPrompt(true);
-    }
-  }, [prompt]);
-
-  useEffect(() => {
-    if (transaction.transactionId > 0) {
-      fillTransaction(transaction);
-    }
-  }, [transaction]);
- 
-
-  const fillText = (text) => {
-    switch (target.target.placeholder) {
-      case "From":
-        setFrom(text);
-        break;
-      case "To":
-        setTo(text);
-        break;
-      case "Purpose":
-        setPurpose(text);
-        break;
-      default:
-        break;
-    }
-    setShowPrompt(false);
-  };
   
+  const fillPerson =(person)=>{
+    const id = person.idField
+    const objPerson = persons.filter((per)=>per.personId === id)[0]
+    setPersonId(objPerson.personId)
+    setPersonName(objPerson.personName)
+    setPersonAddress(objPerson.personAddress)
+  }
+  const displayPerson =(str)=>{
+    setPersonName(str)
+  }
+
+  const deleteItem = (id)=>{
+    setItems(transactionItems.filter((tItem)=>tItem.itemId !== id))
+  }
+
+  const fillAccountHead =(accountHead)=>{
+    setAccountHeadId(accountHead.idField)
+    setAccountHeadName(accountHead.textField)
+  }
+
+  const displayAccountHead =(str)=>{
+    setAccountHeadName(str)
+  }
+ 
   return (
     <>
-      {showPrompt && (
-        <TextPrompt x={x} y={y} prompt={prompt} fillText={fillText} />
-      )}
-      <div className="add-form">
+      <div className="add-form" >
         <div className="form-control">
           <label>Date</label>
           <input
@@ -114,38 +125,50 @@ const AddReceipt = ({ addTransaction, updateTransaction, deleteTransaction, data
           />
         </div>
         <div className="form-control">
-          <label>Receipt No</label>
+          <label>Transaction Id</label>
           <input
             type="text"
-            placeholder="Receipt No"
-            value={transactionReceiptNo}
-            onChange={(e) => setReceiptNo(e.target.value)}
+            readOnly={true}
+            placeholder="Transaction Id"
+            value={transactionId}
+            onChange={(e) => setTransactionId(e.target.value)}
           />
         </div>
         <div className="form-control">
-          <label>From</label>
+          <label>Receipt No</label>
           <input
             type="text"
-            placeholder="From"
-            value={transactionFrom}
-            onChange={(e) => {
-              setFrom(e.target.value);
-              whenChanged(e,personList);
-            }}
-            onFocus={whenFocus}
+            placeholder="Bill/Receipt No"
+            value={transactionBillNo}
+            onChange={(e) => setBillNo(e.target.value)}
+          />
+        </div>
+        <div className="form-control">
+          <label>Person Name</label>
+          <MultiOptionInput promptList ={personList} 
+          textField={personName} 
+          idField={personId} 
+          fillText = {fillPerson}
+          displayText={displayPerson}
+          />
+        </div>
+        <div className="form-control">
+          <label>Person Address</label>
+          <input
+            type="text"
+            readOnly={true}
+            placeholder="Person Address"
+            value={personAddress}
+            onChange={(e) => setPersonAddress(e.target.value)}
           />
         </div>
         <div className="form-control">
           <label>Purpose</label>
-          <input
-            type="text"
-            placeholder="Purpose"
-            value={purpose}
-            onChange={(e) => {
-              setPurpose(e.target.value);
-              whenChanged(e);
-            }}
-            onFocus={whenFocus}
+          <MultiOptionInput promptList ={accountHeadList} 
+          textField={accountHeadName} 
+          idField={accountHeadId} 
+          fillText = {fillAccountHead}
+          displayText={displayAccountHead}
           />
         </div>
         <div className="form-control">
@@ -170,49 +193,52 @@ const AddReceipt = ({ addTransaction, updateTransaction, deleteTransaction, data
           Add Item
         </button>
         <div>
-          {items.map((item, index)=>{
-            return <p key={index}>{item.purpose + " : " +item.amount }</p>
+          {transactionItems.map((item, index)=>{
+            const purpose = accountHeads.filter((accountHead)=>accountHead.accountHeadId === item.accountHeadId)[0].accountHeadName
+            return <p key={index} >{purpose + " : " + item.amount + "( " + item.details + " )" } <span><button onClick={()=>deleteItem(item.itemId)}>X</button></span> </p>
           })}
-          <h3>{"Total : "}<span>&#8360;</span> {+ items.reduce((tot, item)=>{
+          <h3>{"Total : "}<span>&#8360;</span> {+ transactionItems.reduce((tot, item)=>{
            return  tot + parseInt(item.amount,10)
           },0)}</h3>
         </div>
         <div
           className="form-control"
-          value={by}
+          value={transactionBy}
           onChange={(e) => setBy(e.target.value)}
         >
           <label>By</label>
           <input type="radio" value="Cash" name="by" /> Cash
           <input type="radio" value="Bank" name="by" /> Bank
         </div>
-        {by === "Bank" && (
+        {transactionBy === "Bank" && (
           <div className="form-control">
             <label>Bank Details</label>
             <input
               type="text"
               placeholder="Bank Details"
-              value={transactioBankDetails}
+              value={transactionBankDetails}
               onChange={(e) => setBankDetails(e.target.value)}
             />
           </div>
         )}
         <div className="button-block">
             <button className="btn-add" onClick={()=>addTransaction({transactionDate,
-                                                                      transactionReceiptNo,
-                                                                      transactionFrom,
-                                                                      transactionItems,
+                                                                      transactionBillNo,
+                                                                      personId,
                                                                       transactionBy,
-                                                                      transactionType,
-                                                                      transactionBankDetails})}>Add</button>
+                                                                      transactionItems,
+                                                                      transactionBankDetails,
+                                                                      savedTimeStamp:Date(),
+                                                                      userName:user.userName})}>Add</button>
             <button className="btn-update" onClick={()=>updateTransaction({transactionId,
                                                                       transactionDate,
-                                                                      transactionReceiptNo,
-                                                                      transactionFrom,
-                                                                      transactionItems,
+                                                                      transactionBillNo,
+                                                                      personId,
                                                                       transactionBy,
-                                                                      transactionType,
-                                                                      transactionBankDetails})}>Update</button>
+                                                                      transactionItems,
+                                                                      transactionBankDetails,
+                                                                      savedTimeStamp:Date(),
+                                                                      userName:user.userName})}>Update</button>
             <button className="btn-clear" onClick={clearTransaction}>Clear</button>
             <button className="btn-delete" onClick={()=>deleteTransaction(transactionId)}>Delete</button>
         </div>
@@ -221,4 +247,4 @@ const AddReceipt = ({ addTransaction, updateTransaction, deleteTransaction, data
   );
 };
 
-export default AddReceipt;
+export default AddPayment;

@@ -2,7 +2,7 @@ import ScheduleRightPanel from "./ScheduleRightPannel";
 import ScheduleLeftPanel from "./ScheduleLeftPannel"
 import {useState, useEffect} from 'react'
 
-const Schedule = ({schedules,addSchedule,updateSchedule,deleteSchedule}) => {
+const Schedule = ({schedules,addSchedule,updateSchedule,deleteSchedule,clearFields}) => {
   
   const [selectedSchedule, setSelectedSchedule] = useState('')
   const selectSchedule =(id)=>{
@@ -15,7 +15,7 @@ const Schedule = ({schedules,addSchedule,updateSchedule,deleteSchedule}) => {
   
   return (
     <div className="container">
-      <ScheduleLeftPanel addSchedule={addSchedule} updateSchedule={updateSchedule} deleteSchedule={deleteSchedule} selectedSchedule={selectedSchedule}/>
+      <ScheduleLeftPanel addSchedule={addSchedule} updateSchedule={updateSchedule} deleteSchedule={deleteSchedule} selectedSchedule={selectedSchedule}  />
       <ScheduleRightPanel schedules={schedules} selectSchedule={selectSchedule} />
     </div>
   );
